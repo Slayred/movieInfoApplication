@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">testingAppMovie</string>
+    <string name="details">Детали</string>
+    <string name="invite">Пригласить друга</string>
+    <string name="comment">Комментарий</string>
+    <string name="share_via">Поделиться через</string>
+    <string name="invite_text">Я хочу пригласить тебя в мое приложение</string>
+</resources>
