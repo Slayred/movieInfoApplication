@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">testingAppMovie</string>
+    <string name="details">Details</string>
+    <string name="invite">Invite Friend</string>
+    <string name="comment">Comment</string>
+    <string name="share_via">Share VIA</string>
+    <string name="invite_text">I\'m want invite you to myApp</string>
+</resources>
