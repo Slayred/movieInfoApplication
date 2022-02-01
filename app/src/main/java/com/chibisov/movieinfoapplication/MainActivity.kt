@@ -10,18 +10,14 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.chibisov.movieinfoapplication.adapter.MovieAdapter
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
-//    private lateinit var movieFirstName: TextView
-//    private lateinit var movieFirstBtn: Button
-//    private lateinit var movieSecondName: TextView
-//    private lateinit var movieSecondBtn: Button
-//    private lateinit var movieThirdName: TextView
-//    private lateinit var movieThirdBtn: Button
-//    private lateinit var movieFourthName: TextView
-//    private lateinit var movieFourthBtn: Button
     private lateinit var inviteBtn: Button
+    private lateinit var recyclerView: RecyclerView
     private var checkedStatus = intArrayOf(0, 0, 0, 0)
     private val listMovie = Repository.movieList
 
@@ -46,22 +42,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-//        movieFirstName = findViewById(R.id.movieNameFrist)
-//        movieFirstBtn = findViewById(R.id.movieBtnFirst)
-//        movieSecondName = findViewById(R.id.movieNameSecond)
-//        movieSecondBtn = findViewById(R.id.movieBtnSecond)
-//        movieThirdName = findViewById(R.id.movieNameThird)
-//        movieThirdBtn = findViewById(R.id.movieBtnThird)
-//        movieFourthName = findViewById(R.id.movieNameFourth)
-//        movieFourthBtn = findViewById(R.id.movieBtnFourth)
         inviteBtn = findViewById(R.id.inviteBtn)
+        recyclerView = findViewById(R.id.movieRV)
+        val adapter = MovieAdapter()
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        adapter.show(listMovie)
 
-//        setFilms(listMovie)
-
-//        movieFirstBtn.setOnClickListener(this)
-//        movieSecondBtn.setOnClickListener(this)
-//        movieThirdBtn.setOnClickListener(this)
-//        movieFourthBtn.setOnClickListener(this)
         inviteBtn.setOnClickListener(this)
 
     }
@@ -84,12 +71,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         startActivity(Intent.createChooser(intent, getString(R.string.share_via)))
     }
 
-//    private fun setColor() {
-//        changeColor(movieFirstName, checkedStatus[0])
-//        changeColor(movieSecondName, checkedStatus[1])
-//        changeColor(movieThirdName, checkedStatus[2])
-//        changeColor(movieFourthName, checkedStatus[3])
-//    }
 
     private fun launchActivity(movie: Movie, view: TextView) {
         val intent = Intent(this, MovieInfo::class.java)
@@ -97,14 +78,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         changeColor(view, 1)
         activityResultLauncher.launch(intent)
     }
-
-//    private fun setFilms(movieList: List<Movie>) {
-//        movieFirstName.text = movieList[0].name
-//        movieSecondName.text = movieList[1].name
-//        movieThirdName.text = movieList[2].name
-//        movieFourthName.text = movieList[3].name
-//
-//    }
 
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -128,22 +101,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-//            movieFirstBtn.id -> {
-//                launchActivity(listMovie[0], movieFirstName)
-//                checkedStatus[0] = 1
-//            }
-//            movieSecondBtn.id -> {
-//                launchActivity(listMovie[1], movieSecondName)
-//                checkedStatus[1] = 1
-//            }
-//            movieThirdBtn.id -> {
-//                launchActivity(listMovie[2], movieThirdName)
-//                checkedStatus[2] = 1
-//            }
-//            movieFourthBtn.id -> {
-//                launchActivity(listMovie[3], movieFourthName)
-//                checkedStatus[3] = 1
-//            }
             inviteBtn.id -> {
                 share()
             }
