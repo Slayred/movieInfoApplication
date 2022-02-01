@@ -33,7 +33,7 @@ class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MyViewHolder>() {
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.itemView.findViewById<TextView>(R.id.movieName).text = dataList[position].name
         holder.itemView.findViewById<ImageView>(R.id.moviePoster).setImageResource(dataList[position].poster)
-        holder.itemView.findViewById<ImageView>(R.id.movieFavorite).
+        holder.itemView.findViewById<ImageView>(R.id.movieFavorite).setImageResource(dataList[position].favorites)
     }
 
     override fun getItemCount(): Int {
