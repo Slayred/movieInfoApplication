@@ -1,7 +1,7 @@
 package com.chibisov.movieinfoapplication.adapter.util
 
 import androidx.recyclerview.widget.DiffUtil
-import com.chibisov.movieinfoapplication.Movie
+import com.chibisov.movieinfoapplication.data.models.Movie
 
 class MovieDiffUtil(private val oldList: List<Movie>
                     , private val newList: List<Movie>): DiffUtil.Callback() {

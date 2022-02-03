@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import com.chibisov.movieinfoapplication.data.models.Movie
 
 class MovieInfo : AppCompatActivity() {
     private lateinit var movieFavourites : ImageView

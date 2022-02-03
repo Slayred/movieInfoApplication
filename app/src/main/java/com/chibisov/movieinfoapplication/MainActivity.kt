@@ -13,6 +13,8 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chibisov.movieinfoapplication.adapter.MovieAdapter
+import com.chibisov.movieinfoapplication.data.Repository
+import com.chibisov.movieinfoapplication.data.models.Movie
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 

@@ -1,4 +1,4 @@
-package com.chibisov.movieinfoapplication
+package com.chibisov.movieinfoapplication.data.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
@@ -8,7 +8,7 @@ data class Movie(
     val id: Int,
     val name: String,
     val description: String,
-    val poster: Int,
-    var favorites: Boolean = false
+    val poster: Int
 ): Parcelable {
+
 }

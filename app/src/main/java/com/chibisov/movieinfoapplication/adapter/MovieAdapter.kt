@@ -1,7 +1,5 @@
 package com.chibisov.movieinfoapplication.adapter
 
-import android.media.Image
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +7,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.chibisov.movieinfoapplication.Movie
+import com.chibisov.movieinfoapplication.data.models.Movie
 import com.chibisov.movieinfoapplication.R
-import com.chibisov.movieinfoapplication.Repository
 import com.chibisov.movieinfoapplication.adapter.util.MovieDiffUtil
 
 class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MyViewHolder>() {
@@ -33,7 +30,7 @@ class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MyViewHolder>() {
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.itemView.findViewById<TextView>(R.id.movieName).text = dataList[position].name
         holder.itemView.findViewById<ImageView>(R.id.moviePoster).setImageResource(dataList[position].poster)
-        holder.itemView.findViewById<ImageView>(R.id.movieFavorite).setImageResource(dataList[position].favorites)
+        //holder.itemView.findViewById<ImageView>(R.id.movieFavorite).setImageResource(dataList[position].favorites)
     }
 
     override fun getItemCount(): Int {
