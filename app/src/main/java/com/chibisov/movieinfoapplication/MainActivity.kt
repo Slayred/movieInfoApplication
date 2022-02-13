@@ -21,20 +21,22 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var inviteBtn: Button
     private lateinit var recyclerView: RecyclerView
     private var checkedStatus = intArrayOf(0, 0, 0, 0)
-    private val listMovie = Repository.movieList
+    private val repository = Repository()
+    private val communication = Communication(repository)
+    private val listMovie = communication.getData()
 
     private val activityResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
             if (activityResult.resultCode == RESULT_OK) {
                 val r = activityResult.data!!.getParcelableExtra<Movie>(Const.MOVIE)
-                listMovie.find {
-                    it.id == r?.id
-                }?.favorites = r?.favorites!!
-                Log.d(Const.TAG, "Movie ${r.name} is favorite: ${r.favorites}")
-                Log.d(
-                    Const.TAG,
-                    "Comment added: ${activityResult.data!!.getStringExtra(Const.COMMENT)}"
-                )
+//                listMovie.find {
+//                    it.id == r?.id
+//                }?.favorites = r?.favorites!!
+//                Log.d(Const.TAG, "Movie ${r.name} is favorite: ${r.favorites}")
+//                Log.d(
+//                    Const.TAG,
+//                    "Comment added: ${activityResult.data!!.getStringExtra(Const.COMMENT)}"
+//                )
             }
         }
 

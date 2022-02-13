@@ -10,15 +10,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chibisov.movieinfoapplication.data.models.Movie
 import com.chibisov.movieinfoapplication.R
 import com.chibisov.movieinfoapplication.adapter.util.MovieDiffUtil
+import com.chibisov.movieinfoapplication.data.models.UiMovie
 
 class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MyViewHolder>() {
 
-    private var dataList = emptyList<Movie>()
+    private var dataList = emptyList<UiMovie>()
 
-    fun show(data:List<Movie>){
+    fun show(data:List<UiMovie>){
         val movieDiffUtil = MovieDiffUtil(dataList, data)
         val movieDiffUtilResult = DiffUtil.calculateDiff(movieDiffUtil)
-        this.dataList = data as MutableList<Movie>
+        this.dataList = data as MutableList<UiMovie>
         movieDiffUtilResult.dispatchUpdatesTo(this)
     }
 
@@ -30,6 +31,7 @@ class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MyViewHolder>() {
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.itemView.findViewById<TextView>(R.id.movieName).text = dataList[position].name
         holder.itemView.findViewById<ImageView>(R.id.moviePoster).setImageResource(dataList[position].poster)
+        holder.itemView.findViewById<TextView>(R.id.movieName).setTextColor(dataList[position].checkStatus())
         //holder.itemView.findViewById<ImageView>(R.id.movieFavorite).setImageResource(dataList[position].favorites)
     }
 

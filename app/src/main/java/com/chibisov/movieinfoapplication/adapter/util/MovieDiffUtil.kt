@@ -2,9 +2,10 @@ package com.chibisov.movieinfoapplication.adapter.util
 
 import androidx.recyclerview.widget.DiffUtil
 import com.chibisov.movieinfoapplication.data.models.Movie
+import com.chibisov.movieinfoapplication.data.models.UiMovie
 
-class MovieDiffUtil(private val oldList: List<Movie>
-                    , private val newList: List<Movie>): DiffUtil.Callback() {
+class MovieDiffUtil(private val oldList: List<UiMovie>
+                    , private val newList: List<UiMovie>): DiffUtil.Callback() {
 
     override fun getOldListSize() = oldList.size
 
@@ -18,6 +19,6 @@ class MovieDiffUtil(private val oldList: List<Movie>
                 && oldList[oldItemPosition].description == newList[newItemPosition].description
                 && oldList[oldItemPosition].name == newList[newItemPosition].name
                 && oldList[oldItemPosition].poster == newList[newItemPosition].poster
-                && oldList[oldItemPosition].favorites == newList[newItemPosition].favorites
+                //&& oldList[oldItemPosition].favorites == newList[newItemPosition].favorites
     }
 }
