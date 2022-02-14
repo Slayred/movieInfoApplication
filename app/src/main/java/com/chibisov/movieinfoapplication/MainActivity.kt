@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chibisov.movieinfoapplication.adapter.MovieAdapter
 import com.chibisov.movieinfoapplication.data.Repository
 import com.chibisov.movieinfoapplication.data.models.Movie
+import com.chibisov.movieinfoapplication.domain.BaseInteractor
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var recyclerView: RecyclerView
     private var checkedStatus = intArrayOf(0, 0, 0, 0)
     private val repository = Repository()
+    private val baseInteractor = BaseInteractor(repository)
     private val communication = Communication(repository)
     private val listMovie = communication.getData()
 
