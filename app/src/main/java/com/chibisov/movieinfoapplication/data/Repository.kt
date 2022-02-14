@@ -5,11 +5,14 @@ import com.chibisov.movieinfoapplication.data.Movies
 
 class Repository {
 
-    private val netDataSource = Movies.movieList
+    private val netDataSource = Movies
+    private val cacheDataSource = MoviesCache
     private val favorites = Favorites()
 
-    fun showMovies() = netDataSource.map { it.to() }
+    fun showMovies() = netDataSource.movieList.map { it.to() }
 
-    fun showFavorites() = Favorites().showFavorites()
+    fun showFavorites() = MoviesCache.favoriteList
+
+    fun checkedList() = MoviesCache.checkedList
 
 }
