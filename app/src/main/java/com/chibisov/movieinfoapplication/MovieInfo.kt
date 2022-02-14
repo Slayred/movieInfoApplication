@@ -31,24 +31,24 @@ class MovieInfo : AppCompatActivity() {
             movie = this.intent.getParcelableExtra(Const.MOVIE)!!
         }
 
-        setMovie(movie!!)
+//        setMovie(movie!!)
 
 
         movieFavourites.setOnClickListener {
-            changeFavorites(movie!!)
+//            changeFavorites(movie!!)
         }
     }
 
-    private fun setMovie(movie: Movie) {
-        movieName.text = movie.name
-        movieDescr.text = movie.description
-        movie.poster.let { moviePoster.setImageResource(it) }
-        setFavourites(movie)
-    }
+//    private fun setMovie(movie: Movie) {
+//        movieName.text = movie.name
+//        movieDescr.text = movie.description
+//        movie.poster.let { moviePoster.setImageResource(it) }
+//        setFavourites(movie)
+//    }
 
-    private fun setFavourites(movie: Movie) {
-        movieFavourites.setImageResource(checkFavourites(movie.favorites))
-    }
+//    private fun setFavourites(movie: Movie) {
+//        movieFavourites.setImageResource(checkFavourites(movie.favorites))
+//    }
 
     private fun checkFavourites(favorites: Boolean): Int {
         return when(favorites){
@@ -57,10 +57,10 @@ class MovieInfo : AppCompatActivity() {
         }
     }
 
-    private fun changeFavorites(movie: Movie) {
-        movie.favorites = !movie.favorites
-        setFavourites(movie)
-    }
+//    private fun changeFavorites(movie: Movie) {
+//        movie.favorites = !movie.favorites
+//        setFavourites(movie)
+//    }
 
     override fun onBackPressed() {
         data.putExtra(Const.MOVIE, movie)

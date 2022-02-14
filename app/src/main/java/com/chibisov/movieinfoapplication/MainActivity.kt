@@ -1,6 +1,7 @@
 package com.chibisov.movieinfoapplication
 
 import android.content.Intent
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +11,7 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chibisov.movieinfoapplication.adapter.MovieAdapter
@@ -52,7 +54,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         recyclerView = findViewById(R.id.movieRV)
         val adapter = MovieAdapter()
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            recyclerView.layoutManager = LinearLayoutManager(this)
+        } else recyclerView.layoutManager = GridLayoutManager(this, 2)
+
         adapter.show(listMovie)
 
         inviteBtn.setOnClickListener(this)
