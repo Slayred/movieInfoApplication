@@ -8,12 +8,14 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.chibisov.movieinfoapplication.MovieType
 import com.chibisov.movieinfoapplication.data.models.Movie
 import com.chibisov.movieinfoapplication.R
 import com.chibisov.movieinfoapplication.adapter.util.MovieDiffUtil
 import com.chibisov.movieinfoapplication.data.models.UiMovie
+import org.w3c.dom.Text
 
-class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MyViewHolder>() {
+class MovieAdapter(private val type: MovieType): RecyclerView.Adapter<MovieAdapter.MyViewHolder>() {
 
     private var dataList = emptyList<UiMovie>()
 
@@ -26,21 +28,44 @@ class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_layout, parent, false)
-        return MyViewHolder(view)
+        return when(type){
+            MovieType.Common -> MyViewHolder.Base(view)
+            MovieType.Favorite -> MyViewHolder.Favorite(view)
+        }
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.itemView.findViewById<TextView>(R.id.movieName).text = dataList[position].name
-        holder.itemView.findViewById<ImageView>(R.id.moviePoster).setImageResource(dataList[position].poster)
-        holder.itemView.findViewById<TextView>(R.id.movieName).setTextColor(dataList[position].checkStatus())
-        //holder.itemView.findViewById<ImageView>(R.id.movieFavorite).setImageResource(dataList[position].favorites)
+//        holder.itemView.findViewById<TextView>(R.id.movieName).text = dataList[position].name
+//        holder.itemView.findViewById<ImageView>(R.id.moviePoster).setImageResource(dataList[position].poster)
+//        holder.itemView.findViewById<TextView>(R.id.movieName).setTextColor(dataList[position].checkStatus())
+        holder.bind(dataList[position])
+
     }
 
     override fun getItemCount(): Int {
         return dataList.size
     }
 
-    class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    abstract class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+        protected val movieName: TextView = itemView.findViewById(R.id.movieName)
+        protected val moviePoster: ImageView = itemView.findViewById(R.id.moviePoster)
+        protected val movieFavorite: ImageView = itemView.findViewById(R.id.movieFavorite)
+        open fun bind(model: UiMovie) {
+            movieName.text = model.name
+            moviePoster.setImageResource(model.poster)
+        }
 
+        class Base(view: View): MyViewHolder(view){
+            override fun bind(model: UiMovie) {
+                super.bind(model)
+                movieFavorite.visibility = View.INVISIBLE
+            }
+        }
+        class Favorite(view: View):MyViewHolder(view){
+            override fun bind(model: UiMovie) {
+                super.bind(model)
+                movieFavorite.visibility = View.VISIBLE
+            }
+        }
     }
 }

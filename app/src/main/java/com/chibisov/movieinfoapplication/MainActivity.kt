@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_main)
         inviteBtn = findViewById(R.id.inviteBtn)
         recyclerView = findViewById(R.id.movieRV)
-        val adapter = MovieAdapter()
+        val adapter = MovieAdapter(MovieType.Common)
         recyclerView.adapter = adapter
         if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             recyclerView.layoutManager = LinearLayoutManager(this)

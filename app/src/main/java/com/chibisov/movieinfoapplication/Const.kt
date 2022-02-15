@@ -6,3 +6,8 @@ object Const {
     const val COMMENT = "comment"
     const val TAG = "TAG"
 }
+
+enum class MovieType{
+    Common,
+    Favorite
+}
