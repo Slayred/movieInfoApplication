@@ -1,20 +1,20 @@
 package com.chibisov.movieinfoapplication.data
 
-import com.chibisov.movieinfoapplication.data.Favorites
-import com.chibisov.movieinfoapplication.data.Movies
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 
 class Repository {
 
     private val netDataSource = Movies
     private val cacheDataSource = MoviesCache
-    private val favorites = Favorites()
 
     fun showMovies() = netDataSource.movieList.map { it.to() }
 
-    fun showFavorites() = MoviesCache.favoriteList
-    fun addFavorites(movie: UiMovie) = MoviesCache.favoriteList.add(movie)
-    fun removeFavorites(movie: UiMovie) = MoviesCache.favoriteList.remove(movie)
+    fun showFavorites() = cacheDataSource.favoriteList
+    fun addFavorites(movie: UiMovie) = cacheDataSource.favoriteList.add(movie)
+    fun removeFavorites(movie: UiMovie) = cacheDataSource.favoriteList.remove(movie)
+    fun searchFavorites(movie: UiMovie) = cacheDataSource.favoriteList.find {
+        it.id == movie.id
+    }
 
 
     fun checkedList() = MoviesCache.checkedList

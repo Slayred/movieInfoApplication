@@ -15,14 +15,14 @@ import com.chibisov.movieinfoapplication.adapter.util.MovieDiffUtil
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 import org.w3c.dom.Text
 
-class MovieAdapter(private val type: MovieType): RecyclerView.Adapter<MovieAdapter.MyViewHolder>() {
+class MovieAdapter(private val type: MovieType, private val listener: FavoriteClickListener): RecyclerView.Adapter<MovieAdapter.MyViewHolder>() {
 
     private var dataList = emptyList<UiMovie>()
 
     fun show(data:List<UiMovie>){
         val movieDiffUtil = MovieDiffUtil(dataList, data)
         val movieDiffUtilResult = DiffUtil.calculateDiff(movieDiffUtil)
-        this.dataList = data as MutableList<UiMovie>
+        this.dataList = data
         movieDiffUtilResult.dispatchUpdatesTo(this)
     }
 
@@ -30,7 +30,7 @@ class MovieAdapter(private val type: MovieType): RecyclerView.Adapter<MovieAdapt
         val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_layout, parent, false)
         return when(type){
             MovieType.Common -> MyViewHolder.Base(view)
-            MovieType.Favorite -> MyViewHolder.Favorite(view)
+            MovieType.Favorite -> MyViewHolder.Favorite(view, listener)
         }
     }
 
@@ -46,7 +46,7 @@ class MovieAdapter(private val type: MovieType): RecyclerView.Adapter<MovieAdapt
         return dataList.size
     }
 
-    abstract class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    abstract class MyViewHolder(private val itemView: View): RecyclerView.ViewHolder(itemView) {
         protected val movieName: TextView = itemView.findViewById(R.id.movieName)
         protected val moviePoster: ImageView = itemView.findViewById(R.id.moviePoster)
         protected val movieFavorite: ImageView = itemView.findViewById(R.id.movieFavorite)
@@ -61,11 +61,19 @@ class MovieAdapter(private val type: MovieType): RecyclerView.Adapter<MovieAdapt
                 movieFavorite.visibility = View.INVISIBLE
             }
         }
-        class Favorite(view: View):MyViewHolder(view){
+        class Favorite(view: View, private val listener: FavoriteClickListener):MyViewHolder(view){
             override fun bind(model: UiMovie) {
                 super.bind(model)
                 movieFavorite.visibility = View.VISIBLE
+                movieFavorite.setImageResource(if (model.checked) R.drawable.baseline_favorite_24 else R.drawable.baseline_favorite_border_24)
+                movieFavorite.setOnClickListener {
+                    listener.change(model)
+                }
             }
         }
+    }
+
+    interface FavoriteClickListener{
+        fun change(movie: UiMovie)
     }
 }

@@ -14,4 +14,5 @@ class UiMovie( val id: Int
         else R.color.black
     }
 
+
 }

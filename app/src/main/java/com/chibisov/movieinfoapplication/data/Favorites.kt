@@ -1,13 +1,11 @@
 package com.chibisov.movieinfoapplication.data
 
-class Favorites {
+object Favorites {
 
    private var favoritesList = emptyList<Movies>()
 
     fun showFavorites() = favoritesList
 
-    fun addToFavorites() {
 
-    }
 
 }
