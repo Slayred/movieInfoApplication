@@ -6,8 +6,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.chibisov.movieinfoapplication.Communication
 import com.chibisov.movieinfoapplication.MovieType
 import com.chibisov.movieinfoapplication.data.models.Movie
 import com.chibisov.movieinfoapplication.R
@@ -15,19 +17,27 @@ import com.chibisov.movieinfoapplication.adapter.util.MovieDiffUtil
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 import org.w3c.dom.Text
 
-class MovieAdapter(private val type: MovieType, private val listener: FavoriteClickListener): RecyclerView.Adapter<MovieAdapter.MyViewHolder>() {
+class MovieAdapter(private val type: MovieType,
+                   private val listener: FavoriteClickListener,
+                   private val communication: Communication):
+    RecyclerView.Adapter<MovieAdapter.MyViewHolder>() {
 
-    private var dataList = emptyList<UiMovie>()
+    //private var dataList = emptyList<UiMovie>()
 
-    fun show(data:List<UiMovie>){
-        val movieDiffUtil = MovieDiffUtil(dataList, data)
-        val movieDiffUtilResult = DiffUtil.calculateDiff(movieDiffUtil)
-        this.dataList = data
-        movieDiffUtilResult.dispatchUpdatesTo(this)
+    fun update() {
+        communication.getDiffResult().dispatchUpdatesTo(this)
+    }
+
+    fun show(){
+        communication.getDiffResult().dispatchUpdatesTo(this)
+//            val movieDiffUtil = MovieDiffUtil(dataList, data)
+//            val movieDiffUtilResult = DiffUtil.calculateDiff(movieDiffUtil)
+//            movieDiffUtilResult.dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_layout, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_layout,
+            parent, false)
         return when(type){
             MovieType.Common -> MyViewHolder.Base(view)
             MovieType.Favorite -> MyViewHolder.Favorite(view, listener)
@@ -38,12 +48,14 @@ class MovieAdapter(private val type: MovieType, private val listener: FavoriteCl
 //        holder.itemView.findViewById<TextView>(R.id.movieName).text = dataList[position].name
 //        holder.itemView.findViewById<ImageView>(R.id.moviePoster).setImageResource(dataList[position].poster)
 //        holder.itemView.findViewById<TextView>(R.id.movieName).setTextColor(dataList[position].checkStatus())
-        holder.bind(dataList[position])
+       // holder.bind(dataList[position])
+        holder.bind(communication.getFavMovies()[position])
 
     }
 
     override fun getItemCount(): Int {
-        return dataList.size
+        //return dataList.size
+        return communication.getFavMovies().size
     }
 
     abstract class MyViewHolder(private val itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -65,7 +77,8 @@ class MovieAdapter(private val type: MovieType, private val listener: FavoriteCl
             override fun bind(model: UiMovie) {
                 super.bind(model)
                 movieFavorite.visibility = View.VISIBLE
-                movieFavorite.setImageResource(if (model.checked) R.drawable.baseline_favorite_24 else R.drawable.baseline_favorite_border_24)
+                movieFavorite
+                    .setImageResource(if (model.status) R.drawable.baseline_favorite_24 else R.drawable.baseline_favorite_border_24)
                 movieFavorite.setOnClickListener {
                     listener.change(model)
                 }
@@ -76,4 +89,6 @@ class MovieAdapter(private val type: MovieType, private val listener: FavoriteCl
     interface FavoriteClickListener{
         fun change(movie: UiMovie)
     }
+
+
 }

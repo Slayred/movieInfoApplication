@@ -12,15 +12,19 @@ class BaseInteractor(private val repository: Repository) {
        if( repository.showFavorites().contains(
             movie
         )){
+            movie.status = false
             repository.removeFavorites(movie)
-       } else repository.addFavorites(movie)
+       } else {
+           movie.status = true
+           repository.addFavorites(movie)
+       }
     }
 
-    fun changeChecked(movie: UiMovie){
-       val t =  repository.checkedList().find {
-            it.id == movie.id
-        }
-    }
+//    fun changeChecked(movie: UiMovie){
+//       val t =  repository.checkedList().find {
+//            it.id == movie.id
+//        }
+//    }
 
     fun showUIList() = repository.showMovies()
 

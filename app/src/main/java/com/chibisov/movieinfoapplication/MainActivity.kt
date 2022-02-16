@@ -14,19 +14,23 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chibisov.movieinfoapplication.adapter.MovieAdapter
+import com.chibisov.movieinfoapplication.core.Observer
+import com.chibisov.movieinfoapplication.data.Movies
+import com.chibisov.movieinfoapplication.data.MoviesCacheFavorites
 import com.chibisov.movieinfoapplication.data.Repository
 import com.chibisov.movieinfoapplication.data.models.Movie
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 import com.chibisov.movieinfoapplication.domain.BaseInteractor
 import com.google.android.material.snackbar.Snackbar
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
 
     private lateinit var inviteBtn: Button
     private lateinit var recyclerView: RecyclerView
     private lateinit var favoritesBtn: Button
+    private lateinit var adapter: MovieAdapter
     private var checkedStatus = intArrayOf(0, 0, 0, 0)
-    private val repository = Repository()
+    private val repository = Repository(MoviesCacheFavorites, Movies)
     private val baseInteractor = BaseInteractor(repository)
     private val communication = Communication(repository)
 
@@ -47,14 +51,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         inviteBtn = findViewById(R.id.inviteBtn)
         favoritesBtn = findViewById(R.id.favoriteBtn)
         recyclerView = findViewById(R.id.movieRV)
-        val adapter = MovieAdapter(MovieType.Favorite, object :MovieAdapter.FavoriteClickListener{
+        adapter = MovieAdapter(MovieType.Favorite, object :MovieAdapter.FavoriteClickListener{
             override fun change(movie: UiMovie) {
                 Snackbar.make(
                     recyclerView,
@@ -65,13 +67,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     communication.showUIMovie(baseInteractor.showUIList())
                 }.show()
             }
-        })
+        }, communication)
         recyclerView.adapter = adapter
         if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             recyclerView.layoutManager = LinearLayoutManager(this)
         } else recyclerView.layoutManager = GridLayoutManager(this, 2)
 
-        adapter.show(communication.showUIMovie(baseInteractor.showUIList()))
+        adapter.show()
 
         inviteBtn.setOnClickListener(this)
         favoritesBtn.setOnClickListener(this)
@@ -97,33 +99,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
-    private fun launchActivity(movie: Movie, view: TextView) {
-        val intent = Intent(this, MovieInfo::class.java)
-        intent.putExtra(Const.MOVIE, movie)
-        changeColor(view, 1)
-        activityResultLauncher.launch(intent)
-    }
-
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putIntArray(Const.CHECKED, checkedStatus)
-        super.onSaveInstanceState(outState)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        checkedStatus = savedInstanceState.getIntArray(Const.CHECKED)!!
-        //setColor()
-        super.onRestoreInstanceState(savedInstanceState)
-    }
-
-    private fun changeColor(view: TextView, checked: Int) {
-        when (checked) {
-            1 -> view.setTextColor(ContextCompat.getColor(this, R.color.red))
-            0 -> view.setTextColor(ContextCompat.getColor(this, R.color.black))
-        }
-
-    }
-
     override fun onClick(p0: View?) {
         when (p0?.id) {
             inviteBtn.id -> {
@@ -138,6 +113,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun showFavorites() {
         val intent = Intent(this, FavoritesMovie::class.java)
         activityResultLauncher.launch(intent)
+    }
+
+    override fun update() {
+        adapter.update()
     }
 }
 
