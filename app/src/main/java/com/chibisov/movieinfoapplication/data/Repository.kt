@@ -1,19 +1,28 @@
 package com.chibisov.movieinfoapplication.data
 
+import android.util.Log
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 
-class Repository(private val dataSource: CacheDataSource,
-            private val netDataSource: NetDataSource) {
+class Repository(private val cacheDataSource: CacheDataSource,
+                 private val netDataSource: NetDataSource) {
+
+    fun showMovies() = netDataSource.getList().map {
+        if (searchFavorites(it)){
+            Log.d("TAG", "Status FIND ${showFavorites().contains(it)}")
+            it.changeStatus()
+            }
+        else{
+            Log.d("TAG", "Status NOT ${it.status}")
+            it
+        }
+    }
+
+    fun showFavorites() = cacheDataSource.getList()
+    fun addFavorites(movie: UiMovie) = cacheDataSource.addItem(movie)
+    fun removeFavorites(movie: UiMovie) = cacheDataSource.deleteItem(movie)
+    fun searchFavorites(movie: UiMovie) = cacheDataSource.searchItem(movie)
 
 
-    //private val cacheDataSource = dataSource
-
-    fun showMovies() = netDataSource.getList()
-
-    fun showFavorites() = dataSource.getList()
-    fun addFavorites(movie: UiMovie) = dataSource.addItem(movie)
-    fun removeFavorites(movie: UiMovie) = dataSource.deleteItem(movie)
-    fun searchFavorites(movie: UiMovie) = dataSource.searchItem(movie)
 
 
 //    fun checkedList() = MoviesCache.checkedList

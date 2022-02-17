@@ -23,9 +23,9 @@ object Movies: NetDataSource {
 }
 
 interface NetDataSource: DataSource {
-    fun getList(): List<UiMovie>
+
 }
 
 interface DataSource {
-
+    fun getList(): List<UiMovie>
 }

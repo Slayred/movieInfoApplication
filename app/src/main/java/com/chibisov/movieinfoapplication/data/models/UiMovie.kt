@@ -1,17 +1,24 @@
 package com.chibisov.movieinfoapplication.data.models
 
-import com.chibisov.movieinfoapplication.R
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 class UiMovie( val id: Int
               , val name: String
               , val description: String
               , val poster: Int
               , var status: Boolean
-              , var checked: Boolean) {
+              , var checked: Boolean): Parcelable {
 
-    fun checkStatus(): Int {
-      return  if (status) R.color.red
-        else R.color.black
+//    fun checkStatus(): Int {
+//      return  if (status) R.color.red
+//        else R.color.black
+//    }
+
+    fun changeStatus(): UiMovie {
+        this.status = !this.status
+        return this
     }
 
 

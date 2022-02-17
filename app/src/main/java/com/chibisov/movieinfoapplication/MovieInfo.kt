@@ -1,21 +1,28 @@
 package com.chibisov.movieinfoapplication
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import com.chibisov.movieinfoapplication.data.models.Movie
+import com.chibisov.movieinfoapplication.core.Const
+import com.chibisov.movieinfoapplication.data.Movies
+import com.chibisov.movieinfoapplication.data.MoviesCacheFavorites
+import com.chibisov.movieinfoapplication.data.Repository
+import com.chibisov.movieinfoapplication.data.models.UiMovie
+import com.chibisov.movieinfoapplication.domain.BaseInteractor
 
 class MovieInfo : AppCompatActivity() {
+
+    private val repository = Repository(MoviesCacheFavorites, Movies)
+    private val baseInteractor = BaseInteractor(repository)
+
     private lateinit var movieFavourites : ImageView
     private lateinit var movieDescr: TextView
     private lateinit var movieName: TextView
     private lateinit var moviePoster: ImageView
     private lateinit var comment: EditText
-    private var data = Intent()
-    private  var movie: Movie? = null
+    private  var movie: UiMovie? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,42 +38,33 @@ class MovieInfo : AppCompatActivity() {
             movie = this.intent.getParcelableExtra(Const.MOVIE)!!
         }
 
-//        setMovie(movie!!)
+        setMovie(movie!!)
 
 
         movieFavourites.setOnClickListener {
-//            changeFavorites(movie!!)
+            movie!!.status = !movie!!.status
+            baseInteractor.changeStatus(movie!!)
+            setFavourites(movie!!)
         }
     }
 
-//    private fun setMovie(movie: Movie) {
-//        movieName.text = movie.name
-//        movieDescr.text = movie.description
-//        movie.poster.let { moviePoster.setImageResource(it) }
-//        setFavourites(movie)
-//    }
+    private fun setMovie(movie: UiMovie) {
+        movieName.text = movie.name
+        movieDescr.text = movie.description
+        movie.poster.let { moviePoster.setImageResource(it) }
+        setFavourites(movie)
+    }
 
-//    private fun setFavourites(movie: Movie) {
-//        movieFavourites.setImageResource(checkFavourites(movie.favorites))
-//    }
+    private fun setFavourites(movie: UiMovie) {
+        movieFavourites.setImageResource(checkFavourites(movie.status))
+    }
 
-    private fun checkFavourites(favorites: Boolean): Int {
-        return when(favorites){
+    private fun checkFavourites(status: Boolean): Int {
+        return when(status){
             true -> R.drawable.baseline_favorite_24
             false -> R.drawable.baseline_favorite_border_24
         }
     }
 
-//    private fun changeFavorites(movie: Movie) {
-//        movie.favorites = !movie.favorites
-//        setFavourites(movie)
-//    }
 
-    override fun onBackPressed() {
-        data.putExtra(Const.MOVIE, movie)
-        data.putExtra(Const.COMMENT, comment.text.toString())
-        setResult(RESULT_OK, data)
-        finish()
-        super.onBackPressed()
-    }
 }

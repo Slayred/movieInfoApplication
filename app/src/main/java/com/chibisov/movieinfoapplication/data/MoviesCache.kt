@@ -3,10 +3,10 @@ package com.chibisov.movieinfoapplication.data
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 
 
-interface CacheDataSource: NetDataSource {
+interface CacheDataSource: DataSource {
     //fun getList(): List<UiMovie>
     fun addItem(movie: UiMovie)
-    fun searchItem(movie: UiMovie): UiMovie
+    fun searchItem(movie: UiMovie): Boolean
     fun deleteItem(movie: UiMovie)
 }
 
@@ -21,18 +21,23 @@ object MoviesCacheFavorites: CacheDataSource {
         favoriteList.add(movie)
     }
 
-    override fun searchItem(movie: UiMovie): UiMovie {
-        return favoriteList.find {
-            it.id == movie.id
-        }!!
+    override fun searchItem(movie: UiMovie): Boolean {
+        val t  = (favoriteList.find {
+                it.id === movie.id
+            } != null)
+    return t
     }
 
     override fun deleteItem(movie: UiMovie) {
-        favoriteList.remove(movie)
+        favoriteList.remove(favoriteList.find {
+            it.id == movie.id
+        })
+
     }
 
 
 }
+
 object MoviesCacheChecked {
 
     val favoriteList = mutableListOf<UiMovie>()

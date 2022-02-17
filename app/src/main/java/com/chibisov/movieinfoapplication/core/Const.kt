@@ -1,4 +1,4 @@
-package com.chibisov.movieinfoapplication
+package com.chibisov.movieinfoapplication.core
 
 object Const {
     const val CHECKED = "checked"

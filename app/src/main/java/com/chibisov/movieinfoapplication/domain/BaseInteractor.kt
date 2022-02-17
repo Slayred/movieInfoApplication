@@ -9,9 +9,7 @@ class BaseInteractor(private val repository: Repository) {
 
 
     fun changeStatus(movie: UiMovie) {
-       if( repository.showFavorites().contains(
-            movie
-        )){
+       if( repository.searchFavorites(movie)){
             movie.status = false
             repository.removeFavorites(movie)
        } else {
@@ -19,12 +17,6 @@ class BaseInteractor(private val repository: Repository) {
            repository.addFavorites(movie)
        }
     }
-
-//    fun changeChecked(movie: UiMovie){
-//       val t =  repository.checkedList().find {
-//            it.id == movie.id
-//        }
-//    }
 
     fun showUIList() = repository.showMovies()
 
