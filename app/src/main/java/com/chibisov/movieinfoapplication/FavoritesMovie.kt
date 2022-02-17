@@ -4,13 +4,13 @@ import android.content.Intent
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chibisov.movieinfoapplication.adapter.MovieAdapter
 import com.chibisov.movieinfoapplication.core.Const
 import com.chibisov.movieinfoapplication.core.MovieType
-import com.chibisov.movieinfoapplication.core.Observable
 import com.chibisov.movieinfoapplication.core.Observer
 import com.chibisov.movieinfoapplication.data.Movies
 import com.chibisov.movieinfoapplication.data.MoviesCacheFavorites
@@ -28,13 +28,28 @@ class FavoritesMovie : AppCompatActivity(), Observer {
     private val communication = Communication()
     private lateinit var  adapter: MovieAdapter
 
+    override fun onStart() {
+        super.onStart()
+        communication.add(this)
+        Log.d("TAG", "MainActivity onStart")
+        communication.showUiMovieList(baseInteractor.showFavorites())
+        //adapter.updateDataFromAdapter()
+    }
 
+    override fun onStop() {
+        super.onStop()
+        communication.remove(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorites_movie)
         recyclerView = findViewById(R.id.movieRVFavor)
-        adapter = MovieAdapter(MovieType.Favorite, object : MovieAdapter.FavoriteClickListener{
+        adapter = MovieAdapter(MovieType.Favorite, object : MovieAdapter.FavoriteClickDeleteListener{
+            override fun change(movie: UiMovie, position: Int) {
+                TODO("Not yet implemented")
+            }
+
             override fun change(movie: UiMovie) {
                 Snackbar.make(
                     recyclerView,
@@ -42,7 +57,7 @@ class FavoritesMovie : AppCompatActivity(), Observer {
                     Snackbar.LENGTH_SHORT
                 ).setAction("YES"){
                     baseInteractor.changeStatus(movie)
-                    communication.setUIMovieList(baseInteractor.showFavorites())
+                    communication.showUiMovieList(baseInteractor.showFavorites())
                 }.show()
             }
         }, object : MovieAdapter.DetailsCLickListener {
@@ -51,24 +66,24 @@ class FavoritesMovie : AppCompatActivity(), Observer {
             }
         }
             ,communication)
-        communication.add(this)
+//        communication.add(this)
         recyclerView.adapter = adapter
         if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             recyclerView.layoutManager = LinearLayoutManager(this)
         } else recyclerView.layoutManager = GridLayoutManager(this, 2)
 
-        communication.setUIMovieList(baseInteractor.showFavorites())
     }
 
     override fun update() {
+        Log.d("TAG","UPDATE FAVORITES ACTIVITY")
         adapter.updateDataFromAdapter()
     }
 
 
-    override fun onDestroy() {
-        super.onDestroy()
-        communication.remove(this)
-    }
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        communication.remove(this)
+//    }
 
     private fun showDetails(movie: UiMovie){
         val intent = Intent(this, MovieInfo::class.java)

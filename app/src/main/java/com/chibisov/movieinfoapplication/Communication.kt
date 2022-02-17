@@ -11,19 +11,19 @@ import com.chibisov.movieinfoapplication.data.models.UiMovie
 import java.util.*
 import kotlin.collections.ArrayList
 
-class Communication(): Observable {
+class Communication: Observable {
 
     override val observers: ArrayList<Observer> = ArrayList()
 
     private lateinit var diffResult: DiffUtil.DiffResult
 
-    private var listOfMovies = emptyList<UiMovie>()
+   private var listOfMovies = emptyList<UiMovie>()
 
     fun getUIMoviesList(): List<UiMovie> {
         return listOfMovies
     }
 
-    fun setUIMovieList(list: List<UiMovie>) {
+    fun showUiMovieList(list: List<UiMovie>) {
         val callback = MovieDiffUtil(getUIMoviesList(), list)
         diffResult = DiffUtil.calculateDiff(callback)
         listOfMovies = list

@@ -42,6 +42,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
     override fun onStart() {
         super.onStart()
         communication.add(this)
+        Log.d("TAG", "MainActivity onStart")
+        communication.showUiMovieList(baseInteractor.showUIList())
         adapter.updateDataFromAdapter()
     }
 
@@ -65,7 +67,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
                     Snackbar.LENGTH_SHORT
                 ).setAction("YES") {
                     baseInteractor.changeStatus(movie)
-                    communication.setUIMovieList(baseInteractor.showUIList())
+                    communication.showUiMovieList(baseInteractor.showUIList())
                 }.show()
             }
         }, object : MovieAdapter.DetailsCLickListener {
@@ -80,7 +82,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
             recyclerView.layoutManager = LinearLayoutManager(this)
         } else recyclerView.layoutManager = GridLayoutManager(this, 2)
 
-        communication.setUIMovieList(baseInteractor.showUIList())
+        //communication.setUIMovieList(baseInteractor.showUIList())
 
         inviteBtn.setOnClickListener(this)
         favoritesBtn.setOnClickListener(this)

@@ -1,5 +1,6 @@
 package com.chibisov.movieinfoapplication.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,14 +23,10 @@ class MovieAdapter(
 
 
     fun updateDataFromAdapter() {
-        notifyDataSetChanged()
-        //communication.getDiffResult().dispatchUpdatesTo(this)
+        //notifyDataSetChanged()
+        communication.getDiffResult().dispatchUpdatesTo(this)
     }
 
-//    fun show(list: List<UiMovie>) {
-//
-//        communication.setUIMovieList(list)
-//    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_layout,
@@ -90,6 +87,9 @@ class MovieAdapter(
 
     interface FavoriteClickListener {
         fun change(movie: UiMovie)
+    }
+    interface FavoriteClickDeleteListener: FavoriteClickListener{
+        fun change(movie: UiMovie, position: Int)
     }
 
     interface DetailsCLickListener {
