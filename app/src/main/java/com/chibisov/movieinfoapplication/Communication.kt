@@ -1,6 +1,7 @@
 package com.chibisov.movieinfoapplication
 
 
+import android.util.Log
 import androidx.recyclerview.widget.DiffUtil
 import com.chibisov.movieinfoapplication.adapter.util.MovieDiffUtil
 import com.chibisov.movieinfoapplication.core.Observable
@@ -23,10 +24,16 @@ class Communication: Observable {
         return listOfMovies
     }
 
+    fun setUIMoviesList(list: List<UiMovie>) {
+        this.listOfMovies = list
+        Log.d("TAG", "Communication list was set")
+    }
+
     fun showUiMovieList(list: List<UiMovie>) {
         val callback = MovieDiffUtil(getUIMoviesList(), list)
         diffResult = DiffUtil.calculateDiff(callback)
-        listOfMovies = list
+        setUIMoviesList(list)
+        //listOfMovies = list
         sendUpdateEvent()
     }
 

@@ -11,7 +11,9 @@ class MovieDiffUtil(private val oldList: List<UiMovie>
 
     override fun getNewListSize() = newList.size
 
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =  oldList[oldItemPosition] == newList[newItemPosition]
+    override fun areItemsTheSame(oldItemPosition: Int
+                                 , newItemPosition: Int) = oldList[oldItemPosition]
+            .same(newList[newItemPosition])
 
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

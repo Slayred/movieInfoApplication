@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
         communication.add(this)
         Log.d("TAG", "MainActivity onStart")
         communication.showUiMovieList(baseInteractor.showUIList())
-        adapter.updateDataFromAdapter()
+//        adapter.updateDataFromAdapter()
     }
 
     override fun onStop() {
@@ -82,7 +82,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
             recyclerView.layoutManager = LinearLayoutManager(this)
         } else recyclerView.layoutManager = GridLayoutManager(this, 2)
 
-        //communication.setUIMovieList(baseInteractor.showUIList())
+
+//        communication.add(this)
+//        communication.showUiMovieList(baseInteractor.showUIList())
 
         inviteBtn.setOnClickListener(this)
         favoritesBtn.setOnClickListener(this)
