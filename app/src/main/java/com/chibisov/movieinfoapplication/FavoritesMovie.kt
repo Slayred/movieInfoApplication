@@ -32,8 +32,7 @@ class FavoritesMovie : AppCompatActivity(), Observer {
         super.onStart()
         communication.add(this)
         Log.d("TAG", "MainActivity onStart")
-        communication.showUiMovieList(baseInteractor.showFavorites())
-        //adapter.updateDataFromAdapter()
+//        adapter.updateDataFromAdapter()
     }
 
     override fun onStop() {
@@ -57,7 +56,7 @@ class FavoritesMovie : AppCompatActivity(), Observer {
                     Snackbar.LENGTH_SHORT
                 ).setAction("YES"){
                     baseInteractor.changeStatus(movie)
-                    communication.showUiMovieList(baseInteractor.showFavorites())
+                    communication.showUiMovieList(ArrayList(baseInteractor.showFavorites()))
                 }.show()
             }
         }, object : MovieAdapter.DetailsCLickListener {
@@ -65,13 +64,12 @@ class FavoritesMovie : AppCompatActivity(), Observer {
                 showDetails(movie)
             }
         }
-            ,communication)
-//        communication.add(this)
+            , communication)
         recyclerView.adapter = adapter
         if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             recyclerView.layoutManager = LinearLayoutManager(this)
         } else recyclerView.layoutManager = GridLayoutManager(this, 2)
-
+        communication.showUiMovieList(ArrayList(baseInteractor.showFavorites()))
     }
 
     override fun update() {
@@ -80,10 +78,6 @@ class FavoritesMovie : AppCompatActivity(), Observer {
     }
 
 
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        communication.remove(this)
-//    }
 
     private fun showDetails(movie: UiMovie){
         val intent = Intent(this, MovieInfo::class.java)

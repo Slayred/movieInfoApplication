@@ -22,7 +22,7 @@ class UiMovie( val id: Int
     }
 
     fun same(movie: UiMovie): Boolean{
-        return id == movie.id
+        return this.id == movie.id
     }
 
 

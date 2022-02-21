@@ -2,6 +2,8 @@ package com.chibisov.movieinfoapplication
 
 
 import android.util.Log
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import com.chibisov.movieinfoapplication.adapter.util.MovieDiffUtil
 import com.chibisov.movieinfoapplication.core.Observable
@@ -18,33 +20,35 @@ class Communication: Observable {
 
     private lateinit var diffResult: DiffUtil.DiffResult
 
-   private var listOfMovies = emptyList<UiMovie>()
+    private var listOfMovies = arrayListOf<UiMovie>()
 
-    fun getUIMoviesList(): List<UiMovie> {
+    fun getUIMoviesList(): ArrayList<UiMovie> {
+        Log.d("Communication", "Communication was call")
         return listOfMovies
     }
 
-    fun setUIMoviesList(list: List<UiMovie>) {
+
+    private fun setUIMoviesList(list: ArrayList<UiMovie>) {
         this.listOfMovies = list
-        Log.d("TAG", "Communication list was set")
+        Log.d("Communication", "Communication list was set")
     }
 
-    fun showUiMovieList(list: List<UiMovie>) {
-        val callback = MovieDiffUtil(getUIMoviesList(), list)
-        diffResult = DiffUtil.calculateDiff(callback)
+    fun showUiMovieList(list: ArrayList<UiMovie>) {
+        //Log.d("Communication", "Old list: ${getUIMoviesList().size} new list: ${list.size}")
+        for (k in list){
+            Log.d("Communication", "New Film = ${k.name} status is ${k.status}")
+        }
+        for (k in listOfMovies){
+            Log.d("Communication", "old Film = ${k.name} status is ${k.status}")
+        }
+        val callback = MovieDiffUtil(listOfMovies, list)
         setUIMoviesList(list)
-        //listOfMovies = list
+        diffResult = DiffUtil.calculateDiff(callback)
         sendUpdateEvent()
-    }
-
-
-    fun setdiffResult(t: MovieDiffUtil) {
-        diffResult = DiffUtil.calculateDiff(t)
     }
 
     fun getDiffResult(): DiffUtil.DiffResult {
         return diffResult
     }
-
 
 }

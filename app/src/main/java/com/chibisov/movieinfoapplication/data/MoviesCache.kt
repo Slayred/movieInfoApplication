@@ -4,7 +4,6 @@ import com.chibisov.movieinfoapplication.data.models.UiMovie
 
 
 interface CacheDataSource: DataSource {
-    //fun getList(): List<UiMovie>
     fun addItem(movie: UiMovie)
     fun searchItem(movie: UiMovie): Boolean
     fun deleteItem(movie: UiMovie)
@@ -12,8 +11,8 @@ interface CacheDataSource: DataSource {
 
 object MoviesCacheFavorites: CacheDataSource {
 
-    private val favoriteList = mutableListOf<UiMovie>()
-    override fun getList(): List<UiMovie> {
+    private val favoriteList = arrayListOf<UiMovie>()
+    override fun getList(): ArrayList<UiMovie> {
         return favoriteList
     }
 
@@ -40,5 +39,5 @@ object MoviesCacheFavorites: CacheDataSource {
 
 object MoviesCacheChecked {
 
-    val favoriteList = mutableListOf<UiMovie>()
+    val favoriteList = ArrayList<UiMovie>()
 }

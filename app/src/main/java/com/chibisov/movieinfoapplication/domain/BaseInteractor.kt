@@ -1,9 +1,6 @@
 package com.chibisov.movieinfoapplication.domain
 
-import android.util.Log
-import androidx.recyclerview.widget.DiffUtil
 import com.chibisov.movieinfoapplication.data.Repository
-import com.chibisov.movieinfoapplication.data.models.Movie
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 
 class BaseInteractor(private val repository: Repository) {
@@ -21,9 +18,7 @@ class BaseInteractor(private val repository: Repository) {
 
     fun showUIList() = repository.showMovies()
 
-    fun showFavorites(): List<UiMovie> {
-        val t = repository.showFavorites()
-        Log.d("TAG", "Favorites size is ${t.size}")
-       return t
+    fun showFavorites(): ArrayList<UiMovie> {
+        return repository.showFavorites() as ArrayList<UiMovie>
     }
 }

@@ -7,21 +7,15 @@ class Repository(private val cacheDataSource: CacheDataSource,
                  private val netDataSource: NetDataSource) {
 
     fun showMovies() :List<UiMovie> {
-//        netDataSource.getList().map {
-//            if (searchFavorites(it)) {
-//                Log.d("TAG", "Status FIND ${showFavorites().contains(it)}")
-//                it.changeStatus()
-//            } else {
-//                Log.d("TAG", "Status NOT ${it.status}")
-//                it
-//            }
-//        }
-        var t = netDataSource.getList()
+        val t = netDataSource.getList()
         for( k in t){
             if(searchFavorites(k)){
                 k.changeStatus()
                 Log.d("TAG", "NEW STATUS OF ${k.name} is ${k.status}")
             }
+        }
+        for (k in t){
+            Log.d("Repository", "Film = ${k.name} status is ${k.status}")
         }
         return t
     }

@@ -38,11 +38,13 @@ class MovieAdapter(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        Log.d("Adapter", "Call Communication for bind specific element in position $position")
         holder.bind(communication.getUIMoviesList()[position])
 
     }
 
     override fun getItemCount(): Int {
+        Log.d("Adapter", "Call Communication for count")
         return communication.getUIMoviesList().size
     }
 
