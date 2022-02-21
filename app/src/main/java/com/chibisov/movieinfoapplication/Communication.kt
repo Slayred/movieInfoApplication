@@ -8,10 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.chibisov.movieinfoapplication.adapter.util.MovieDiffUtil
 import com.chibisov.movieinfoapplication.core.Observable
 import com.chibisov.movieinfoapplication.core.Observer
-import com.chibisov.movieinfoapplication.data.Repository
-import com.chibisov.movieinfoapplication.data.models.Movie
 import com.chibisov.movieinfoapplication.data.models.UiMovie
-import java.util.*
 import kotlin.collections.ArrayList
 
 class Communication: Observable {
@@ -30,11 +27,10 @@ class Communication: Observable {
 
     private fun setUIMoviesList(list: ArrayList<UiMovie>) {
         this.listOfMovies = list
-        Log.d("Communication", "Communication list was set")
+        Log.d("Communication", "Communication list was set Communication name $this")
     }
 
     fun showUiMovieList(list: ArrayList<UiMovie>) {
-        //Log.d("Communication", "Old list: ${getUIMoviesList().size} new list: ${list.size}")
         for (k in list){
             Log.d("Communication", "New Film = ${k.name} status is ${k.status}")
         }
