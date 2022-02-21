@@ -6,7 +6,7 @@ import com.chibisov.movieinfoapplication.data.models.UiMovie
 class Repository(private val cacheDataSource: CacheDataSource,
                  private val netDataSource: NetDataSource) {
 
-    fun showMovies() :List<UiMovie> {
+    fun showMovies() :ArrayList<UiMovie> {
         val t = netDataSource.getList()
         for( k in t){
             if(searchFavorites(k)){

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chibisov.movieinfoapplication.Communication
 import com.chibisov.movieinfoapplication.core.MovieType
 import com.chibisov.movieinfoapplication.R
+import com.chibisov.movieinfoapplication.core.Observer
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 
 class MovieAdapter(
@@ -19,7 +20,7 @@ class MovieAdapter(
     private val detailsCLickListener: DetailsCLickListener,
     private val communication: Communication
 ) :
-    RecyclerView.Adapter<MovieAdapter.MyViewHolder>() {
+    RecyclerView.Adapter<MovieAdapter.MyViewHolder>(){
 
 
     fun updateDataFromAdapter() {
@@ -97,7 +98,6 @@ class MovieAdapter(
     interface DetailsCLickListener {
         fun details(movie: UiMovie)
     }
-
 
 
 
