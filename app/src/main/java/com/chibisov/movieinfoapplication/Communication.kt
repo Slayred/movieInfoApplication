@@ -34,7 +34,7 @@ class Communication: Observable {
         for (k in list){
             Log.d("Communication", "New Film = ${k.name} status is ${k.status}")
         }
-        for (k in listOfMovies){
+        for (k in getUIMoviesList()){
             Log.d("Communication", "old Film = ${k.name} status is ${k.status}")
         }
         val callback = MovieDiffUtil(listOfMovies, list)

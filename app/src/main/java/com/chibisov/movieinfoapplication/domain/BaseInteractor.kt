@@ -16,7 +16,9 @@ class BaseInteractor(private val repository: Repository) {
        }
     }
 
-    fun showUIList() = repository.showMovies()
+    fun showUIList(): ArrayList<UiMovie> {
+        return repository.showMovies()
+    }
 
     fun showFavorites(): ArrayList<UiMovie> {
         return repository.showFavorites() as ArrayList<UiMovie>

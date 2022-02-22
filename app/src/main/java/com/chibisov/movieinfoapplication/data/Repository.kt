@@ -2,6 +2,7 @@ package com.chibisov.movieinfoapplication.data
 
 import android.util.Log
 import com.chibisov.movieinfoapplication.data.models.UiMovie
+import kotlin.collections.ArrayList
 
 class Repository(private val cacheDataSource: CacheDataSource,
                  private val netDataSource: NetDataSource) {
