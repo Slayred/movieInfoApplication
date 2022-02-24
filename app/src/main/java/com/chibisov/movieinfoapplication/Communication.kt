@@ -30,7 +30,7 @@ class Communication: Observable {
         Log.d("Communication", "Communication list was set Communication name $this")
     }
 
-    fun showUiMovieList(list: ArrayList<UiMovie>) {
+    suspend fun showUiMovieList(list: ArrayList<UiMovie>) {
         for (k in list){
             Log.d("Communication", "New Film = ${k.name} status is ${k.status}")
         }

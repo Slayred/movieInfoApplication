@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
                     Snackbar.LENGTH_SHORT
                 ).setAction("YES") {
                     baseInteractor.changeStatus(movie)
+                    viewLife
                     communication.showUiMovieList(baseInteractor.showUIList())
                 }.show()
             }
