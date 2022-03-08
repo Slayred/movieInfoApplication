@@ -11,10 +11,6 @@ class UiMovie( val id: Int
               , var status: Boolean
               , var checked: Boolean): Parcelable {
 
-//    fun checkStatus(): Int {
-//      return  if (status) R.color.red
-//        else R.color.black
-//    }
 
     fun changeStatus(): UiMovie {
         this.status = !this.status

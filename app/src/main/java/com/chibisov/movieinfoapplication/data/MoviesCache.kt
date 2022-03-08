@@ -4,40 +4,52 @@ import com.chibisov.movieinfoapplication.data.models.UiMovie
 
 
 interface CacheDataSource: DataSource {
-    fun addItem(movie: UiMovie)
-    fun searchItem(movie: UiMovie): Boolean
-    fun deleteItem(movie: UiMovie)
+    fun addFavItem(movie: UiMovie)
+    fun searchFavItem(movie: UiMovie): Boolean
+    fun deleteFavItem(movie: UiMovie)
+    fun addCheckedItem(movie: UiMovie)
+    fun searchCheckedItem(movie: UiMovie): Boolean
 }
 
 object MoviesCacheFavorites: CacheDataSource {
 
     private val favoriteList = arrayListOf<UiMovie>()
+    private val checkedList = arrayListOf<UiMovie>()
+
+
     override fun getList(): ArrayList<UiMovie> {
         return favoriteList
     }
 
-    override fun addItem(movie: UiMovie) {
+    override fun addFavItem(movie: UiMovie) {
         favoriteList.add(movie)
     }
 
-    override fun searchItem(movie: UiMovie): Boolean {
+    override fun searchFavItem(movie: UiMovie): Boolean {
         val t  = (favoriteList.find {
                 it.id == movie.id
             } != null)
     return t
     }
 
-    override fun deleteItem(movie: UiMovie) {
+    override fun deleteFavItem(movie: UiMovie) {
         favoriteList.remove(favoriteList.find {
             it.id == movie.id
         })
 
     }
 
+    override fun addCheckedItem(movie: UiMovie) {
+        checkedList.add(movie)
+    }
+
+    override fun searchCheckedItem(movie: UiMovie): Boolean {
+        val t = checkedList.remove(checkedList.find {
+            it.id == movie.id
+        })
+        return t
+    }
+
 
 }
 
-object MoviesCacheChecked {
-
-    val favoriteList = ArrayList<UiMovie>()
-}

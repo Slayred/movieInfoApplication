@@ -30,11 +30,11 @@ class Communication: Observable {
         Log.d("Communication", "Communication list was set Communication name $this")
     }
 
-    suspend fun showUiMovieList(list: ArrayList<UiMovie>) {
+    fun showUiMovieList(list: ArrayList<UiMovie>) {
         for (k in list){
             Log.d("Communication", "New Film = ${k.name} status is ${k.status}")
         }
-        for (k in getUIMoviesList()){
+        for (k in listOfMovies){
             Log.d("Communication", "old Film = ${k.name} status is ${k.status}")
         }
         val callback = MovieDiffUtil(listOfMovies, list)

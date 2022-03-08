@@ -23,4 +23,8 @@ class BaseInteractor(private val repository: Repository) {
     fun showFavorites(): ArrayList<UiMovie> {
         return repository.showFavorites() as ArrayList<UiMovie>
     }
+
+    fun checkItem(movie: UiMovie) {
+        repository.addCheckedItem(movie)
+    }
 }

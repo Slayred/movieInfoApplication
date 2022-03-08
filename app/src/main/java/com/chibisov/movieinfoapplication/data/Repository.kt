@@ -7,7 +7,7 @@ import kotlin.collections.ArrayList
 class Repository(private val cacheDataSource: CacheDataSource,
                  private val netDataSource: NetDataSource) {
 
-   suspend fun showMovies() :ArrayList<UiMovie> {
+   fun showMovies() :ArrayList<UiMovie> {
         val t = netDataSource.getList()
         for( k in t){
             if(searchFavorites(k)){
@@ -18,21 +18,19 @@ class Repository(private val cacheDataSource: CacheDataSource,
         for (k in t){
             Log.d("Repository", "Film = ${k.name} status is ${k.status}")
         }
+       for (l in t) {
+           if(searchCheckedItem(l)){
+               l.checked = true
+           }
+       }
         return t
     }
 
     fun showFavorites() = cacheDataSource.getList()
-    fun addFavorites(movie: UiMovie) = cacheDataSource.addItem(movie)
-    fun removeFavorites(movie: UiMovie) = cacheDataSource.deleteItem(movie)
-    fun searchFavorites(movie: UiMovie) = cacheDataSource.searchItem(movie)
+    fun addFavorites(movie: UiMovie) = cacheDataSource.addFavItem(movie)
+    fun removeFavorites(movie: UiMovie) = cacheDataSource.deleteFavItem(movie)
+    fun searchFavorites(movie: UiMovie) = cacheDataSource.searchFavItem(movie)
+    fun addCheckedItem(movie: UiMovie) = cacheDataSource.addCheckedItem(movie)
+    fun searchCheckedItem(movie: UiMovie) = cacheDataSource.searchCheckedItem(movie)
 
-
-
-
-//    fun checkedList() = MoviesCache.checkedList
-//    fun addCheckedList(movie: UiMovie) = MoviesCache.checkedList.add(CheckedMovie(movie.id))
-//    fun removeCheckedList(movie: UiMovie) = MoviesCache.checkedList.remove(CheckedMovie(movie.id))
-//    fun searchChecked(movie: UiMovie) = MoviesCache.checkedList.find {
-//        it.id == movie.id
-//    }
 }

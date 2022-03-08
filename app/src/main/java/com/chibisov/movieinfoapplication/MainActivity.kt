@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chibisov.movieinfoapplication.adapter.MovieAdapter
+import com.chibisov.movieinfoapplication.core.CallbackData
 import com.chibisov.movieinfoapplication.core.Const
 import com.chibisov.movieinfoapplication.core.MovieType
 import com.chibisov.movieinfoapplication.core.Observer
@@ -44,6 +45,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
         communication.add(this)
         Log.d("TAG", "MainActivity onStart")
         communication.showUiMovieList(baseInteractor.showUIList())
+        Log.d("onStart", "Communication ${communication.getUIMoviesList()}")
         adapter.updateDataFromAdapter()
     }
 
@@ -59,6 +61,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
         inviteBtn = findViewById(R.id.inviteBtn)
         favoritesBtn = findViewById(R.id.favoriteBtn)
         recyclerView = findViewById(R.id.movieRV)
+        Log.d("onCreate", "Communication ${communication.getUIMoviesList()}")
         adapter = MovieAdapter(MovieType.Favorite, object : MovieAdapter.FavoriteClickListener {
             override fun change(movie: UiMovie) {
                 Snackbar.make(
@@ -66,9 +69,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
                     "Change Status?",
                     Snackbar.LENGTH_SHORT
                 ).setAction("YES") {
+                    Log.d("onCreate", "Communication ${communication.getUIMoviesList()}")
                     baseInteractor.changeStatus(movie)
-                    viewLife
-                    communication.showUiMovieList(baseInteractor.showUIList())
+                    val t = baseInteractor.showUIList()
+                    for (k in t){
+                        Log.d("MainActivity", "film name = ${k.name}, film status = ${k.status}")
+                    }
+                    communication.showUiMovieList(t)
                 }.show()
             }
         }, object : MovieAdapter.DetailsCLickListener {
@@ -86,7 +93,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
 
 
     }
-
     override fun onBackPressed() {
         val alertDialog = AlertDialog.Builder(this)
         alertDialog.setTitle("Exit")
