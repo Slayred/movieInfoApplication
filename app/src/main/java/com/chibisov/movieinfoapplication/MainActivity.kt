@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.GridLayoutManager
@@ -36,12 +37,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
     private val communication = Communication()
 
 
-//    private val activityResultLauncher =
-//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
-//            if (activityResult.resultCode == RESULT_OK) {
-//                val r = activityResult.data!!.getParcelableExtra<Movie>(Const.MOVIE)
-//            }
-//        }
+    private val activityResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
+            if (activityResult.resultCode == RESULT_OK) {
+                val r = activityResult.data!!.getParcelableExtra<UiMovie>(Const.MOVIE)
+                if (r != null) {
+                    Log.d(Const.TAG, "Movie ${r.name} is favorite: ${r.status}")
+                }
+                Log.d(
+                    Const.TAG,
+                    "Comment added: ${activityResult.data!!.getStringExtra(Const.COMMENT)}")
+            }
+        }
 
     override fun onStart() {
         super.onStart()
@@ -66,9 +73,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
             override fun change(movie: UiMovie) {
                 Snackbar.make(
                     recyclerView,
-                    "Change Status?",
+                    resources.getText(R.string.exit_question),
                     Snackbar.LENGTH_SHORT
-                ).setAction("YES") {
+                ).setAction(resources.getText(R.string.yes)) {
                     baseInteractor.changeStatus(movie)
                     val t = baseInteractor.showUIList()
                     communication.showUiMovieList(t)
@@ -101,10 +108,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
             }
         }
 
-
-
-
-
         inviteBtn.setOnClickListener(this)
         favoritesBtn.setOnClickListener(this)
 
@@ -112,9 +115,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
     }
     override fun onBackPressed() {
         val alertDialog = AlertDialog.Builder(this)
-        alertDialog.setTitle("Exit")
-        alertDialog.setMessage("Are you sure to exit?")
-        alertDialog.setPositiveButton("YES") { _, _ ->
+        alertDialog.setTitle(resources.getText(R.string.exit))
+        alertDialog.setMessage(resources.getText(R.string.exit_question))
+        alertDialog.setPositiveButton(resources.getText(R.string.yes)) { _, _ ->
             super.onBackPressed()
         }
         alertDialog.setNegativeButton("NO") { _, _ -> }
@@ -144,7 +147,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
         baseInteractor.addCheckedItem(movie)
         val intent = Intent(this, MovieInfo::class.java)
         intent.putExtra(Const.MOVIE, movie)
-        startActivity(intent)
+        activityResultLauncher.launch(intent)
+
     }
 
     private fun showFavorites() {

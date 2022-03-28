@@ -5,6 +5,7 @@ import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,10 +29,23 @@ class FavoritesMovie : AppCompatActivity(), Observer {
     private val communication = Communication()
     private lateinit var  adapter: MovieAdapter
 
+
+    private val activityResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
+            if (activityResult.resultCode == RESULT_OK) {
+                val r = activityResult.data!!.getParcelableExtra<UiMovie>(Const.MOVIE)
+                if (r != null) {
+                    Log.d(Const.TAG, "Movie ${r.name} is favorite: ${r.status}")
+                }
+                Log.d(
+                    Const.TAG,
+                    "Comment added: ${activityResult.data!!.getStringExtra(Const.COMMENT)}")
+            }
+        }
+
     override fun onStart() {
         super.onStart()
         communication.add(this)
-        Log.d("TAG", "MainActivity onStart")
     }
 
     override fun onStop() {
@@ -72,10 +86,9 @@ class FavoritesMovie : AppCompatActivity(), Observer {
     }
 
 
-
     private fun showDetails(movie: UiMovie){
         val intent = Intent(this, MovieInfo::class.java)
         intent.putExtra(Const.MOVIE, movie)
-        startActivity(intent)
+        activityResultLauncher.launch(intent)
     }
 }

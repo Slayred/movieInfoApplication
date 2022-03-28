@@ -1,7 +1,9 @@
 package com.chibisov.movieinfoapplication
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -22,7 +24,8 @@ class MovieInfo : AppCompatActivity() {
     private lateinit var movieName: TextView
     private lateinit var moviePoster: ImageView
     private lateinit var comment: EditText
-    private  var movie: UiMovie? = null
+    private var movie: UiMovie? = null
+    private var data  = Intent()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,6 +67,13 @@ class MovieInfo : AppCompatActivity() {
             true -> R.drawable.baseline_favorite_24
             false -> R.drawable.baseline_favorite_border_24
         }
+    }
+    override fun onBackPressed() {
+        data.putExtra(Const.COMMENT, comment.text.toString())
+        data.putExtra(Const.MOVIE, movie)
+        setResult(RESULT_OK, data)
+        finish()
+        super.onBackPressed()
     }
 
 

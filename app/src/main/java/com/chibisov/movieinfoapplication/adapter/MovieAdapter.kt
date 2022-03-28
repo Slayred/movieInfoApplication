@@ -71,7 +71,6 @@ class MovieAdapter(
         private val context: Context) :
             MyViewHolder(view) {
             override fun bind(model: UiMovie) {
-                Log.d("ADAPTER", "Bind model on ${model.name} checked status is ${model.checked}")
                 super.bind(model)
                 movieFavorite.visibility = View.VISIBLE
                 movieFavorite
