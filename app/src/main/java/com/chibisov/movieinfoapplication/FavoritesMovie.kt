@@ -61,9 +61,9 @@ class FavoritesMovie : AppCompatActivity(), Observer {
             override fun change(movie: UiMovie) {
                 Snackbar.make(
                     recyclerView,
-                    "Some text",
+                    resources.getText(R.string.change_status),
                     Snackbar.LENGTH_SHORT
-                ).setAction("YES"){
+                ).setAction(resources.getText(R.string.yes)){
                     baseInteractor.changeStatus(movie)
                     communication.showUiMovieList(baseInteractor.showFavorites())
                 }.show()

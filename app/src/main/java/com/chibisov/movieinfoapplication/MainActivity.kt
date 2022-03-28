@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
             override fun change(movie: UiMovie) {
                 Snackbar.make(
                     recyclerView,
-                    resources.getText(R.string.exit_question),
+                    resources.getText(R.string.change_status),
                     Snackbar.LENGTH_SHORT
                 ).setAction(resources.getText(R.string.yes)) {
                     baseInteractor.changeStatus(movie)
@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
         alertDialog.setPositiveButton(resources.getText(R.string.yes)) { _, _ ->
             super.onBackPressed()
         }
-        alertDialog.setNegativeButton("NO") { _, _ -> }
+        alertDialog.setNegativeButton(resources.getText(R.string.no)) { _, _ -> }
         alertDialog.show()
     }
 
