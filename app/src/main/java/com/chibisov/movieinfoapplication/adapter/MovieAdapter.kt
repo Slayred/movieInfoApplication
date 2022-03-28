@@ -1,5 +1,6 @@
 package com.chibisov.movieinfoapplication.adapter
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.chibisov.movieinfoapplication.Communication
 import com.chibisov.movieinfoapplication.core.MovieType
@@ -34,23 +36,21 @@ class MovieAdapter(
             parent, false)
         return when (type) {
             MovieType.Common -> MyViewHolder.Base(view)
-            MovieType.Favorite -> MyViewHolder.Favorite(view, listener, detailsCLickListener)
+            MovieType.Favorite -> MyViewHolder.Favorite(view, listener, detailsCLickListener, parent.context)
         }
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        Log.d("Adapter", "Call Communication for bind specific element in position $position")
         holder.bind(communication.getUIMoviesList()[position])
 
     }
 
     override fun getItemCount(): Int {
-        Log.d("Adapter", "Call Communication for count")
         return communication.getUIMoviesList().size
     }
 
     abstract class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val movieName: TextView = itemView.findViewById(R.id.movieName)
+        protected val movieName: TextView = itemView.findViewById(R.id.movieName)
         private val moviePoster: ImageView = itemView.findViewById(R.id.moviePoster)
         protected val movieFavorite: ImageView = itemView.findViewById(R.id.movieFavorite)
         protected val movieDetails: Button = itemView.findViewById(R.id.movieDetails)
@@ -67,9 +67,11 @@ class MovieAdapter(
         }
 
         class Favorite(view: View, private val listener: FavoriteClickListener,
-        private val detailsListener: DetailsCLickListener) :
+        private val detailsListener: DetailsCLickListener,
+        private val context: Context) :
             MyViewHolder(view) {
             override fun bind(model: UiMovie) {
+                Log.d("ADAPTER", "Bind model on ${model.name} checked status is ${model.checked}")
                 super.bind(model)
                 movieFavorite.visibility = View.VISIBLE
                 movieFavorite
@@ -77,6 +79,8 @@ class MovieAdapter(
                         if (model.status) R.drawable.baseline_favorite_24
                         else R.drawable.baseline_favorite_border_24
                     )
+                movieName.setTextColor(if (model.checked) ContextCompat.getColor(context, R.color.red)
+                else ContextCompat.getColor(context, R.color.black))
                 movieFavorite.setOnClickListener {
                     listener.change(model)
                 }
@@ -91,9 +95,9 @@ class MovieAdapter(
     interface FavoriteClickListener {
         fun change(movie: UiMovie)
     }
-    interface FavoriteClickDeleteListener: FavoriteClickListener{
-        fun change(movie: UiMovie, position: Int)
-    }
+//    interface FavoriteClickDeleteListener: FavoriteClickListener{
+//        fun change(movie: UiMovie, position: Int)
+//    }
 
     interface DetailsCLickListener {
         fun details(movie: UiMovie)

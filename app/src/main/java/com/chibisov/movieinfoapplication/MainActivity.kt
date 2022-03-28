@@ -8,11 +8,13 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.chibisov.movieinfoapplication.adapter.itemDecoration.CustomVerticalItemDecoration
 import com.chibisov.movieinfoapplication.adapter.MovieAdapter
-import com.chibisov.movieinfoapplication.core.CallbackData
+import com.chibisov.movieinfoapplication.adapter.itemDecoration.CustomHorizontalItemDecoration
 import com.chibisov.movieinfoapplication.core.Const
 import com.chibisov.movieinfoapplication.core.MovieType
 import com.chibisov.movieinfoapplication.core.Observer
@@ -33,6 +35,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
     private val baseInteractor = BaseInteractor(repository)
     private val communication = Communication()
 
+
 //    private val activityResultLauncher =
 //        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
 //            if (activityResult.resultCode == RESULT_OK) {
@@ -43,9 +46,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
     override fun onStart() {
         super.onStart()
         communication.add(this)
-        Log.d("TAG", "MainActivity onStart")
         communication.showUiMovieList(baseInteractor.showUIList())
-        Log.d("onStart", "Communication ${communication.getUIMoviesList()}")
         adapter.updateDataFromAdapter()
     }
 
@@ -61,7 +62,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
         inviteBtn = findViewById(R.id.inviteBtn)
         favoritesBtn = findViewById(R.id.favoriteBtn)
         recyclerView = findViewById(R.id.movieRV)
-        Log.d("onCreate", "Communication ${communication.getUIMoviesList()}")
         adapter = MovieAdapter(MovieType.Favorite, object : MovieAdapter.FavoriteClickListener {
             override fun change(movie: UiMovie) {
                 Snackbar.make(
@@ -69,12 +69,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
                     "Change Status?",
                     Snackbar.LENGTH_SHORT
                 ).setAction("YES") {
-                    Log.d("onCreate", "Communication ${communication.getUIMoviesList()}")
                     baseInteractor.changeStatus(movie)
                     val t = baseInteractor.showUIList()
-                    for (k in t){
-                        Log.d("MainActivity", "film name = ${k.name}, film status = ${k.status}")
-                    }
                     communication.showUiMovieList(t)
                 }.show()
             }
@@ -84,10 +80,31 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
             }
         }
             ,communication)
+        val divider = ResourcesCompat.getDrawable(resources, R.drawable.divider, null)
+
         recyclerView.adapter = adapter
         if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            recyclerView.layoutManager = LinearLayoutManager(this)
-        } else recyclerView.layoutManager = GridLayoutManager(this, 2)
+            recyclerView.layoutManager = LinearLayoutManager(this,
+                LinearLayoutManager.VERTICAL,
+                false)
+            with(recyclerView){
+                addItemDecoration(CustomVerticalItemDecoration(divider!!))
+            }
+        } else {
+            recyclerView.layoutManager  = GridLayoutManager(this, 2)
+            with(recyclerView) {
+                addItemDecoration(
+                    CustomHorizontalItemDecoration(
+                        divider!!
+                    )
+                )
+            }
+        }
+
+
+
+
+
         inviteBtn.setOnClickListener(this)
         favoritesBtn.setOnClickListener(this)
 
@@ -124,6 +141,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
     }
 
     private fun showDetails(movie: UiMovie){
+        baseInteractor.addCheckedItem(movie)
         val intent = Intent(this, MovieInfo::class.java)
         intent.putExtra(Const.MOVIE, movie)
         startActivity(intent)

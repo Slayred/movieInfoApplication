@@ -20,23 +20,15 @@ class Communication: Observable {
     private var listOfMovies = arrayListOf<UiMovie>()
 
     fun getUIMoviesList(): ArrayList<UiMovie> {
-        Log.d("Communication", "Communication was call")
         return listOfMovies
     }
 
 
     private fun setUIMoviesList(list: ArrayList<UiMovie>) {
         this.listOfMovies = list
-        Log.d("Communication", "Communication list was set Communication name $this")
     }
 
     fun showUiMovieList(list: ArrayList<UiMovie>) {
-        for (k in list){
-            Log.d("Communication", "New Film = ${k.name} status is ${k.status}")
-        }
-        for (k in listOfMovies){
-            Log.d("Communication", "old Film = ${k.name} status is ${k.status}")
-        }
         val callback = MovieDiffUtil(listOfMovies, list)
         setUIMoviesList(list)
         diffResult = DiffUtil.calculateDiff(callback)

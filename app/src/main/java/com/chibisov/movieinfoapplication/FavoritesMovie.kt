@@ -32,7 +32,6 @@ class FavoritesMovie : AppCompatActivity(), Observer {
         super.onStart()
         communication.add(this)
         Log.d("TAG", "MainActivity onStart")
-//        adapter.updateDataFromAdapter()
     }
 
     override fun onStop() {
@@ -44,11 +43,7 @@ class FavoritesMovie : AppCompatActivity(), Observer {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorites_movie)
         recyclerView = findViewById(R.id.movieRVFavor)
-        adapter = MovieAdapter(MovieType.Favorite, object : MovieAdapter.FavoriteClickDeleteListener{
-            override fun change(movie: UiMovie, position: Int) {
-                TODO("Not yet implemented")
-            }
-
+        adapter = MovieAdapter(MovieType.Favorite, object : MovieAdapter.FavoriteClickListener{
             override fun change(movie: UiMovie) {
                 Snackbar.make(
                     recyclerView,
@@ -56,7 +51,7 @@ class FavoritesMovie : AppCompatActivity(), Observer {
                     Snackbar.LENGTH_SHORT
                 ).setAction("YES"){
                     baseInteractor.changeStatus(movie)
-                    communication.showUiMovieList(ArrayList(baseInteractor.showFavorites()))
+                    communication.showUiMovieList(baseInteractor.showFavorites())
                 }.show()
             }
         }, object : MovieAdapter.DetailsCLickListener {
@@ -73,7 +68,6 @@ class FavoritesMovie : AppCompatActivity(), Observer {
     }
 
     override fun update() {
-        Log.d("TAG","UPDATE FAVORITES ACTIVITY")
         adapter.updateDataFromAdapter()
     }
 

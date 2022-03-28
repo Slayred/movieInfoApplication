@@ -8,15 +8,14 @@ class Repository(private val cacheDataSource: CacheDataSource,
                  private val netDataSource: NetDataSource) {
 
    fun showMovies() :ArrayList<UiMovie> {
-        val t = netDataSource.getList()
+//        val t = netDataSource.getList().map {
+//            if(searchFavorites(it)) it.changeStatus()
+//        }
+       val t = netDataSource.getList()
         for( k in t){
             if(searchFavorites(k)){
                 k.changeStatus()
-                Log.d("TAG", "NEW STATUS OF ${k.name} is ${k.status}")
             }
-        }
-        for (k in t){
-            Log.d("Repository", "Film = ${k.name} status is ${k.status}")
         }
        for (l in t) {
            if(searchCheckedItem(l)){

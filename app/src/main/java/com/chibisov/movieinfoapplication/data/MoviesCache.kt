@@ -14,7 +14,7 @@ interface CacheDataSource: DataSource {
 object MoviesCacheFavorites: CacheDataSource {
 
     private val favoriteList = arrayListOf<UiMovie>()
-    private val checkedList = arrayListOf<UiMovie>()
+    private val checkedList = arrayListOf<Int>()
 
 
     override fun getList(): ArrayList<UiMovie> {
@@ -36,20 +36,15 @@ object MoviesCacheFavorites: CacheDataSource {
         favoriteList.remove(favoriteList.find {
             it.id == movie.id
         })
-
     }
 
     override fun addCheckedItem(movie: UiMovie) {
-        checkedList.add(movie)
+        if (!searchCheckedItem(movie)) checkedList.add(movie.id)
     }
 
     override fun searchCheckedItem(movie: UiMovie): Boolean {
-        val t = checkedList.remove(checkedList.find {
-            it.id == movie.id
-        })
-        return t
+       return checkedList.contains(movie.id)
     }
-
 
 }
 
