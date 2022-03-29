@@ -8,9 +8,6 @@ class Repository(private val cacheDataSource: CacheDataSource,
                  private val netDataSource: NetDataSource) {
 
    fun showMovies() :ArrayList<UiMovie> {
-//        val t = netDataSource.getList().map {
-//            if(searchFavorites(it)) it.changeStatus()
-//        }
        val t = netDataSource.getList()
         for( k in t){
             if(searchFavorites(k)){

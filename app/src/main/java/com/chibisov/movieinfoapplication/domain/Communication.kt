@@ -1,4 +1,4 @@
-package com.chibisov.movieinfoapplication
+package com.chibisov.movieinfoapplication.domain
 
 
 import android.util.Log

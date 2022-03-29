@@ -24,6 +24,7 @@ import com.chibisov.movieinfoapplication.data.MoviesCacheFavorites
 import com.chibisov.movieinfoapplication.data.Repository
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 import com.chibisov.movieinfoapplication.domain.BaseInteractor
+import com.chibisov.movieinfoapplication.domain.Communication
 import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {

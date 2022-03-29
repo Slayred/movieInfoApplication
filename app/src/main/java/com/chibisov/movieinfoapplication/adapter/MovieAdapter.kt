@@ -1,7 +1,6 @@
 package com.chibisov.movieinfoapplication.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,10 +9,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.chibisov.movieinfoapplication.Communication
+import com.chibisov.movieinfoapplication.domain.Communication
 import com.chibisov.movieinfoapplication.core.MovieType
 import com.chibisov.movieinfoapplication.R
-import com.chibisov.movieinfoapplication.core.Observer
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 
 class MovieAdapter(

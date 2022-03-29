@@ -6,10 +6,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chibisov.movieinfoapplication.adapter.MovieAdapter
+import com.chibisov.movieinfoapplication.adapter.itemDecoration.CustomHorizontalItemDecoration
+import com.chibisov.movieinfoapplication.adapter.itemDecoration.CustomVerticalItemDecoration
 import com.chibisov.movieinfoapplication.core.Const
 import com.chibisov.movieinfoapplication.core.MovieType
 import com.chibisov.movieinfoapplication.core.Observer
@@ -18,6 +21,7 @@ import com.chibisov.movieinfoapplication.data.MoviesCacheFavorites
 import com.chibisov.movieinfoapplication.data.Repository
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 import com.chibisov.movieinfoapplication.domain.BaseInteractor
+import com.chibisov.movieinfoapplication.domain.Communication
 import com.google.android.material.snackbar.Snackbar
 
 class FavoritesMovie : AppCompatActivity(), Observer {
@@ -57,6 +61,7 @@ class FavoritesMovie : AppCompatActivity(), Observer {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorites_movie)
         recyclerView = findViewById(R.id.movieRVFavor)
+        val divider = ResourcesCompat.getDrawable(resources, R.drawable.divider, null)
         adapter = MovieAdapter(MovieType.Favorite, object : MovieAdapter.FavoriteClickListener{
             override fun change(movie: UiMovie) {
                 Snackbar.make(
@@ -75,9 +80,23 @@ class FavoritesMovie : AppCompatActivity(), Observer {
         }
             , communication)
         recyclerView.adapter = adapter
-        if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            recyclerView.layoutManager = LinearLayoutManager(this)
-        } else recyclerView.layoutManager = GridLayoutManager(this, 2)
+        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            recyclerView.layoutManager = LinearLayoutManager(this,
+                LinearLayoutManager.VERTICAL,
+                false)
+            with(recyclerView){
+                addItemDecoration(CustomVerticalItemDecoration(divider!!))
+            }
+        } else {
+            recyclerView.layoutManager  = GridLayoutManager(this, 2)
+            with(recyclerView) {
+                addItemDecoration(
+                    CustomHorizontalItemDecoration(
+                        divider!!
+                    )
+                )
+            }
+        }
         communication.showUiMovieList(ArrayList(baseInteractor.showFavorites()))
     }
 
