@@ -10,6 +10,7 @@ import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,17 +26,17 @@ import com.chibisov.movieinfoapplication.data.Repository
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 import com.chibisov.movieinfoapplication.domain.BaseInteractor
 import com.chibisov.movieinfoapplication.domain.Communication
+import com.chibisov.movieinfoapplication.ui.BaseFragment
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 
-class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
+class MainActivity : AppCompatActivity() {
 
-    private lateinit var inviteBtn: Button
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var favoritesBtn: Button
-    private lateinit var adapter: MovieAdapter
-    private val repository = Repository(MoviesCacheFavorites, Movies)
-    private val baseInteractor = BaseInteractor(repository)
-    private val communication = Communication()
+    private lateinit var movieListFragment: BaseFragment
+    private lateinit var bottomBar: BottomNavigationView
 
 
     private val activityResultLauncher =
@@ -51,69 +52,23 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
             }
         }
 
-    override fun onStart() {
-        super.onStart()
-        communication.add(this)
-        communication.showUiMovieList(baseInteractor.showUIList())
-        adapter.updateDataFromAdapter()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        communication.remove(this)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("TAG", "MainActivity onCreate")
         setContentView(R.layout.activity_main)
-        inviteBtn = findViewById(R.id.inviteBtn)
-        favoritesBtn = findViewById(R.id.favoriteBtn)
-        recyclerView = findViewById(R.id.movieRV)
-        adapter = MovieAdapter(MovieType.Favorite, object : MovieAdapter.FavoriteClickListener {
-            override fun change(movie: UiMovie) {
-                Snackbar.make(
-                    recyclerView,
-                    resources.getText(R.string.change_status),
-                    Snackbar.LENGTH_SHORT
-                ).setAction(resources.getText(R.string.yes)) {
-                    baseInteractor.changeStatus(movie)
-                    val t = baseInteractor.showUIList()
-                    communication.showUiMovieList(t)
-                }.show()
+        Log.d("TAG", "MainActivity onCreate ${javaClass.simpleName}")
+        movieListFragment = BaseFragment()
+        replaceFragment(movieListFragment)
+        bottomBar = findViewById(R.id.btm_nav)
+        bottomBar.setOnItemSelectedListener {
+            when (it.itemId){
+                R.id.ic_movie_list -> replaceFragment(movieListFragment)
+                R.id.ic_favorites -> replaceFragment(movieListFragment)
             }
-        }, object : MovieAdapter.DetailsCLickListener {
-            override fun details(movie: UiMovie) {
-                showDetails(movie)
-            }
+            true
         }
-            ,communication)
-        val divider = ResourcesCompat.getDrawable(resources, R.drawable.divider, null)
-
-        recyclerView.adapter = adapter
-        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            recyclerView.layoutManager = LinearLayoutManager(this,
-                LinearLayoutManager.VERTICAL,
-                false)
-            with(recyclerView){
-                addItemDecoration(CustomVerticalItemDecoration(divider!!))
-            }
-        } else {
-            recyclerView.layoutManager  = GridLayoutManager(this, 2)
-            with(recyclerView) {
-                addItemDecoration(
-                    CustomHorizontalItemDecoration(
-                        divider!!
-                    )
-                )
-            }
-        }
-
-        inviteBtn.setOnClickListener(this)
-        favoritesBtn.setOnClickListener(this)
-
-
     }
+
     override fun onBackPressed() {
         val alertDialog = AlertDialog.Builder(this)
         alertDialog.setTitle(resources.getText(R.string.exit))
@@ -125,42 +80,24 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
         alertDialog.show()
     }
 
-    private fun share() {
-        val intent = Intent(Intent.ACTION_SEND)
-        intent.type = "text/plain"
-        intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.invite_text))
-        startActivity(Intent.createChooser(intent, getString(R.string.share_via)))
-    }
 
 
-    override fun onClick(p0: View?) {
-        when (p0?.id) {
-            inviteBtn.id -> {
-                share()
-            }
-            favoritesBtn.id -> {
-                showFavorites()
-            }
-        }
-    }
-
-    private fun showDetails(movie: UiMovie){
-        baseInteractor.addCheckedItem(movie)
-        val intent = Intent(this, MovieInfo::class.java)
-        intent.putExtra(Const.MOVIE, movie)
-        activityResultLauncher.launch(intent)
-
-    }
-
+//    private fun showDetails(movie: UiMovie){
+//        baseInteractor.addCheckedItem(movie)
+//        val intent = Intent(this, MovieInfo::class.java)
+//        intent.putExtra(Const.MOVIE, movie)
+//        activityResultLauncher.launch(intent)
+//
+//    }
     private fun showFavorites() {
         val intent = Intent(this, FavoritesMovie::class.java)
         startActivity(intent)
     }
-
-    override fun update() {
-        adapter.updateDataFromAdapter()
+    private fun replaceFragment(fragment: Fragment){
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragment_container, fragment)
+        transaction.commit()
     }
-
 
 }
 

@@ -11,5 +11,7 @@
     <string name="exit">Exit</string>
     <string name="exit_question">Are you sure to exit?</string>
     <string name="change_status">Change Status?</string>
+    <string name="favorite">Favorite</string>
+    <string name="movies">Movies</string>
 
 </resources>
