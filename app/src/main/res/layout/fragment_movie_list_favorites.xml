@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/main_view"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,17 +7,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="8dp"
-    tools:context=".MainActivity">
+    tools:context=".presentaion.MovieListFavoritesFragment">
 
-    <FrameLayout
-        android:id="@+id/main_fragment_container"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/movieRVFavor"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="parent">
-    </FrameLayout>
 
-
-
+        tools:listitem="@layout/movie_layout"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
