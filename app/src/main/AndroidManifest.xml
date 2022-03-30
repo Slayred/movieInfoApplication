@@ -10,12 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MovieInfoApplication">
         <activity
-            android:name=".FavoritesMovie"
-            android:exported="true" />
-        <activity
-            android:name=".MovieInfo"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

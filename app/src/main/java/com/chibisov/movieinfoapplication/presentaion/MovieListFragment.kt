@@ -64,15 +64,9 @@ class MovieListFragment: BaseMovieListFragment(), Observer {
         recyclerView = view.findViewById(R.id.movieRV)
         adapter = MovieAdapter(MovieType.Favorite, object : MovieAdapter.FavoriteClickListener {
             override fun change(movie: UiMovie) {
-                Snackbar.make(
-                    recyclerView,
-                    resources.getText(R.string.change_status),
-                    Snackbar.LENGTH_SHORT
-                ).setAction(resources.getText(R.string.yes)) {
                     baseInteractor.changeStatus(movie)
                     val t = baseInteractor.showUIList()
                     communication.showUiMovieList(t)
-                }.show()
             }
         }, object : MovieAdapter.DetailsCLickListener {
             override fun details(movie: UiMovie) {
