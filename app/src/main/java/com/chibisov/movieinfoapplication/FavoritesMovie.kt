@@ -65,14 +65,8 @@ class FavoritesMovie : AppCompatActivity(), Observer {
         val divider = ResourcesCompat.getDrawable(resources, R.drawable.divider, null)
         adapter = MovieAdapter(MovieType.Favorite, object : MovieAdapter.FavoriteClickListener {
             override fun change(movie: UiMovie) {
-                Snackbar.make(
-                    recyclerView,
-                    resources.getText(R.string.change_status),
-                    Snackbar.LENGTH_SHORT
-                ).setAction(resources.getText(R.string.yes)) {
                     baseInteractor.changeStatus(movie)
                     communication.showUiMovieList(baseInteractor.showFavorites())
-                }.show()
             }
         }, object : MovieAdapter.DetailsCLickListener {
             override fun details(movie: UiMovie) {
