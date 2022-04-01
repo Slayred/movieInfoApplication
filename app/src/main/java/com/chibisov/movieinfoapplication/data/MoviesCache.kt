@@ -26,10 +26,10 @@ object MoviesCacheFavorites : CacheDataSource {
     }
 
     override fun searchFavItem(movie: UiMovie): Boolean {
-        val t = (favoriteList.find {
+        val favMovie = (favoriteList.find {
             it.id == movie.id
         } != null)
-        return t
+        return favMovie
     }
 
     override fun deleteFavItem(movie: UiMovie) {

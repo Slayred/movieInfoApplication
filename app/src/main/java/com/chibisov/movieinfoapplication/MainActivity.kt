@@ -79,8 +79,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
                     Snackbar.LENGTH_SHORT
                 ).setAction(resources.getText(R.string.yes)) {
                     baseInteractor.changeStatus(movie)
-                    val t = baseInteractor.showUIList()
-                    communication.showUiMovieList(t)
+                    val listOfMovies = baseInteractor.showUIList()
+                    communication.showUiMovieList(listOfMovies)
                 }.show()
             }
         }, object : MovieAdapter.DetailsCLickListener {

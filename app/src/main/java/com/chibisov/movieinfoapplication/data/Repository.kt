@@ -1,6 +1,5 @@
 package com.chibisov.movieinfoapplication.data
 
-import android.util.Log
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 import kotlin.collections.ArrayList
 
@@ -10,18 +9,18 @@ class Repository(
 ) {
 
     fun showMovies(): ArrayList<UiMovie> {
-        val t = netDataSource.getList()
-        for (k in t) {
-            if (searchFavorites(k)) {
-                k.changeStatus()
+        val listOfMovies = netDataSource.getList()
+        for (movie in listOfMovies) {
+            if (searchFavorites(movie)) {
+                movie.changeStatus()
             }
         }
-        for (l in t) {
-            if (searchCheckedItem(l)) {
-                l.checked = true
+        for (movie in listOfMovies) {
+            if (searchCheckedItem(movie)) {
+                movie.checked = true
             }
         }
-        return t
+        return listOfMovies
     }
 
     fun showFavorites() = cacheDataSource.getList()
