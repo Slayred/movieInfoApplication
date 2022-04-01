@@ -20,21 +20,28 @@ class MovieAdapter(
     private val detailsCLickListener: DetailsCLickListener,
     private val communication: Communication
 ) :
-    RecyclerView.Adapter<MovieAdapter.MyViewHolder>(){
+    RecyclerView.Adapter<MovieAdapter.MyViewHolder>() {
 
 
     fun updateDataFromAdapter() {
-       notifyDataSetChanged()
+        notifyDataSetChanged()
 //        communication.getDiffResult().dispatchUpdatesTo(this)
     }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_layout,
-            parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(
+            R.layout.movie_layout,
+            parent, false
+        )
         return when (type) {
             MovieType.Common -> MyViewHolder.Base(view)
-            MovieType.Favorite -> MyViewHolder.Favorite(view, listener, detailsCLickListener, parent.context)
+            MovieType.Favorite -> MyViewHolder.Favorite(
+                view,
+                listener,
+                detailsCLickListener,
+                parent.context
+            )
         }
     }
 
@@ -57,6 +64,10 @@ class MovieAdapter(
             moviePoster.setImageResource(model.poster)
         }
 
+        open fun getCurrentPosition(): Int {
+            return this.adapterPosition
+        }
+
         class Base(view: View) : MyViewHolder(view) {
             override fun bind(model: UiMovie) {
                 super.bind(model)
@@ -64,9 +75,11 @@ class MovieAdapter(
             }
         }
 
-        class Favorite(view: View, private val listener: FavoriteClickListener,
-        private val detailsListener: DetailsCLickListener,
-        private val context: Context) :
+        class Favorite(
+            view: View, private val listener: FavoriteClickListener,
+            private val detailsListener: DetailsCLickListener,
+            private val context: Context
+        ) :
             MyViewHolder(view) {
             override fun bind(model: UiMovie) {
                 super.bind(model)
@@ -76,8 +89,10 @@ class MovieAdapter(
                         if (model.status) R.drawable.baseline_favorite_24
                         else R.drawable.baseline_favorite_border_24
                     )
-                movieName.setTextColor(if (model.checked) ContextCompat.getColor(context, R.color.red)
-                else ContextCompat.getColor(context, R.color.black))
+                movieName.setTextColor(
+                    if (model.checked) ContextCompat.getColor(context, R.color.red)
+                    else ContextCompat.getColor(context, R.color.black)
+                )
                 movieFavorite.setOnClickListener {
                     listener.change(model)
                 }
@@ -92,14 +107,10 @@ class MovieAdapter(
     interface FavoriteClickListener {
         fun change(movie: UiMovie)
     }
-//    interface FavoriteClickDeleteListener: FavoriteClickListener{
-//        fun change(movie: UiMovie, position: Int)
-//    }
 
     interface DetailsCLickListener {
         fun details(movie: UiMovie)
     }
-
 
 
 }

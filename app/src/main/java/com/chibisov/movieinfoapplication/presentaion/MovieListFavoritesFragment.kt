@@ -18,7 +18,6 @@ import com.chibisov.movieinfoapplication.data.Repository
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 import com.chibisov.movieinfoapplication.domain.BaseInteractor
 import com.chibisov.movieinfoapplication.domain.Communication
-import com.google.android.material.snackbar.Snackbar
 
 /**
  * A simple [Fragment] subclass.
@@ -59,16 +58,16 @@ class MovieListFavoritesFragment : BaseMovieListFragment(), Observer {
         recyclerView = view.findViewById(R.id.movieRVFavor)
         adapter = MovieAdapter(MovieType.Favorite, object : MovieAdapter.FavoriteClickListener {
             override fun change(movie: UiMovie) {
-                    baseInteractor.changeStatus(movie)
-                    val t = baseInteractor.showFavorites()
-                    communication.showUiMovieList(t)
+                baseInteractor.changeStatus(movie)
+                val t = baseInteractor.showFavorites()
+                communication.showUiMovieList(t)
+
             }
         }, object : MovieAdapter.DetailsCLickListener {
             override fun details(movie: UiMovie) {
                 showDetails(movie)
             }
-        }
-            ,communication)
+        }, communication)
         val divider = ResourcesCompat.getDrawable(resources, R.drawable.divider, null)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = setAdapter(divider!!, recyclerView, resources)
