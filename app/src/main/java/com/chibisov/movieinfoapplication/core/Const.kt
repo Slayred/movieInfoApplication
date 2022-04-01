@@ -7,7 +7,7 @@ object Const {
     const val TAG = "TAG_RESULT"
 }
 
-enum class MovieType{
+enum class MovieType {
     Common,
     Favorite
 }

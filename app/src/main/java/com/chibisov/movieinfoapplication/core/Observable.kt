@@ -16,7 +16,7 @@ interface Observable {
     }
 
     fun sendUpdateEvent() {
-        observers.forEach{
+        observers.forEach {
             it.update()
         }
     }

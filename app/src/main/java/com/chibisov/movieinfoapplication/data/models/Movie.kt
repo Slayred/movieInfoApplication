@@ -9,7 +9,8 @@ data class Movie(
     val name: String,
     val description: String,
     val poster: Int
-): Parcelable {
+) : Parcelable {
 
-    fun to(): UiMovie = UiMovie(this.id, this.name, this.description, this.poster, status = false, checked = false)
+    fun to(): UiMovie =
+        UiMovie(this.id, this.name, this.description, this.poster, status = false, checked = false)
 }

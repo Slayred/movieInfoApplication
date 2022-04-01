@@ -19,13 +19,13 @@ class MovieInfo : AppCompatActivity() {
     private val repository = Repository(MoviesCacheFavorites, Movies)
     private val baseInteractor = BaseInteractor(repository)
 
-    private lateinit var movieFavourites : ImageView
+    private lateinit var movieFavourites: ImageView
     private lateinit var movieDescr: TextView
     private lateinit var movieName: TextView
     private lateinit var moviePoster: ImageView
     private lateinit var comment: EditText
     private var movie: UiMovie? = null
-    private var data  = Intent()
+    private var data = Intent()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +37,7 @@ class MovieInfo : AppCompatActivity() {
         moviePoster = findViewById(R.id.infoImageView)
         comment = findViewById(R.id.commentET)
 
-        if(movie == null){
+        if (movie == null) {
             movie = this.intent.getParcelableExtra(Const.MOVIE)!!
         }
 
@@ -63,11 +63,12 @@ class MovieInfo : AppCompatActivity() {
     }
 
     private fun checkFavourites(status: Boolean): Int {
-        return when(status){
+        return when (status) {
             true -> R.drawable.baseline_favorite_24
             false -> R.drawable.baseline_favorite_border_24
         }
     }
+
     override fun onBackPressed() {
         data.putExtra(Const.COMMENT, comment.text.toString())
         data.putExtra(Const.MOVIE, movie)

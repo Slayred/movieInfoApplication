@@ -11,7 +11,7 @@ import com.chibisov.movieinfoapplication.core.Observer
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 import kotlin.collections.ArrayList
 
-class Communication: Observable {
+class Communication : Observable {
 
     override val observers: ArrayList<Observer> = ArrayList()
 

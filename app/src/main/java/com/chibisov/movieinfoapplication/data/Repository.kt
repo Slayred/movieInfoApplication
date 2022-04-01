@@ -4,21 +4,23 @@ import android.util.Log
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 import kotlin.collections.ArrayList
 
-class Repository(private val cacheDataSource: CacheDataSource,
-                 private val netDataSource: NetDataSource) {
+class Repository(
+    private val cacheDataSource: CacheDataSource,
+    private val netDataSource: NetDataSource
+) {
 
-   fun showMovies() :ArrayList<UiMovie> {
-       val t = netDataSource.getList()
-        for( k in t){
-            if(searchFavorites(k)){
+    fun showMovies(): ArrayList<UiMovie> {
+        val t = netDataSource.getList()
+        for (k in t) {
+            if (searchFavorites(k)) {
                 k.changeStatus()
             }
         }
-       for (l in t) {
-           if(searchCheckedItem(l)){
-               l.checked = true
-           }
-       }
+        for (l in t) {
+            if (searchCheckedItem(l)) {
+                l.checked = true
+            }
+        }
         return t
     }
 

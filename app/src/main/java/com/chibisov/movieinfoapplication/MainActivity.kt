@@ -47,7 +47,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
                 }
                 Log.d(
                     Const.TAG,
-                    "Comment added: ${activityResult.data!!.getStringExtra(Const.COMMENT)}")
+                    "Comment added: ${activityResult.data!!.getStringExtra(Const.COMMENT)}"
+                )
             }
         }
 
@@ -86,20 +87,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
             override fun details(movie: UiMovie) {
                 showDetails(movie)
             }
-        }
-            ,communication)
+        }, communication)
         val divider = ResourcesCompat.getDrawable(resources, R.drawable.divider, null)
 
         recyclerView.adapter = adapter
         if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            recyclerView.layoutManager = LinearLayoutManager(this,
+            recyclerView.layoutManager = LinearLayoutManager(
+                this,
                 LinearLayoutManager.VERTICAL,
-                false)
-            with(recyclerView){
+                false
+            )
+            with(recyclerView) {
                 addItemDecoration(CustomVerticalItemDecoration(divider!!))
             }
         } else {
-            recyclerView.layoutManager  = GridLayoutManager(this, 2)
+            recyclerView.layoutManager = GridLayoutManager(this, 2)
             with(recyclerView) {
                 addItemDecoration(
                     CustomHorizontalItemDecoration(
@@ -114,6 +116,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
 
 
     }
+
     override fun onBackPressed() {
         val alertDialog = AlertDialog.Builder(this)
         alertDialog.setTitle(resources.getText(R.string.exit))
@@ -144,7 +147,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
         }
     }
 
-    private fun showDetails(movie: UiMovie){
+    private fun showDetails(movie: UiMovie) {
         baseInteractor.addCheckedItem(movie)
         val intent = Intent(this, MovieInfo::class.java)
         intent.putExtra(Const.MOVIE, movie)

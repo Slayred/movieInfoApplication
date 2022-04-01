@@ -31,7 +31,7 @@ class FavoritesMovie : AppCompatActivity(), Observer {
     private val repository = Repository(MoviesCacheFavorites, Movies)
     private val baseInteractor = BaseInteractor(repository)
     private val communication = Communication()
-    private lateinit var  adapter: MovieAdapter
+    private lateinit var adapter: MovieAdapter
 
 
     private val activityResultLauncher =
@@ -43,7 +43,8 @@ class FavoritesMovie : AppCompatActivity(), Observer {
                 }
                 Log.d(
                     Const.TAG,
-                    "Comment added: ${activityResult.data!!.getStringExtra(Const.COMMENT)}")
+                    "Comment added: ${activityResult.data!!.getStringExtra(Const.COMMENT)}"
+                )
             }
         }
 
@@ -62,13 +63,13 @@ class FavoritesMovie : AppCompatActivity(), Observer {
         setContentView(R.layout.activity_favorites_movie)
         recyclerView = findViewById(R.id.movieRVFavor)
         val divider = ResourcesCompat.getDrawable(resources, R.drawable.divider, null)
-        adapter = MovieAdapter(MovieType.Favorite, object : MovieAdapter.FavoriteClickListener{
+        adapter = MovieAdapter(MovieType.Favorite, object : MovieAdapter.FavoriteClickListener {
             override fun change(movie: UiMovie) {
                 Snackbar.make(
                     recyclerView,
                     resources.getText(R.string.change_status),
                     Snackbar.LENGTH_SHORT
-                ).setAction(resources.getText(R.string.yes)){
+                ).setAction(resources.getText(R.string.yes)) {
                     baseInteractor.changeStatus(movie)
                     communication.showUiMovieList(baseInteractor.showFavorites())
                 }.show()
@@ -77,18 +78,19 @@ class FavoritesMovie : AppCompatActivity(), Observer {
             override fun details(movie: UiMovie) {
                 showDetails(movie)
             }
-        }
-            , communication)
+        }, communication)
         recyclerView.adapter = adapter
         if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            recyclerView.layoutManager = LinearLayoutManager(this,
+            recyclerView.layoutManager = LinearLayoutManager(
+                this,
                 LinearLayoutManager.VERTICAL,
-                false)
-            with(recyclerView){
+                false
+            )
+            with(recyclerView) {
                 addItemDecoration(CustomVerticalItemDecoration(divider!!))
             }
         } else {
-            recyclerView.layoutManager  = GridLayoutManager(this, 2)
+            recyclerView.layoutManager = GridLayoutManager(this, 2)
             with(recyclerView) {
                 addItemDecoration(
                     CustomHorizontalItemDecoration(
@@ -105,7 +107,7 @@ class FavoritesMovie : AppCompatActivity(), Observer {
     }
 
 
-    private fun showDetails(movie: UiMovie){
+    private fun showDetails(movie: UiMovie) {
         val intent = Intent(this, MovieInfo::class.java)
         intent.putExtra(Const.MOVIE, movie)
         activityResultLauncher.launch(intent)
