@@ -93,7 +93,7 @@ class FavoritesMovie : AppCompatActivity(), Observer {
                 )
             }
         }
-        communication.showUiMovieList(ArrayList(baseInteractor.showFavorites()))
+        communication.showUiMovieList(baseInteractor.showFavorites())
     }
 
     override fun update() {

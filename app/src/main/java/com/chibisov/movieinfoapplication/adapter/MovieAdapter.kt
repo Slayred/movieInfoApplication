@@ -24,8 +24,8 @@ class MovieAdapter(
 
 
     fun updateDataFromAdapter() {
-        notifyDataSetChanged()
-//        communication.getDiffResult().dispatchUpdatesTo(this)
+//        notifyDataSetChanged()
+        communication.getDiffResult().dispatchUpdatesTo(this)
     }
 
 

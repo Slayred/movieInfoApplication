@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class UiMovie(
+data class UiMovie(
     val id: Int,
     val name: String,
     val description: String,

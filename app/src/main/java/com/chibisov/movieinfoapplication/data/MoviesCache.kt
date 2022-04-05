@@ -18,11 +18,11 @@ object MoviesCacheFavorites : CacheDataSource {
 
 
     override fun getList(): ArrayList<UiMovie> {
-        return favoriteList
+        return favoriteList.clone() as ArrayList<UiMovie>
     }
 
     override fun addFavItem(movie: UiMovie) {
-        favoriteList.add(movie)
+        favoriteList.add(movie.copy(status = true))
     }
 
     override fun searchFavItem(movie: UiMovie): Boolean {

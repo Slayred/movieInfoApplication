@@ -8,10 +8,8 @@ class BaseInteractor(private val repository: Repository) {
 
     fun changeStatus(movie: UiMovie) {
         if (repository.searchFavorites(movie)) {
-            movie.status = false
             repository.removeFavorites(movie)
         } else {
-            movie.status = true
             repository.addFavorites(movie)
         }
     }

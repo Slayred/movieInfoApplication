@@ -73,9 +73,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
         recyclerView = findViewById(R.id.movieRV)
         adapter = MovieAdapter(MovieType.Favorite, object : MovieAdapter.FavoriteClickListener {
             override fun change(movie: UiMovie) {
-                    baseInteractor.changeStatus(movie)
-                    val listOfMovies = baseInteractor.showUIList()
-                    communication.showUiMovieList(listOfMovies)
+                baseInteractor.changeStatus(movie)
+                val listOfMovies = baseInteractor.showUIList()
+                communication.showUiMovieList(listOfMovies)
             }
         }, object : MovieAdapter.DetailsCLickListener {
             override fun details(movie: UiMovie) {
