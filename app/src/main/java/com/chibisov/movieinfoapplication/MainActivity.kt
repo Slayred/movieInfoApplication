@@ -13,6 +13,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.chibisov.movieinfoapplication.adapter.itemDecoration.CustomVerticalItemDecoration
 import com.chibisov.movieinfoapplication.adapter.MovieAdapter
 import com.chibisov.movieinfoapplication.adapter.itemDecoration.CustomHorizontalItemDecoration
@@ -104,6 +105,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
                 )
             }
         }
+        (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
         inviteBtn.setOnClickListener(this)
         favoritesBtn.setOnClickListener(this)
