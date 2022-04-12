@@ -1,4 +1,4 @@
-package com.chibisov.movieinfoapplication
+package com.chibisov.movieinfoapplication.presentation
 
 import android.content.Intent
 import android.content.res.Configuration
@@ -10,6 +10,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.chibisov.movieinfoapplication.R
 import com.chibisov.movieinfoapplication.adapter.MovieAdapter
 import com.chibisov.movieinfoapplication.adapter.itemDecoration.CustomHorizontalItemDecoration
 import com.chibisov.movieinfoapplication.adapter.itemDecoration.CustomVerticalItemDecoration
@@ -22,7 +23,6 @@ import com.chibisov.movieinfoapplication.data.Repository
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 import com.chibisov.movieinfoapplication.domain.BaseInteractor
 import com.chibisov.movieinfoapplication.domain.Communication
-import com.google.android.material.snackbar.Snackbar
 
 class FavoritesMovie : AppCompatActivity(), Observer {
 
