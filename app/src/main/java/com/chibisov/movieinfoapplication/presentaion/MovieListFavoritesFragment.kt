@@ -30,7 +30,7 @@ import com.chibisov.movieinfoapplication.domain.Communication
  * Use the [MovieListFavoritesFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MovieListFavoritesFragment : BaseMovieListFragment(), Observer, IOnBackPressed {
+class MovieListFavoritesFragment : BaseMovieListFragment(), Observer{
 
     private val repository = Repository(MoviesCacheFavorites, Movies)
     private val baseInteractor = BaseInteractor(repository)
@@ -119,7 +119,4 @@ class MovieListFavoritesFragment : BaseMovieListFragment(), Observer, IOnBackPre
         adapter.updateDataFromAdapter()
     }
 
-    override fun onBackPressed(): Boolean {
-        TODO("Not yet implemented")
-    }
 }

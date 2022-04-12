@@ -27,7 +27,7 @@ import com.chibisov.movieinfoapplication.data.models.UiMovie
 import com.chibisov.movieinfoapplication.domain.BaseInteractor
 import com.chibisov.movieinfoapplication.domain.Communication
 
-class MovieListFragment : BaseMovieListFragment(), Observer, IOnBackPressed {
+class MovieListFragment : BaseMovieListFragment(), Observer {
 
     private lateinit var inviteBtn: Button
     private lateinit var recyclerView: RecyclerView
@@ -117,7 +117,6 @@ class MovieListFragment : BaseMovieListFragment(), Observer, IOnBackPressed {
         bundle.putParcelable(Const.MOVIE, movie)
         fragment.arguments = bundle
         val transaction = parentFragmentManager.beginTransaction()
-//        transaction.replace(R.id.main_fragment_container, fragment)
         //Пытаемся поменять фрагмент для бэкстека
         transaction.replace(R.id.home_fragment_container, fragment)
         transaction.addToBackStack(fragment.javaClass.name)
@@ -135,8 +134,5 @@ class MovieListFragment : BaseMovieListFragment(), Observer, IOnBackPressed {
         adapter.updateDataFromAdapter()
     }
 
-    override fun onBackPressed(): Boolean {
-        return true
-    }
 
 }
