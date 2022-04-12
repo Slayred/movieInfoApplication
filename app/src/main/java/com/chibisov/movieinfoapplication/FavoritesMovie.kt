@@ -5,18 +5,14 @@ import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SimpleItemAnimator
-import com.chibisov.movieinfoapplication.adapter.itemDecoration.CustomVerticalItemDecoration
 import com.chibisov.movieinfoapplication.adapter.MovieAdapter
 import com.chibisov.movieinfoapplication.adapter.itemDecoration.CustomHorizontalItemDecoration
+import com.chibisov.movieinfoapplication.adapter.itemDecoration.CustomVerticalItemDecoration
 import com.chibisov.movieinfoapplication.core.Const
 import com.chibisov.movieinfoapplication.core.MovieType
 import com.chibisov.movieinfoapplication.core.Observer
@@ -28,15 +24,14 @@ import com.chibisov.movieinfoapplication.domain.BaseInteractor
 import com.chibisov.movieinfoapplication.domain.Communication
 import com.google.android.material.snackbar.Snackbar
 
-class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
+class FavoritesMovie : AppCompatActivity(), Observer {
 
-    private lateinit var inviteBtn: Button
     private lateinit var recyclerView: RecyclerView
-    private lateinit var favoritesBtn: Button
-    private lateinit var adapter: MovieAdapter
+
     private val repository = Repository(MoviesCacheFavorites, Movies)
     private val baseInteractor = BaseInteractor(repository)
     private val communication = Communication()
+    private lateinit var adapter: MovieAdapter
 
 
     private val activityResultLauncher =
@@ -56,8 +51,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
     override fun onStart() {
         super.onStart()
         communication.add(this)
-        communication.showUiMovieList(baseInteractor.showUIList())
-        adapter.updateDataFromAdapter()
     }
 
     override fun onStop() {
@@ -67,24 +60,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("TAG", "MainActivity onCreate")
-        setContentView(R.layout.activity_main)
-        inviteBtn = findViewById(R.id.inviteBtn)
-        favoritesBtn = findViewById(R.id.favoriteBtn)
-        recyclerView = findViewById(R.id.movieRV)
+        setContentView(R.layout.activity_favorites_movie)
+        recyclerView = findViewById(R.id.movieRVFavor)
+        val divider = ResourcesCompat.getDrawable(resources, R.drawable.divider, null)
         adapter = MovieAdapter(MovieType.Favorite, object : MovieAdapter.FavoriteClickListener {
             override fun change(movie: UiMovie) {
-                baseInteractor.changeStatus(movie)
-                val listOfMovies = baseInteractor.showUIList()
-                communication.showUiMovieList(listOfMovies)
+                    baseInteractor.changeStatus(movie)
+                    communication.showUiMovieList(baseInteractor.showFavorites())
             }
         }, object : MovieAdapter.DetailsCLickListener {
             override fun details(movie: UiMovie) {
                 showDetails(movie)
             }
         }, communication)
-        val divider = ResourcesCompat.getDrawable(resources, R.drawable.divider, null)
-
         recyclerView.adapter = adapter
         if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             recyclerView.layoutManager = LinearLayoutManager(
@@ -105,55 +93,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
                 )
             }
         }
-        (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-
-        inviteBtn.setOnClickListener(this)
-        favoritesBtn.setOnClickListener(this)
-
-
-    }
-
-    override fun onBackPressed() {
-        val alertDialog = AlertDialog.Builder(this)
-        alertDialog.setTitle(resources.getText(R.string.exit))
-        alertDialog.setMessage(resources.getText(R.string.exit_question))
-        alertDialog.setPositiveButton(resources.getText(R.string.yes)) { _, _ ->
-            super.onBackPressed()
-        }
-        alertDialog.setNegativeButton(resources.getText(R.string.no)) { _, _ -> }
-        alertDialog.show()
-    }
-
-    private fun share() {
-        val intent = Intent(Intent.ACTION_SEND)
-        intent.type = "text/plain"
-        intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.invite_text))
-        startActivity(Intent.createChooser(intent, getString(R.string.share_via)))
-    }
-
-
-    override fun onClick(p0: View?) {
-        when (p0?.id) {
-            inviteBtn.id -> {
-                share()
-            }
-            favoritesBtn.id -> {
-                showFavorites()
-            }
-        }
-    }
-
-    private fun showDetails(movie: UiMovie) {
-        baseInteractor.addCheckedItem(movie)
-        val intent = Intent(this, MovieInfo::class.java)
-        intent.putExtra(Const.MOVIE, movie)
-        activityResultLauncher.launch(intent)
-
-    }
-
-    private fun showFavorites() {
-        val intent = Intent(this, FavoritesMovie::class.java)
-        startActivity(intent)
+        communication.showUiMovieList(baseInteractor.showFavorites())
     }
 
     override fun update() {
@@ -161,5 +101,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, Observer {
     }
 
 
+    private fun showDetails(movie: UiMovie) {
+        val intent = Intent(this, MovieInfo::class.java)
+        intent.putExtra(Const.MOVIE, movie)
+        activityResultLauncher.launch(intent)
+    }
 }
-

@@ -6,4 +6,10 @@
     <string name="comment">Комментарий</string>
     <string name="share_via">Поделиться через</string>
     <string name="invite_text">Я хочу пригласить тебя в мое приложение</string>
+    <string name="show_favorites">Избранные</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="exit">Выход</string>
+    <string name="exit_question">Вы точно хотите выйти?</string>
+    <string name="change_status">Изменить статус?</string>
 </resources>

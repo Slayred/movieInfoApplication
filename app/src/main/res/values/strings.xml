@@ -5,4 +5,11 @@
     <string name="comment">Comment</string>
     <string name="share_via">Share VIA</string>
     <string name="invite_text">I\'m want invite you to myApp</string>
+    <string name="show_favorites">Show Favorites</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="exit">Exit</string>
+    <string name="exit_question">Are you sure to exit?</string>
+    <string name="change_status">Change Status?</string>
+
 </resources>
