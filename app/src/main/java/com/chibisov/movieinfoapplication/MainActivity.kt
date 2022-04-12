@@ -30,25 +30,11 @@ class MainActivity : AppCompatActivity() {
         replaceFragment(HomeFragment())
     }
 
-    override fun onBackPressed() {
-        val count = supportFragmentManager.backStackEntryCount
-        if (count == 1) {
-            val alertDialog = AlertDialog.Builder(this)
-            alertDialog.setTitle(resources.getText(R.string.exit))
-            alertDialog.setMessage(resources.getText(R.string.exit_question))
-            alertDialog.setPositiveButton(resources.getText(R.string.yes)) { _, _ ->
-                super.onBackPressed()
-            }
-            alertDialog.setNegativeButton(resources.getText(R.string.no)) { _, _ -> }
-            alertDialog.show()
-        } else {
-            supportFragmentManager.popBackStack()
-        }
+//
 
-    }
     private fun replaceFragment(fragment: Fragment){
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.main_fragment_container, fragment)
+        transaction.add(R.id.main_fragment_container, fragment)
         transaction.commit()
     }
 

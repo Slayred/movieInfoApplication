@@ -1,15 +1,21 @@
 package com.chibisov.movieinfoapplication.presentaion
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.RecyclerView
 import com.chibisov.movieinfoapplication.R
 import com.chibisov.movieinfoapplication.adapter.MovieAdapter
 import com.chibisov.movieinfoapplication.core.Const
+import com.chibisov.movieinfoapplication.core.IOnBackPressed
 import com.chibisov.movieinfoapplication.core.MovieType
 import com.chibisov.movieinfoapplication.core.Observer
 import com.chibisov.movieinfoapplication.data.Movies
@@ -24,7 +30,7 @@ import com.chibisov.movieinfoapplication.domain.Communication
  * Use the [MovieListFavoritesFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MovieListFavoritesFragment : BaseMovieListFragment(), Observer {
+class MovieListFavoritesFragment : BaseMovieListFragment(), Observer, IOnBackPressed {
 
     private val repository = Repository(MoviesCacheFavorites, Movies)
     private val baseInteractor = BaseInteractor(repository)
@@ -39,6 +45,12 @@ class MovieListFavoritesFragment : BaseMovieListFragment(), Observer {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+//        requireActivity().onBackPressedDispatcher //custom CallBack for backPressed
+//            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+//                override fun handleOnBackPressed() {
+//                    parentFragmentManager.popBackStack()
+//                }
+//            })
         return inflater.inflate(R.layout.fragment_movie_list_favorites, container, false)
     }
 
@@ -50,6 +62,19 @@ class MovieListFavoritesFragment : BaseMovieListFragment(), Observer {
     override fun onStop() {
         super.onStop()
         communication.remove(this)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        setFragmentResultListener(Const.BUNDLE) { _, bundle ->
+            val resultMovie = bundle.getParcelable<UiMovie>(Const.MOVIE)
+            val resultComment = bundle.getString(Const.COMMENT)
+            Log.d(
+                "MAINFRAGMENT",
+                "Movie status is ${resultMovie?.status} \n Comment is $resultComment"
+            )
+
+        }
+        super.onCreate(savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -77,16 +102,24 @@ class MovieListFavoritesFragment : BaseMovieListFragment(), Observer {
 
     private fun showDetails(movie: UiMovie) {
         baseInteractor.addCheckedItem(movie)
+        parentFragmentManager.setFragmentResult(
+            Const.MOVIE,
+            bundleOf(Const.BUNDLE to movie)
+        )
         val bundle = Bundle()
         bundle.putParcelable(Const.MOVIE, movie)
         fragment.arguments = bundle
         val transaction = parentFragmentManager.beginTransaction()
-        transaction.replace(R.id.main_fragment_container, fragment)
+        transaction.replace(R.id.home_fragment_container, fragment)
         transaction.addToBackStack(fragment.javaClass.name)
         transaction.commit()
     }
 
     override fun update() {
         adapter.updateDataFromAdapter()
+    }
+
+    override fun onBackPressed(): Boolean {
+        TODO("Not yet implemented")
     }
 }

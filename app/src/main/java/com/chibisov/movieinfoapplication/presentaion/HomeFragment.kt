@@ -11,7 +11,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class HomeFragment : Fragment() {
 
     private lateinit var movieListFragment: BaseMovieListFragment
-    private lateinit var movieInfoFragment: Fragment
+    private lateinit var movieListFavoritesFragment: Fragment
     private lateinit var bottomBar: BottomNavigationView
 
     override fun onCreateView(
@@ -27,13 +27,15 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         bottomBar = view.findViewById(R.id.btm_nav)
         movieListFragment = MovieListFragment()
-        movieInfoFragment = MovieListFavoritesFragment()
+        movieListFavoritesFragment = MovieListFavoritesFragment()
         replaceFragment(movieListFragment)
 
         bottomBar.setOnItemSelectedListener {
             when (it.itemId){
                 R.id.ic_movie_list -> replaceFragment(movieListFragment)
-                R.id.ic_favorites -> replaceFragment(movieInfoFragment)
+                R.id.ic_favorites -> replaceFragment(movieListFavoritesFragment)
+//                R.id.ic_movie_list -> replaceFragment(movieListFavoritesFragment)
+//                R.id.ic_favorites -> replaceFragment(movieListFragment)
             }
             true
         }
@@ -41,9 +43,11 @@ class HomeFragment : Fragment() {
 
 
     private fun replaceFragment(fragment: Fragment){
+//        val transaction = parentFragmentManager.beginTransaction()
         val transaction = parentFragmentManager.beginTransaction()
         transaction.replace(R.id.home_fragment_container, fragment)
-        transaction.addToBackStack(fragment.javaClass.name)
+//        transaction.addToBackStack(fragment.javaClass.name)
+        transaction.addToBackStack(null)
         transaction.commit()
 
     }

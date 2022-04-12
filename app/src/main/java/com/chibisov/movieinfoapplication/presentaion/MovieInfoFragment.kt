@@ -9,6 +9,10 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
+import androidx.core.os.bundleOf
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.setFragmentResult
 import com.chibisov.movieinfoapplication.R
 import com.chibisov.movieinfoapplication.core.Const
 import com.chibisov.movieinfoapplication.data.Movies
@@ -27,7 +31,7 @@ class MovieInfoFragment : BaseMovieListFragment() {
     private val repository = Repository(MoviesCacheFavorites, Movies)
     private val baseInteractor = BaseInteractor(repository)
 
-    private lateinit var movieFavourites : ImageView
+    private lateinit var movieFavourites: ImageView
     private lateinit var movieDescr: TextView
     private lateinit var movieName: TextView
     private lateinit var moviePoster: ImageView
@@ -40,17 +44,23 @@ class MovieInfoFragment : BaseMovieListFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-//        setFragmentListener()
         movie = arguments?.getParcelable(Const.MOVIE)
         return inflater.inflate(R.layout.fragment_movie_info, container, false)
     }
 
-//    private fun setFragmentListener() {
-//        setFragmentResultListener(Const.MOVIE){
-//                _, bundle ->
-//           movie =  bundle.getParcelable(Const.BUNDLE)
-//        }
-//    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+            requireActivity().onBackPressedDispatcher //custom CallBack for backPressed
+            .addCallback(this){
+                    val movieBack = movie
+                    val comment = comment.text.toString()
+                    setFragmentResult(
+                        Const.BUNDLE,
+                        bundleOf(Const.MOVIE to movieBack, Const.COMMENT to comment)
+                    )
+                    parentFragmentManager.popBackStack()
+            }
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -60,16 +70,8 @@ class MovieInfoFragment : BaseMovieListFragment() {
         moviePoster = view.findViewById(R.id.infoImageView)
         comment = view.findViewById(R.id.commentET)
 
-
         movie?.let { setMovie(it) }
 
-        requireActivity().onBackPressedDispatcher //custom CallBack for backPressed
-            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true){
-                override fun handleOnBackPressed() {
-                    TODO("Not yet implemented")
-                }
-
-            })
     }
 
     private fun setMovie(movie: UiMovie) {
@@ -84,19 +86,10 @@ class MovieInfoFragment : BaseMovieListFragment() {
     }
 
     private fun checkFavourites(status: Boolean): Int {
-        return when(status){
+        return when (status) {
             true -> R.drawable.baseline_favorite_24
             false -> R.drawable.baseline_favorite_border_24
         }
     }
 
-
-
-//    override fun onBackPressed() {
-//        data.putExtra(Const.COMMENT, comment.text.toString())
-//        data.putExtra(Const.MOVIE, movie)
-//        setResult(AppCompatActivity.RESULT_OK, data)
-//        finish()
-//        super.onBackPressed()
-//    }
 }
