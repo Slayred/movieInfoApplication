@@ -1,7 +1,6 @@
 package com.chibisov.movieinfoapplication.domain
 
 
-import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
@@ -17,22 +16,24 @@ class Communication : Observable {
 
     private lateinit var diffResult: DiffUtil.DiffResult
 
-    private var listOfMovies = arrayListOf<UiMovie>()
+    private var listOfMoviesLiveData = MutableLiveData<ArrayList<UiMovie>>()
 
-    fun getUIMoviesList(): ArrayList<UiMovie> {
-        return listOfMovies
+    fun observe(owner: LifecycleOwner, observer: androidx.lifecycle.Observer<List<UiMovie>> ) {
+        listOfMoviesLiveData.observe(owner, observer)
     }
 
+    fun getUIMoviesList(): ArrayList<UiMovie> {
+        return listOfMoviesLiveData.value?: arrayListOf()
+    }
 
     private fun setUIMoviesList(list: ArrayList<UiMovie>) {
-        this.listOfMovies = list
+        listOfMoviesLiveData.value = list
     }
 
     fun showUiMovieList(list: ArrayList<UiMovie>) {
-        val callback = MovieDiffUtil(listOfMovies, list)
-        setUIMoviesList(list)
+        val callback = MovieDiffUtil(getUIMoviesList(), list)
         diffResult = DiffUtil.calculateDiff(callback)
-        sendUpdateEvent()
+        setUIMoviesList(list)
     }
 
     fun getDiffResult(): DiffUtil.DiffResult {

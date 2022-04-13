@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.chibisov.movieinfoapplication.MovieInfoApp
 import com.chibisov.movieinfoapplication.R
 import com.chibisov.movieinfoapplication.adapter.MovieAdapter
 import com.chibisov.movieinfoapplication.core.Const
@@ -27,17 +28,17 @@ import com.chibisov.movieinfoapplication.data.Repository
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 import com.chibisov.movieinfoapplication.domain.BaseInteractor
 import com.chibisov.movieinfoapplication.domain.Communication
+import com.chibisov.movieinfoapplication.viewmodels.BaseViewModel
+import com.chibisov.movieinfoapplication.viewmodels.MovieListViewModel
 import com.google.android.material.snackbar.Snackbar
 
-class MovieListFragment : BaseMovieListFragment(), Observer {
+class MovieListFragment : BaseMovieListFragment() {
 
     private lateinit var inviteBtn: Button
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: MovieAdapter
     private lateinit var fragment: Fragment
-    private val repository = Repository(MoviesCacheFavorites, Movies)
-    private val baseInteractor = BaseInteractor(repository)
-    private val communication = Communication()
+    private lateinit var listViewModel: MovieListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,20 +74,16 @@ class MovieListFragment : BaseMovieListFragment(), Observer {
         return inflater.inflate(R.layout.fragment_movie_list, container, false)
     }
 
-    override fun onStart() {
-        super.onStart()
-        communication.add(this)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        listViewModel = (requireActivity().application as MovieInfoApp).movieListViewModel
         fragment = MovieInfoFragment()
         inviteBtn = view.findViewById(R.id.inviteBtn)
         recyclerView = view.findViewById(R.id.movieRV)
         adapter = MovieAdapter(MovieType.Favorite, object : MovieAdapter.FavoriteClickListener {
             override fun change(movie: UiMovie) {
-                baseInteractor.changeStatus(movie)
-                communication.showUiMovieList(baseInteractor.showUIList())
+                listViewModel.changeStatus(movie)
                 Snackbar.make(
                     view,
                     "${movie.name} " + getString(R.string.change_status),
@@ -94,29 +91,32 @@ class MovieListFragment : BaseMovieListFragment(), Observer {
                 )
                     .setAnchorView(R.id.btm_nav)
                     .setAction(getString(R.string.undo)) {
-                        baseInteractor.changeStatus(movie)
-                        communication.showUiMovieList(baseInteractor.showUIList())
+                        listViewModel.changeStatus(movie)
                     }.show()
             }
         }, object : MovieAdapter.DetailsCLickListener {
             override fun details(movie: UiMovie) {
                 showDetails(movie)
             }
-        }, communication)
+        }, listViewModel.communication)
         val divider = ResourcesCompat.getDrawable(resources, R.drawable.divider, null)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = setAdapter(divider!!, recyclerView, resources)
         (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
+        listViewModel.showUIList()
 
-        communication.showUiMovieList(baseInteractor.showUIList())
+        listViewModel.observe(this ){
+            adapter.updateDataFromAdapter()
+        }
+
         inviteBtn.setOnClickListener {
             share()
         }
     }
 
     private fun showDetails(movie: UiMovie) {
-        baseInteractor.addCheckedItem(movie)
+        listViewModel.addCheckedItem(movie)
         parentFragmentManager.setFragmentResult(
             Const.MOVIE,
             bundleOf(Const.BUNDLE to movie)
@@ -137,10 +137,6 @@ class MovieListFragment : BaseMovieListFragment(), Observer {
         intent.type = "text/plain"
         intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.invite_text))
         startActivity(Intent.createChooser(intent, getString(R.string.share_via)))
-    }
-
-    override fun update() {
-        adapter.updateDataFromAdapter()
     }
 
 

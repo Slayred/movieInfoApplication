@@ -26,5 +26,4 @@ class BaseInteractor(private val repository: Repository) {
         repository.addCheckedItem(movie)
     }
 
-    fun searchCheckedItem(movie: UiMovie) = repository.searchCheckedItem(movie)
 }
