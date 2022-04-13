@@ -1,4 +1,4 @@
-package com.chibisov.movieinfoapplication.core
+package com.chibisov.movieinfoapplication.nonuse
 
 interface CallbackData {
     fun provideData()

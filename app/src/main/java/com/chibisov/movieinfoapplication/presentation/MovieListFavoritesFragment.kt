@@ -12,6 +12,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.chibisov.movieinfoapplication.R
 import com.chibisov.movieinfoapplication.adapter.MovieAdapter
 import com.chibisov.movieinfoapplication.core.Const
@@ -29,7 +30,7 @@ import com.chibisov.movieinfoapplication.domain.Communication
  * Use the [MovieListFavoritesFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MovieListFavoritesFragment : BaseMovieListFragment(), Observer{
+class MovieListFavoritesFragment : BaseMovieListFragment(), Observer {
 
     private val repository = Repository(MoviesCacheFavorites, Movies)
     private val baseInteractor = BaseInteractor(repository)
@@ -71,7 +72,6 @@ class MovieListFavoritesFragment : BaseMovieListFragment(), Observer{
                 "MAINFRAGMENT",
                 "Movie status is ${resultMovie?.status} \n Comment is $resultComment"
             )
-
         }
         super.onCreate(savedInstanceState)
     }
@@ -83,9 +83,7 @@ class MovieListFavoritesFragment : BaseMovieListFragment(), Observer{
         adapter = MovieAdapter(MovieType.Favorite, object : MovieAdapter.FavoriteClickListener {
             override fun change(movie: UiMovie) {
                 baseInteractor.changeStatus(movie)
-                val t = baseInteractor.showFavorites()
-                communication.showUiMovieList(t)
-
+                communication.showUiMovieList(baseInteractor.showFavorites())
             }
         }, object : MovieAdapter.DetailsCLickListener {
             override fun details(movie: UiMovie) {
@@ -95,8 +93,11 @@ class MovieListFavoritesFragment : BaseMovieListFragment(), Observer{
         val divider = ResourcesCompat.getDrawable(resources, R.drawable.divider, null)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = setAdapter(divider!!, recyclerView, resources)
+        recyclerView.itemAnimator?.apply {
+            removeDuration = 0
+        }
+        communication.showUiMovieList(baseInteractor.showFavorites())
 
-        communication.showUiMovieList(ArrayList(baseInteractor.showFavorites()))
     }
 
     private fun showDetails(movie: UiMovie) {

@@ -10,14 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MovieInfoApplication">
         <activity
-            android:name=".presentation.FavoritesMovie"
-            android:exported="true" />
-        <activity
-            android:name=".presentation.MovieInfo"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:configChanges="orientation|screenSize|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

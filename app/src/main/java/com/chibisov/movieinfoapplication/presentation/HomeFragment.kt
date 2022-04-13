@@ -34,8 +34,6 @@ class HomeFragment : Fragment() {
             when (it.itemId){
                 R.id.ic_movie_list -> replaceFragment(movieListFragment)
                 R.id.ic_favorites -> replaceFragment(movieListFavoritesFragment)
-//                R.id.ic_movie_list -> replaceFragment(movieListFavoritesFragment)
-//                R.id.ic_favorites -> replaceFragment(movieListFragment)
             }
             true
         }
@@ -43,10 +41,8 @@ class HomeFragment : Fragment() {
 
 
     private fun replaceFragment(fragment: Fragment){
-//        val transaction = parentFragmentManager.beginTransaction()
         val transaction = parentFragmentManager.beginTransaction()
         transaction.replace(R.id.home_fragment_container, fragment)
-//        transaction.addToBackStack(fragment.javaClass.name)
         transaction.addToBackStack(null)
         transaction.commit()
 

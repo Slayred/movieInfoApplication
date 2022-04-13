@@ -12,4 +12,6 @@
     <string name="exit">Выход</string>
     <string name="exit_question">Вы точно хотите выйти?</string>
     <string name="change_status">Изменить статус?</string>
+    <string name="_42">4222222222222252555555555 525 52 525 52 5 25</string>
+    <string name="large_text">large_text</string>
 </resources>

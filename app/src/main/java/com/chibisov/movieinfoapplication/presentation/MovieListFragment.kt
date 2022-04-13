@@ -11,8 +11,10 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.chibisov.movieinfoapplication.R
 import com.chibisov.movieinfoapplication.adapter.MovieAdapter
 import com.chibisov.movieinfoapplication.core.Const
@@ -30,7 +32,7 @@ class MovieListFragment : BaseMovieListFragment(), Observer {
     private lateinit var inviteBtn: Button
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: MovieAdapter
-    private lateinit var fragment: BaseMovieListFragment
+    private lateinit var fragment: Fragment
     private val repository = Repository(MoviesCacheFavorites, Movies)
     private val baseInteractor = BaseInteractor(repository)
     private val communication = Communication()
@@ -93,6 +95,8 @@ class MovieListFragment : BaseMovieListFragment(), Observer {
         val divider = ResourcesCompat.getDrawable(resources, R.drawable.divider, null)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = setAdapter(divider!!, recyclerView, resources)
+        (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+
 
         communication.showUiMovieList(baseInteractor.showUIList())
         inviteBtn.setOnClickListener {
@@ -111,7 +115,8 @@ class MovieListFragment : BaseMovieListFragment(), Observer {
         fragment.arguments = bundle
         val transaction = parentFragmentManager.beginTransaction()
         //Пытаемся поменять фрагмент для бэкстека
-        transaction.replace(R.id.home_fragment_container, fragment)
+//        transaction.replace(R.id.home_fragment_container, fragment)
+        transaction.replace(R.id.main_fragment_container,fragment)
         transaction.addToBackStack(fragment.javaClass.name)
         transaction.commit()
     }

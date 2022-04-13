@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toolbar
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.core.os.bundleOf
@@ -20,20 +21,16 @@ import com.chibisov.movieinfoapplication.data.MoviesCacheFavorites
 import com.chibisov.movieinfoapplication.data.Repository
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 import com.chibisov.movieinfoapplication.domain.BaseInteractor
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-/**
- * A simple [Fragment] subclass.
- * Use the [MovieInfoFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class MovieInfoFragment : BaseMovieListFragment() {
 
     private val repository = Repository(MoviesCacheFavorites, Movies)
     private val baseInteractor = BaseInteractor(repository)
 
-    private lateinit var movieFavourites: ImageView
+    private lateinit var movieFavourites: FloatingActionButton
     private lateinit var movieDescr: TextView
-    private lateinit var movieName: TextView
+    private lateinit var movieName: androidx.appcompat.widget.Toolbar
     private lateinit var moviePoster: ImageView
     private lateinit var comment: EditText
     private var movie: UiMovie? = null
@@ -45,7 +42,7 @@ class MovieInfoFragment : BaseMovieListFragment() {
     ): View? {
         // Inflate the layout for this fragment
         movie = arguments?.getParcelable(Const.MOVIE)
-        return inflater.inflate(R.layout.fragment_movie_info, container, false)
+        return inflater.inflate(R.layout.fragment_movie_info_coordinator, container, false)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,18 +61,23 @@ class MovieInfoFragment : BaseMovieListFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        movieFavourites = view.findViewById(R.id.favorites)
-        movieDescr = view.findViewById(R.id.movieDescrInfo)
-        movieName = view.findViewById(R.id.movieNameInfo)
-        moviePoster = view.findViewById(R.id.infoImageView)
-        comment = view.findViewById(R.id.commentET)
+        movieFavourites = view.findViewById(R.id.fab)
+        movieDescr = view.findViewById(R.id.nested_description)
+        movieName = view.findViewById(R.id.toolbar)
+        moviePoster = view.findViewById(R.id.main_backdrop)
+        comment = view.findViewById(R.id.nested_comment)
 
         movie?.let { setMovie(it) }
+        movieFavourites.setOnClickListener{
+            movie!!.status = !movie!!.status
+            baseInteractor.changeStatus(movie!!)
+            setFavourites(movie!!)
+        }
 
     }
 
     private fun setMovie(movie: UiMovie) {
-        movieName.text = movie.name
+        movieName.title = movie.name
         movieDescr.text = movie.description
         movie.poster.let { moviePoster.setImageResource(it) }
         setFavourites(movie)

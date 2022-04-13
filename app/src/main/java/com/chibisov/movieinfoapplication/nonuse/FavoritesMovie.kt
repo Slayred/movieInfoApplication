@@ -1,4 +1,4 @@
-package com.chibisov.movieinfoapplication.presentation
+package com.chibisov.movieinfoapplication.nonuse
 
 import android.content.Intent
 import android.content.res.Configuration
