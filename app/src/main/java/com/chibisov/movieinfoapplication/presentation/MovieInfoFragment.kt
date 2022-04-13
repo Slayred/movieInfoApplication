@@ -47,7 +47,7 @@ class MovieInfoFragment : BaseMovieListFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         requireActivity().onBackPressedDispatcher //custom CallBack for backPressed
-            .addCallback(this){
+            .addCallback(this) {
                 val movieBack = movie
                 val comment = comment.text.toString()
                 setFragmentResult(
@@ -68,7 +68,7 @@ class MovieInfoFragment : BaseMovieListFragment() {
         comment = view.findViewById(R.id.nested_comment)
 
         movie?.let { setMovie(it) }
-        movieFavourites.setOnClickListener{
+        movieFavourites.setOnClickListener {
             movie!!.status = !movie!!.status
             baseInteractor.changeStatus(movie!!)
             setFavourites(movie!!)

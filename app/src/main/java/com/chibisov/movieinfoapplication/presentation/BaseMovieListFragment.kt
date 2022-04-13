@@ -10,19 +10,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chibisov.movieinfoapplication.adapter.itemDecoration.CustomHorizontalItemDecoration
 import com.chibisov.movieinfoapplication.adapter.itemDecoration.CustomVerticalItemDecoration
 
-abstract class BaseMovieListFragment: Fragment() {
+abstract class BaseMovieListFragment : Fragment() {
 
-    fun setAdapter(drawable: Drawable,
-                   recyclerView: RecyclerView
-                   , resources: Resources
+    fun setAdapter(
+        drawable: Drawable,
+        recyclerView: RecyclerView, resources: Resources
     ): RecyclerView.LayoutManager {
         return if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             recyclerView.addItemDecoration(
                 CustomVerticalItemDecoration(drawable)
             )
-            LinearLayoutManager(activity,
+            LinearLayoutManager(
+                activity,
                 LinearLayoutManager.VERTICAL,
-                false)
+                false
+            )
         } else {
             recyclerView.addItemDecoration(
                 CustomHorizontalItemDecoration(drawable)

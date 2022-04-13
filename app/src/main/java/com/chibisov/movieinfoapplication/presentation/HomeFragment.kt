@@ -31,7 +31,7 @@ class HomeFragment : Fragment() {
         replaceFragment(movieListFragment)
 
         bottomBar.setOnItemSelectedListener {
-            when (it.itemId){
+            when (it.itemId) {
                 R.id.ic_movie_list -> replaceFragment(movieListFragment)
                 R.id.ic_favorites -> replaceFragment(movieListFavoritesFragment)
             }
@@ -40,7 +40,7 @@ class HomeFragment : Fragment() {
     }
 
 
-    private fun replaceFragment(fragment: Fragment){
+    private fun replaceFragment(fragment: Fragment) {
         val transaction = parentFragmentManager.beginTransaction()
         transaction.replace(R.id.home_fragment_container, fragment)
         transaction.addToBackStack(null)

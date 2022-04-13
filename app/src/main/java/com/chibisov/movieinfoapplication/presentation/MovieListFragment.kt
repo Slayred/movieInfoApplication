@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -26,6 +27,7 @@ import com.chibisov.movieinfoapplication.data.Repository
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 import com.chibisov.movieinfoapplication.domain.BaseInteractor
 import com.chibisov.movieinfoapplication.domain.Communication
+import com.google.android.material.snackbar.Snackbar
 
 class MovieListFragment : BaseMovieListFragment(), Observer {
 
@@ -84,8 +86,17 @@ class MovieListFragment : BaseMovieListFragment(), Observer {
         adapter = MovieAdapter(MovieType.Favorite, object : MovieAdapter.FavoriteClickListener {
             override fun change(movie: UiMovie) {
                 baseInteractor.changeStatus(movie)
-                val t = baseInteractor.showUIList()
-                communication.showUiMovieList(t)
+                communication.showUiMovieList(baseInteractor.showUIList())
+                Snackbar.make(
+                    view,
+                    "${movie.name} " + getString(R.string.change_status),
+                    Snackbar.LENGTH_LONG
+                )
+                    .setAnchorView(R.id.btm_nav)
+                    .setAction(getString(R.string.undo)) {
+                        baseInteractor.changeStatus(movie)
+                        communication.showUiMovieList(baseInteractor.showUIList())
+                    }.show()
             }
         }, object : MovieAdapter.DetailsCLickListener {
             override fun details(movie: UiMovie) {
@@ -116,7 +127,7 @@ class MovieListFragment : BaseMovieListFragment(), Observer {
         val transaction = parentFragmentManager.beginTransaction()
         //Пытаемся поменять фрагмент для бэкстека
 //        transaction.replace(R.id.home_fragment_container, fragment)
-        transaction.replace(R.id.main_fragment_container,fragment)
+        transaction.replace(R.id.main_fragment_container, fragment)
         transaction.addToBackStack(fragment.javaClass.name)
         transaction.commit()
     }

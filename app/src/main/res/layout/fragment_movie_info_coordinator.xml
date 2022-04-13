@@ -61,7 +61,6 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:lineSpacingExtra="8dp"
-            android:text="@string/large_text"
             android:padding="16dp"
             />
         <EditText

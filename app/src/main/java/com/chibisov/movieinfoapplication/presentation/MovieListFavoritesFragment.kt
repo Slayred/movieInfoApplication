@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResultListener
@@ -24,6 +25,7 @@ import com.chibisov.movieinfoapplication.data.Repository
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 import com.chibisov.movieinfoapplication.domain.BaseInteractor
 import com.chibisov.movieinfoapplication.domain.Communication
+import com.google.android.material.snackbar.Snackbar
 
 /**
  * A simple [Fragment] subclass.
@@ -45,12 +47,6 @@ class MovieListFavoritesFragment : BaseMovieListFragment(), Observer {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-//        requireActivity().onBackPressedDispatcher //custom CallBack for backPressed
-//            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-//                override fun handleOnBackPressed() {
-//                    parentFragmentManager.popBackStack()
-//                }
-//            })
         return inflater.inflate(R.layout.fragment_movie_list_favorites, container, false)
     }
 
@@ -84,6 +80,16 @@ class MovieListFavoritesFragment : BaseMovieListFragment(), Observer {
             override fun change(movie: UiMovie) {
                 baseInteractor.changeStatus(movie)
                 communication.showUiMovieList(baseInteractor.showFavorites())
+                Snackbar.make(
+                    view,
+                    "${movie.name} " + getString(R.string.change_status),
+                    Snackbar.LENGTH_LONG
+                )
+                    .setAnchorView(R.id.btm_nav)
+                    .setAction(getString(R.string.undo)) {
+                        baseInteractor.changeStatus(movie)
+                        communication.showUiMovieList(baseInteractor.showFavorites())
+                    }.show()
             }
         }, object : MovieAdapter.DetailsCLickListener {
             override fun details(movie: UiMovie) {
