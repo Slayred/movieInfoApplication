@@ -23,7 +23,7 @@ import com.chibisov.movieinfoapplication.data.models.UiMovie
 import com.chibisov.movieinfoapplication.domain.BaseInteractor
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class MovieInfoFragment : BaseMovieListFragment() {
+class MovieInfoFragment : Fragment() {
 
     private val repository = Repository(MoviesCacheFavorites, Movies)
     private val baseInteractor = BaseInteractor(repository)
