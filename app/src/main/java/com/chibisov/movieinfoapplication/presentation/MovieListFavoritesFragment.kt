@@ -39,7 +39,6 @@ class MovieListFavoritesFragment : BaseMovieListFragment(), Observer {
     private val communication = Communication()
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: MovieAdapter
-    private lateinit var fragment: BaseMovieListFragment
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -74,7 +73,6 @@ class MovieListFavoritesFragment : BaseMovieListFragment(), Observer {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fragment = MovieInfoFragment()
         recyclerView = view.findViewById(R.id.movieRVFavor)
         adapter = MovieAdapter(MovieType.Favorite, object : MovieAdapter.FavoriteClickListener {
             override fun change(movie: UiMovie) {
@@ -107,6 +105,7 @@ class MovieListFavoritesFragment : BaseMovieListFragment(), Observer {
     }
 
     private fun showDetails(movie: UiMovie) {
+        val fragment = MovieInfoFragment()
         baseInteractor.addCheckedItem(movie)
         parentFragmentManager.setFragmentResult(
             Const.MOVIE,

@@ -34,7 +34,6 @@ class MovieListFragment : BaseMovieListFragment(), Observer {
     private lateinit var inviteBtn: Button
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: MovieAdapter
-    private lateinit var fragment: Fragment
     private val repository = Repository(MoviesCacheFavorites, Movies)
     private val baseInteractor = BaseInteractor(repository)
     private val communication = Communication()
@@ -80,7 +79,6 @@ class MovieListFragment : BaseMovieListFragment(), Observer {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fragment = MovieInfoFragment()
         inviteBtn = view.findViewById(R.id.inviteBtn)
         recyclerView = view.findViewById(R.id.movieRV)
         adapter = MovieAdapter(MovieType.Favorite, object : MovieAdapter.FavoriteClickListener {
@@ -116,6 +114,7 @@ class MovieListFragment : BaseMovieListFragment(), Observer {
     }
 
     private fun showDetails(movie: UiMovie) {
+        val fragment = MovieInfoFragment()
         baseInteractor.addCheckedItem(movie)
         parentFragmentManager.setFragmentResult(
             Const.MOVIE,
