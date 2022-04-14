@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -21,14 +20,7 @@ import com.chibisov.movieinfoapplication.R
 import com.chibisov.movieinfoapplication.adapter.MovieAdapter
 import com.chibisov.movieinfoapplication.core.Const
 import com.chibisov.movieinfoapplication.core.MovieType
-import com.chibisov.movieinfoapplication.core.Observer
-import com.chibisov.movieinfoapplication.data.Movies
-import com.chibisov.movieinfoapplication.data.MoviesCacheFavorites
-import com.chibisov.movieinfoapplication.data.Repository
 import com.chibisov.movieinfoapplication.data.models.UiMovie
-import com.chibisov.movieinfoapplication.domain.BaseInteractor
-import com.chibisov.movieinfoapplication.domain.Communication
-import com.chibisov.movieinfoapplication.viewmodels.BaseViewModel
 import com.chibisov.movieinfoapplication.viewmodels.MovieListViewModel
 import com.google.android.material.snackbar.Snackbar
 
@@ -104,7 +96,7 @@ class MovieListFragment : BaseMovieListFragment() {
         recyclerView.layoutManager = setAdapter(divider!!, recyclerView, resources)
         (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
-        listViewModel.showUIList()
+        listViewModel.showList()
 
         listViewModel.observe(this ){
             adapter.updateDataFromAdapter()

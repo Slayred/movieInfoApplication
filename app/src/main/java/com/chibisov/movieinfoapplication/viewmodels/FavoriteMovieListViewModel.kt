@@ -7,13 +7,12 @@ import com.chibisov.movieinfoapplication.data.models.UiMovie
 import com.chibisov.movieinfoapplication.domain.BaseInteractor
 import com.chibisov.movieinfoapplication.domain.Communication
 
-class MovieListViewModel(
+class FavoriteMovieListViewModel(
     val communication: Communication,
     private val interactor: BaseInteractor
-) : ViewModel(), BaseViewModel {
+): BaseViewModel, ViewModel() {
 
-
-    override fun observe(owner: LifecycleOwner, observer: Observer<List<UiMovie>>){
+    override fun observe(owner: LifecycleOwner, observer: Observer<List<UiMovie>>) {
         communication.observe(owner, observer)
     }
 
@@ -23,13 +22,11 @@ class MovieListViewModel(
     }
 
     override fun showList() {
-        communication.showUiMovieList(interactor.showUIList())
+        communication.showUiMovieList(interactor.showFavorites())
     }
-
 
     override fun addCheckedItem(movie: UiMovie) {
         interactor.addCheckedItem(movie)
+        showList()
     }
-
-
 }

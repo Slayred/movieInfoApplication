@@ -14,6 +14,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.chibisov.movieinfoapplication.MovieInfoApp
 import com.chibisov.movieinfoapplication.R
 import com.chibisov.movieinfoapplication.adapter.MovieAdapter
 import com.chibisov.movieinfoapplication.core.Const
@@ -25,21 +26,16 @@ import com.chibisov.movieinfoapplication.data.Repository
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 import com.chibisov.movieinfoapplication.domain.BaseInteractor
 import com.chibisov.movieinfoapplication.domain.Communication
+import com.chibisov.movieinfoapplication.viewmodels.FavoriteMovieListViewModel
 import com.google.android.material.snackbar.Snackbar
 
-/**
- * A simple [Fragment] subclass.
- * Use the [MovieListFavoritesFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class MovieListFavoritesFragment : BaseMovieListFragment(), Observer {
+class MovieListFavoritesFragment : BaseMovieListFragment(){
 
-    private val repository = Repository(MoviesCacheFavorites, Movies)
-    private val baseInteractor = BaseInteractor(repository)
-    private val communication = Communication()
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: MovieAdapter
     private lateinit var fragment: BaseMovieListFragment
+    private lateinit var favoriteMovieListViewModel: FavoriteMovieListViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,15 +46,6 @@ class MovieListFavoritesFragment : BaseMovieListFragment(), Observer {
         return inflater.inflate(R.layout.fragment_movie_list_favorites, container, false)
     }
 
-    override fun onStart() {
-        super.onStart()
-        communication.add(this)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        communication.remove(this)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setFragmentResultListener(Const.BUNDLE) { _, bundle ->
@@ -69,6 +56,8 @@ class MovieListFavoritesFragment : BaseMovieListFragment(), Observer {
                 "Movie status is ${resultMovie?.status} \n Comment is $resultComment"
             )
         }
+        favoriteMovieListViewModel =
+            (requireActivity().application as MovieInfoApp).movieFavoriteListViewModel
         super.onCreate(savedInstanceState)
     }
 
@@ -78,8 +67,7 @@ class MovieListFavoritesFragment : BaseMovieListFragment(), Observer {
         recyclerView = view.findViewById(R.id.movieRVFavor)
         adapter = MovieAdapter(MovieType.Favorite, object : MovieAdapter.FavoriteClickListener {
             override fun change(movie: UiMovie) {
-                baseInteractor.changeStatus(movie)
-                communication.showUiMovieList(baseInteractor.showFavorites())
+                favoriteMovieListViewModel.changeStatus(movie)
                 Snackbar.make(
                     view,
                     "${movie.name} " + getString(R.string.change_status),
@@ -87,27 +75,29 @@ class MovieListFavoritesFragment : BaseMovieListFragment(), Observer {
                 )
                     .setAnchorView(R.id.btm_nav)
                     .setAction(getString(R.string.undo)) {
-                        baseInteractor.changeStatus(movie)
-                        communication.showUiMovieList(baseInteractor.showFavorites())
+                        favoriteMovieListViewModel.changeStatus(movie)
                     }.show()
             }
         }, object : MovieAdapter.DetailsCLickListener {
             override fun details(movie: UiMovie) {
                 showDetails(movie)
             }
-        }, communication)
+        }, favoriteMovieListViewModel.communication)
         val divider = ResourcesCompat.getDrawable(resources, R.drawable.divider, null)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = setAdapter(divider!!, recyclerView, resources)
         recyclerView.itemAnimator?.apply {
             removeDuration = 0
         }
-        communication.showUiMovieList(baseInteractor.showFavorites())
+        favoriteMovieListViewModel.observe(this){
+            adapter.updateDataFromAdapter()
+        }
+        favoriteMovieListViewModel.showList()
 
     }
 
     private fun showDetails(movie: UiMovie) {
-        baseInteractor.addCheckedItem(movie)
+        favoriteMovieListViewModel.addCheckedItem(movie)
         parentFragmentManager.setFragmentResult(
             Const.MOVIE,
             bundleOf(Const.BUNDLE to movie)
@@ -119,10 +109,6 @@ class MovieListFavoritesFragment : BaseMovieListFragment(), Observer {
         transaction.replace(R.id.home_fragment_container, fragment)
         transaction.addToBackStack(fragment.javaClass.name)
         transaction.commit()
-    }
-
-    override fun update() {
-        adapter.updateDataFromAdapter()
     }
 
 }

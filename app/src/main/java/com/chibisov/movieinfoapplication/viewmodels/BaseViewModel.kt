@@ -9,8 +9,7 @@ interface BaseViewModel {
 
     fun observe(owner: LifecycleOwner, observer: Observer<List<UiMovie>>)
     fun changeStatus(movie: UiMovie)
-    fun showUIList()
-    fun showFavorites()
+    fun showList()
     fun addCheckedItem(movie: UiMovie)
 
 }
