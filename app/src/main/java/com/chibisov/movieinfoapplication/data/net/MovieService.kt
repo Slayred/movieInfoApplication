@@ -9,7 +9,7 @@ import retrofit2.http.Headers
 
 interface MovieService {
 
-    @Headers("X-API-KEY : 295873e7-0cb4-4fb5-84ff-0c1fb88fc7fd")
-    @GET("/films/top?page=2")
+    @Headers("X-API-KEY:295873e7-0cb4-4fb5-84ff-0c1fb88fc7fd")
+    @GET("films/top?page=2")
     fun getTopFilms(): Call<KinopoiskMovieResponse>
 }

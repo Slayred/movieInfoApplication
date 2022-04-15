@@ -1,11 +1,13 @@
 package com.chibisov.movieinfoapplication.data
 
 import com.chibisov.movieinfoapplication.data.models.UiMovie
+import com.chibisov.movieinfoapplication.nonuse.CallbackData
 import kotlin.collections.ArrayList
 
 class Repository(
     private val cacheDataSource: CacheDataSource,
-    private val netDataSource: NetDataSource
+    private val netDataSource: NetDataSource,
+    private val movieNetDataSource: MovieNetDataSource
 ) {
 
     fun showMovies(): ArrayList<UiMovie> {
@@ -21,6 +23,9 @@ class Repository(
             }
         }
         return listOfMovies
+    }
+    fun getNetList(callbackData: CallbackData) {
+        movieNetDataSource.getNewList(callbackData)
     }
 
     fun showFavorites() = cacheDataSource.getList()

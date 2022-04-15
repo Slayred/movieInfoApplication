@@ -5,6 +5,7 @@ import com.chibisov.movieinfoapplication.R
 import com.chibisov.movieinfoapplication.data.models.KinopoiskMovieResponse
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 import com.chibisov.movieinfoapplication.data.net.MovieService
+import com.chibisov.movieinfoapplication.nonuse.CallbackData
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -44,15 +45,23 @@ object Movies : NetDataSource {
 
 }
 
-class MovieNetDataSource(private val service: MovieService): NetDataSource {
+class MovieNetDataSource(private val service: MovieService) {
 
-    override fun getList(): ArrayList<UiMovie> {
-        service.getTopFilms().enqueue(object : Callback<KinopoiskMovieResponse>{
+    fun getNewList(callback: CallbackData) {
+        service.getTopFilms().enqueue(object : Callback<KinopoiskMovieResponse> {
             override fun onResponse(
                 call: Call<KinopoiskMovieResponse>,
                 response: Response<KinopoiskMovieResponse>
             ) {
-                response.body()?.films
+                if (response.isSuccessful) {
+                    val k = mutableListOf<UiMovie>()
+                    response.body()?.films?.forEach {
+                        if (it != null) {
+                            k.add(it.toUiMovie())
+                        }
+                    }
+                    callback.provideData(k as ArrayList<UiMovie>)
+                }
             }
 
             override fun onFailure(call: Call<KinopoiskMovieResponse>, t: Throwable) {
@@ -62,11 +71,13 @@ class MovieNetDataSource(private val service: MovieService): NetDataSource {
         })
     }
 
+
 }
 
 interface NetDataSource : DataSource {
 
 }
+
 
 interface DataSource {
     fun getList(): ArrayList<UiMovie>

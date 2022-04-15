@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 import com.chibisov.movieinfoapplication.domain.BaseInteractor
 import com.chibisov.movieinfoapplication.domain.Communication
+import com.chibisov.movieinfoapplication.nonuse.CallbackData
 
 class MovieListViewModel(
     val communication: Communication,
@@ -24,6 +25,15 @@ class MovieListViewModel(
 
     override fun showList() {
         communication.showUiMovieList(interactor.showUIList())
+    }
+
+    fun showNetList() {
+        interactor.showNetList(object : CallbackData{
+            override fun provideData(uiMovieList: ArrayList<UiMovie>) {
+                communication.showUiMovieList(uiMovieList)
+            }
+
+        })
     }
 
 

@@ -96,7 +96,7 @@ class MovieListFragment : BaseMovieListFragment() {
         recyclerView.layoutManager = setAdapter(divider!!, recyclerView, resources)
         (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
-        listViewModel.showList()
+        listViewModel.showNetList()
 
         listViewModel.observe(this ){
             adapter.updateDataFromAdapter()
@@ -118,8 +118,8 @@ class MovieListFragment : BaseMovieListFragment() {
         fragment.arguments = bundle
         val transaction = parentFragmentManager.beginTransaction()
         //Пытаемся поменять фрагмент для бэкстека
-//        transaction.replace(R.id.home_fragment_container, fragment)
-        transaction.replace(R.id.main_fragment_container, fragment)
+        transaction.replace(R.id.home_fragment_container, fragment)
+//        transaction.replace(R.id.main_fragment_container, fragment)
         transaction.addToBackStack(fragment.javaClass.name)
         transaction.commit()
     }

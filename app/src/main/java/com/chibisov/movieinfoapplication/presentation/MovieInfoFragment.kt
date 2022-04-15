@@ -16,16 +16,21 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.setFragmentResult
 import com.chibisov.movieinfoapplication.R
 import com.chibisov.movieinfoapplication.core.Const
+import com.chibisov.movieinfoapplication.data.MovieNetDataSource
 import com.chibisov.movieinfoapplication.data.Movies
 import com.chibisov.movieinfoapplication.data.MoviesCacheFavorites
 import com.chibisov.movieinfoapplication.data.Repository
 import com.chibisov.movieinfoapplication.data.models.UiMovie
+import com.chibisov.movieinfoapplication.data.net.MovieService
+import com.chibisov.movieinfoapplication.data.retrofit.RetrofitFactory
 import com.chibisov.movieinfoapplication.domain.BaseInteractor
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MovieInfoFragment : BaseMovieListFragment() {
 
-    private val repository = Repository(MoviesCacheFavorites, Movies)
+    var BASE_URL = "https://kinopoiskapiunofficial.tech/api/v2.2/"
+    private val repository = Repository(MoviesCacheFavorites, Movies, MovieNetDataSource(
+        RetrofitFactory.getRetrofitInstance(BASE_URL).create(MovieService::class.java)))
     private val baseInteractor = BaseInteractor(repository)
 
     private lateinit var movieFavourites: FloatingActionButton
