@@ -11,5 +11,6 @@
     <string name="no">Нет</string>
     <string name="exit">Выход</string>
     <string name="exit_question">Вы точно хотите выйти?</string>
-    <string name="change_status">Изменить статус?</string>
+    <string name="change_status">статус изменился</string>
+    <string name="undo">ОТМЕНА</string>
 </resources>

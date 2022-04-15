@@ -10,6 +10,8 @@
     <string name="no">No</string>
     <string name="exit">Exit</string>
     <string name="exit_question">Are you sure to exit?</string>
-    <string name="change_status">Change Status?</string>
-
+    <string name="change_status">status was changed</string>
+    <string name="favorite" translatable="false">Favorite</string>
+    <string name="movies" translatable="false">Movies</string>
+    <string name="undo">UNDO</string>
 </resources>
