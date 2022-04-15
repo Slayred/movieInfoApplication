@@ -41,7 +41,8 @@ class HomeFragment : Fragment() {
 
 
     private fun replaceFragment(fragment: Fragment) {
-        val transaction = parentFragmentManager.beginTransaction()
+//        val transaction = parentFragmentManager.beginTransaction()
+        val transaction = childFragmentManager.beginTransaction()
         transaction.replace(R.id.home_fragment_container, fragment)
         transaction.addToBackStack(null)
         transaction.commit()

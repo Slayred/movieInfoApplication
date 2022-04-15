@@ -2,11 +2,14 @@ package com.chibisov.movieinfoapplication.data
 
 import com.chibisov.movieinfoapplication.data.models.Movie
 import com.chibisov.movieinfoapplication.R
+import com.chibisov.movieinfoapplication.data.models.KinopoiskMovieResponse
 import com.chibisov.movieinfoapplication.data.models.UiMovie
+import com.chibisov.movieinfoapplication.data.net.MovieService
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 object Movies : NetDataSource {
-
-
     private val movieList = arrayListOf(
         Movie(
             1,
@@ -38,6 +41,26 @@ object Movies : NetDataSource {
         return movieList.map { it.to() } as ArrayList<UiMovie>
     }
 
+
+}
+
+class MovieNetDataSource(private val service: MovieService): NetDataSource {
+
+    override fun getList(): ArrayList<UiMovie> {
+        service.getTopFilms().enqueue(object : Callback<KinopoiskMovieResponse>{
+            override fun onResponse(
+                call: Call<KinopoiskMovieResponse>,
+                response: Response<KinopoiskMovieResponse>
+            ) {
+                response.body()?.films
+            }
+
+            override fun onFailure(call: Call<KinopoiskMovieResponse>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+
+        })
+    }
 
 }
 
