@@ -1,7 +1,9 @@
 package com.chibisov.movieinfoapplication.data
 
+import com.chibisov.movieinfoapplication.core.CallbackData
 import com.chibisov.movieinfoapplication.data.models.UiMovie
-import com.chibisov.movieinfoapplication.nonuse.CallbackData
+import com.chibisov.movieinfoapplication.core.CallbackDataList
+import com.chibisov.movieinfoapplication.core.CallbackStateMovie
 import kotlin.collections.ArrayList
 
 class Repository(
@@ -24,8 +26,12 @@ class Repository(
         }
         return listOfMovies
     }
-    fun getNetList(callbackData: CallbackData) {
-        movieNetDataSource.getNewList(callbackData)
+    fun getNetList(callbackDataList: CallbackDataList) {
+        movieNetDataSource.getNewList(callbackDataList)
+    }
+
+    fun getStateMovieInfo(callbackStateMovie: CallbackStateMovie, id: Int) {
+        movieNetDataSource.showStateMovieInfo(callbackStateMovie, id)
     }
 
     fun showFavorites() = cacheDataSource.getList()
@@ -34,5 +40,10 @@ class Repository(
     fun searchFavorites(movie: UiMovie) = cacheDataSource.searchFavItem(movie)
     fun addCheckedItem(movie: UiMovie) = cacheDataSource.addCheckedItem(movie)
     fun searchCheckedItem(movie: UiMovie) = cacheDataSource.searchCheckedItem(movie)
+    fun getMovieInfo(callbackData: CallbackData, id: Int) {
+        movieNetDataSource.showMovieInfo(callbackData, id)
+    }
+
+
 
 }

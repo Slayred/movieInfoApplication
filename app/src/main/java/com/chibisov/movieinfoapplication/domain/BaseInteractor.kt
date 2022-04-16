@@ -2,7 +2,7 @@ package com.chibisov.movieinfoapplication.domain
 
 import com.chibisov.movieinfoapplication.data.Repository
 import com.chibisov.movieinfoapplication.data.models.UiMovie
-import com.chibisov.movieinfoapplication.nonuse.CallbackData
+import com.chibisov.movieinfoapplication.core.CallbackDataList
 
 class BaseInteractor(private val repository: Repository) {
 
@@ -15,8 +15,8 @@ class BaseInteractor(private val repository: Repository) {
         }
     }
 
-    fun showNetList(callbackData: CallbackData) {
-        repository.getNetList(callbackData)
+    fun showNetList(callbackDataList: CallbackDataList) {
+        repository.getNetList(callbackDataList)
     }
 
     fun showUIList(): ArrayList<UiMovie> {

@@ -2,10 +2,15 @@ package com.chibisov.movieinfoapplication.data
 
 import com.chibisov.movieinfoapplication.data.models.Movie
 import com.chibisov.movieinfoapplication.R
+import com.chibisov.movieinfoapplication.core.CallbackData
 import com.chibisov.movieinfoapplication.data.models.KinopoiskMovieResponse
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 import com.chibisov.movieinfoapplication.data.net.MovieService
-import com.chibisov.movieinfoapplication.nonuse.CallbackData
+import com.chibisov.movieinfoapplication.core.CallbackDataList
+import com.chibisov.movieinfoapplication.core.CallbackStateMovie
+import com.chibisov.movieinfoapplication.data.models.KinopoiskMovieInfoResponse
+import com.chibisov.movieinfoapplication.domain.StateMovie
+import kotlinx.coroutines.delay
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -47,7 +52,7 @@ object Movies : NetDataSource {
 
 class MovieNetDataSource(private val service: MovieService) {
 
-    fun getNewList(callback: CallbackData) {
+    fun getNewList(callbackList: CallbackDataList) {
         service.getTopFilms().enqueue(object : Callback<KinopoiskMovieResponse> {
             override fun onResponse(
                 call: Call<KinopoiskMovieResponse>,
@@ -60,7 +65,7 @@ class MovieNetDataSource(private val service: MovieService) {
                             k.add(it.toUiMovie())
                         }
                     }
-                    callback.provideData(k as ArrayList<UiMovie>)
+                    callbackList.provideData(k as ArrayList<UiMovie>)
                 }
             }
 
@@ -71,8 +76,44 @@ class MovieNetDataSource(private val service: MovieService) {
         })
     }
 
+    fun showMovieInfo(callbackData: CallbackData, id: Int) {
+        service.getMovieIno(id).enqueue(object : Callback<KinopoiskMovieInfoResponse>{
+            override fun onResponse(
+                call: Call<KinopoiskMovieInfoResponse>,
+                response: Response<KinopoiskMovieInfoResponse>
+            ) {
+                if (response.isSuccessful){
+                    callbackData.provideData(response.body()!!.toUiMovie())
+                }
+            }
+
+            override fun onFailure(call: Call<KinopoiskMovieInfoResponse>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+
+        })
+    }
+
+    fun showStateMovieInfo(callbackStateMovie: CallbackStateMovie, id: Int) {
+        service.getMovieIno(id).enqueue(object : Callback<KinopoiskMovieInfoResponse>{
+            override fun onResponse(
+                call: Call<KinopoiskMovieInfoResponse>,
+                response: Response<KinopoiskMovieInfoResponse>
+            ) {
+                if(response.isSuccessful){
+                    callbackStateMovie.provideStateData(StateMovie.Successful(response.body()!!.toUiMovie()))
+                } else callbackStateMovie.provideStateData(StateMovie.Fail(response.code().toString()))
+            }
+
+            override fun onFailure(call: Call<KinopoiskMovieInfoResponse>, t: Throwable) {
+                callbackStateMovie.provideStateData(StateMovie.Fail(t.toString()))
+            }
+        })
+    }
 
 }
+
+
 
 interface NetDataSource : DataSource {
 

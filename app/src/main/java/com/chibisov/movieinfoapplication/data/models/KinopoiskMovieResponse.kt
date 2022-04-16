@@ -9,14 +9,14 @@ import kotlinx.parcelize.Parcelize
 data class KinopoiskMovieResponse(
 
     @field:SerializedName("films")
-    val films: List<FilmsItem?>? = null,
+    val films: List<FilmsShortItem?>? = null,
 
     @field:SerializedName("pagesCount")
     val pagesCount: Int? = null
 ) : Parcelable
 
 @Parcelize
-data class FilmsItem(
+data class FilmsShortItem(
 
     @field:SerializedName("nameRu")
     val nameRu: String,

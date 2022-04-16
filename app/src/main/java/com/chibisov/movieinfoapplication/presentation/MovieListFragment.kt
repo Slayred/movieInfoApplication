@@ -22,6 +22,7 @@ import com.chibisov.movieinfoapplication.core.Const
 import com.chibisov.movieinfoapplication.core.MovieType
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 import com.chibisov.movieinfoapplication.viewmodels.MovieListViewModel
+import com.chibisov.movieinfoapplication.viewmodels.SharedMovieViewModel
 import com.google.android.material.snackbar.Snackbar
 
 class MovieListFragment : BaseMovieListFragment() {
@@ -31,6 +32,7 @@ class MovieListFragment : BaseMovieListFragment() {
     private lateinit var adapter: MovieAdapter
     private lateinit var fragment: Fragment
     private lateinit var listViewModel: MovieListViewModel
+    private lateinit var sharedMovieViewModel: SharedMovieViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +72,7 @@ class MovieListFragment : BaseMovieListFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         listViewModel = (requireActivity().application as MovieInfoApp).movieListViewModel
+        sharedMovieViewModel = (requireActivity().application as MovieInfoApp).sharedMovieViewModel
         fragment = MovieInfoFragment()
         inviteBtn = view.findViewById(R.id.inviteBtn)
         recyclerView = view.findViewById(R.id.movieRV)
@@ -109,6 +112,7 @@ class MovieListFragment : BaseMovieListFragment() {
 
     private fun showDetails(movie: UiMovie) {
         listViewModel.addCheckedItem(movie)
+        sharedMovieViewModel.setMovieID(movie.id)
         parentFragmentManager.setFragmentResult(
             Const.MOVIE,
             bundleOf(Const.BUNDLE to movie)
