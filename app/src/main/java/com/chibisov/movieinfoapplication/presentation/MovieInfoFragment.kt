@@ -1,6 +1,7 @@
 package com.chibisov.movieinfoapplication.presentation
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -52,10 +53,12 @@ class MovieInfoFragment : BaseMovieListFragment() {
     ): View? {
         // Inflate the layout for this fragment
         movie = arguments?.getParcelable(Const.MOVIE)
+        Log.d(this::javaClass.toString(), "OnCreateView")
         return inflater.inflate(R.layout.fragment_movie_info_coordinator, container, false)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d(this::javaClass.toString(), "OnCreate")
         sharedMovieViewModel = (requireActivity().application as MovieInfoApp).sharedMovieViewModel
         requireActivity().onBackPressedDispatcher //custom CallBack for backPressed
             .addCallback(this) {
@@ -72,6 +75,7 @@ class MovieInfoFragment : BaseMovieListFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(this::javaClass.toString(), "OnViewCreated")
         coordinatorLayout = view.findViewById(R.id.included)
         movieFavourites = view.findViewById(R.id.fab)
         movieDescr = view.findViewById(R.id.nested_description)
@@ -86,10 +90,7 @@ class MovieInfoFragment : BaseMovieListFragment() {
             baseInteractor.changeStatus(movie!!)
             setFavourites(movie!!)
         }
-//        sharedMovieViewModel.observe(this){
-//            data -> setMovie(data)
-//        }
-//        sharedMovieViewModel.showMovieInfo()
+
         sharedMovieViewModel.observeStateMovie(this) {
             when(it){
                 is StateMovie.Successful -> {

@@ -14,7 +14,6 @@ class SharedMovieViewModel(
     private val interactor: MovieInteractor
 ) : ViewModel() {
 
-    private  var movieLiveData =  MutableLiveData<UiMovie>()
     private var movieStateLiveData = MutableLiveData<StateMovie>(StateMovie.Progress())
     private var movieId = 0
 
@@ -22,23 +21,8 @@ class SharedMovieViewModel(
         this.movieId = id
     }
 
-    fun observe(owner: LifecycleOwner, observer: Observer<UiMovie>) {
-        movieLiveData.observe(owner, observer)
-    }
-
     fun observeStateMovie(owner: LifecycleOwner, observer: Observer<StateMovie>) {
         movieStateLiveData.observe(owner, observer)
-    }
-
-
-    fun getMovieLiveData() = movieLiveData.value
-
-    fun showMovieInfo(id: Int = movieId) {
-        interactor.showMovieInfo(object : CallbackData {
-            override fun provideData(uiMovie: UiMovie) {
-                movieLiveData.value = uiMovie
-            }
-        }, id)
     }
 
     fun showStateMovieInfo(id: Int = movieId) {

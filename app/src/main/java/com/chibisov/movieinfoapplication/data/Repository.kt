@@ -40,10 +40,5 @@ class Repository(
     fun searchFavorites(movie: UiMovie) = cacheDataSource.searchFavItem(movie)
     fun addCheckedItem(movie: UiMovie) = cacheDataSource.addCheckedItem(movie)
     fun searchCheckedItem(movie: UiMovie) = cacheDataSource.searchCheckedItem(movie)
-    fun getMovieInfo(callbackData: CallbackData, id: Int) {
-        movieNetDataSource.showMovieInfo(callbackData, id)
-    }
-
-
 
 }
