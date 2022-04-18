@@ -1,9 +1,8 @@
-package com.chibisov.movieinfoapplication.adapter.itemDecoration
+package com.chibisov.movieinfoapplication.presentation.adapter.itemDecoration
 
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.View
 import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView

@@ -15,9 +15,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.chibisov.movieinfoapplication.MovieInfoApp
 import com.chibisov.movieinfoapplication.R
-import com.chibisov.movieinfoapplication.adapter.MovieAdapter
+import com.chibisov.movieinfoapplication.presentation.adapter.MovieAdapter
 import com.chibisov.movieinfoapplication.core.Const
 import com.chibisov.movieinfoapplication.core.MovieType
 import com.chibisov.movieinfoapplication.data.models.UiMovie
@@ -33,6 +34,7 @@ class MovieListFragment : BaseMovieListFragment() {
     private lateinit var fragment: Fragment
     private lateinit var listViewModel: MovieListViewModel
     private lateinit var sharedMovieViewModel: SharedMovieViewModel
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,6 +78,7 @@ class MovieListFragment : BaseMovieListFragment() {
         fragment = MovieInfoFragment()
         inviteBtn = view.findViewById(R.id.inviteBtn)
         recyclerView = view.findViewById(R.id.movieRV)
+        swipeRefreshLayout = view.findViewById(R.id.movie_list_swipe_refresh)
         adapter = MovieAdapter(MovieType.Favorite, object : MovieAdapter.FavoriteClickListener {
             override fun change(movie: UiMovie) {
                 listViewModel.changeStatus(movie)
@@ -103,6 +106,10 @@ class MovieListFragment : BaseMovieListFragment() {
 
         listViewModel.observe(this ){
             adapter.updateDataFromAdapter()
+        }
+        swipeRefreshLayout.setOnRefreshListener{
+            listViewModel.showNetList()
+            swipeRefreshLayout.isRefreshing = false
         }
 
         inviteBtn.setOnClickListener {

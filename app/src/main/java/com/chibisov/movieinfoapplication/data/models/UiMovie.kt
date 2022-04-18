@@ -8,7 +8,7 @@ data class UiMovie(
     val id: Int,
     val name: String,
     val description: String,
-    val poster: Int,
+    val posterPath: String,
     var status: Boolean,
     var checked: Boolean
 ) : Parcelable {

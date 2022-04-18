@@ -1,4 +1,4 @@
-package com.chibisov.movieinfoapplication.adapter
+package com.chibisov.movieinfoapplication.presentation.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,6 +9,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.chibisov.movieinfoapplication.domain.Communication
 import com.chibisov.movieinfoapplication.core.MovieType
 import com.chibisov.movieinfoapplication.R
@@ -24,7 +26,6 @@ class MovieAdapter(
 
 
     fun updateDataFromAdapter() {
-//        notifyDataSetChanged()
         communication.getDiffResult().dispatchUpdatesTo(this)
     }
 
@@ -61,7 +62,12 @@ class MovieAdapter(
         protected val movieDetails: Button = itemView.findViewById(R.id.movieDetails)
         open fun bind(model: UiMovie) {
             movieName.text = model.name
-            moviePoster.setImageResource(model.poster)
+//            moviePoster.setImageResource(model.posterPath)
+            Glide.with(itemView)
+                .load(model.posterPath)
+                .apply(RequestOptions().override(150,150))
+                .placeholder(R.drawable.baseline_update_24)
+                .into(moviePoster)
         }
 
         class Base(view: View) : MyViewHolder(view) {

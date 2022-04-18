@@ -55,14 +55,16 @@ data class FilmsShortItem(
     val countries: List<CountriesItem?>? = null
 ) : Parcelable {
 
-    fun toUiMovie() = UiMovie(
+    fun toUiMovie() = this.posterUrlPreview?.let {
+        UiMovie(
         this.filmId,
         this.nameRu,
         "desct",
-        R.drawable.ic_fight_club_foreground,
+            it,
         status = false,
         checked = false
     )
+    }
 }
 
 @Parcelize

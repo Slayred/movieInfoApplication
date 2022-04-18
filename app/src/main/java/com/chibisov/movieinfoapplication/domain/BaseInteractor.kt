@@ -19,9 +19,9 @@ class BaseInteractor(private val repository: Repository) {
         repository.getNetList(callbackDataList)
     }
 
-    fun showUIList(): ArrayList<UiMovie> {
-        return repository.showMovies()
-    }
+//    fun showUIList(): ArrayList<UiMovie> {
+//        return repository.showMovies()
+//    }
 
     fun showFavorites(): ArrayList<UiMovie> {
         return repository.showFavorites()

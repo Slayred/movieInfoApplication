@@ -2,23 +2,20 @@ package com.chibisov.movieinfoapplication.presentation
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.setFragmentResult
+import com.bumptech.glide.Glide
 import com.chibisov.movieinfoapplication.MovieInfoApp
 import com.chibisov.movieinfoapplication.R
 import com.chibisov.movieinfoapplication.core.Const
 import com.chibisov.movieinfoapplication.data.MovieNetDataSource
-import com.chibisov.movieinfoapplication.data.Movies
 import com.chibisov.movieinfoapplication.data.MoviesCacheFavorites
 import com.chibisov.movieinfoapplication.data.Repository
 import com.chibisov.movieinfoapplication.data.models.UiMovie
@@ -32,7 +29,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 class MovieInfoFragment : BaseMovieListFragment() {
 
     var BASE_URL = "https://kinopoiskapiunofficial.tech/api/v2.2/"
-    private val repository = Repository(MoviesCacheFavorites, Movies, MovieNetDataSource(
+    private val repository = Repository(MoviesCacheFavorites, MovieNetDataSource(
         RetrofitFactory.getRetrofitInstance(BASE_URL).create(MovieService::class.java)))
     private val baseInteractor = BaseInteractor(repository)
     private lateinit var sharedMovieViewModel : SharedMovieViewModel
@@ -111,7 +108,11 @@ class MovieInfoFragment : BaseMovieListFragment() {
     private fun setMovie(movie: UiMovie) {
         movieName.title = movie.name
         movieDescr.text = movie.description
-        movie.poster.let { moviePoster.setImageResource(it) }
+//        movie.posterPath.let { moviePoster.setImageResource(it) }
+        Glide.with(requireActivity().applicationContext)
+            .load(movie.posterPath)
+            .placeholder(R.drawable.baseline_update_24)
+            .into(moviePoster)
         setFavourites(movie)
     }
 

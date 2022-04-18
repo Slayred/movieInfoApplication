@@ -1,4 +1,4 @@
-package com.chibisov.movieinfoapplication.adapter.itemDecoration
+package com.chibisov.movieinfoapplication.presentation.adapter.itemDecoration
 
 import android.graphics.Canvas
 import android.graphics.Rect

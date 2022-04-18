@@ -141,14 +141,16 @@ data class KinopoiskMovieInfoResponse(
     val ratingFilmCriticsVoteCount: Int? = null
 ) : Parcelable {
 
-    fun toUiMovie() = UiMovie(
+    fun toUiMovie() = this.posterUrlPreview?.let {
+        UiMovie(
         this.kinopoiskId,
         this.nameRu,
         this.description,
-        R.drawable.ic_fight_club_foreground,
+            it,
         status = false,
         checked = false
     )
+    }
 }
 
 

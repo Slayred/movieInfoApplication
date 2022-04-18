@@ -1,8 +1,7 @@
-package com.chibisov.movieinfoapplication.adapter.util
+package com.chibisov.movieinfoapplication.presentation.adapter.util
 
 import android.util.Log
 import androidx.recyclerview.widget.DiffUtil
-import com.chibisov.movieinfoapplication.data.models.Movie
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 
 class MovieDiffUtil(
@@ -28,7 +27,7 @@ class MovieDiffUtil(
         return oldList[oldItemPosition].id == newList[newItemPosition].id
                 && oldList[oldItemPosition].description == newList[newItemPosition].description
                 && oldList[oldItemPosition].name == newList[newItemPosition].name
-                && oldList[oldItemPosition].poster == newList[newItemPosition].poster
+                && oldList[oldItemPosition].posterPath == newList[newItemPosition].posterPath
                 && oldList[oldItemPosition].status == newList[newItemPosition].status
     }
 }

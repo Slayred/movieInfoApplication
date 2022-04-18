@@ -24,7 +24,7 @@ class MovieListViewModel(
     }
 
     override fun showList() {
-        communication.showUiMovieList(interactor.showUIList())
+//        communication.showUiMovieList(interactor.showUIList())
     }
 
     fun showNetList() {

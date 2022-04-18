@@ -7,8 +7,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.chibisov.movieinfoapplication.adapter.itemDecoration.CustomHorizontalItemDecoration
-import com.chibisov.movieinfoapplication.adapter.itemDecoration.CustomVerticalItemDecoration
+import com.chibisov.movieinfoapplication.presentation.adapter.itemDecoration.CustomHorizontalItemDecoration
+import com.chibisov.movieinfoapplication.presentation.adapter.itemDecoration.CustomVerticalItemDecoration
 
 abstract class BaseMovieListFragment : Fragment() {
 
@@ -32,4 +32,6 @@ abstract class BaseMovieListFragment : Fragment() {
             GridLayoutManager(activity, 2)
         }
     }
+
+
 }
