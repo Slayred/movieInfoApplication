@@ -1,6 +1,5 @@
 package com.chibisov.movieinfoapplication.data
 
-import com.chibisov.movieinfoapplication.core.CallbackData
 import com.chibisov.movieinfoapplication.data.models.KinopoiskMovieResponse
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 import com.chibisov.movieinfoapplication.data.net.MovieService
@@ -21,13 +20,13 @@ class MovieNetDataSource(private val service: MovieService) {
                 response: Response<KinopoiskMovieResponse>
             ) {
                 if (response.isSuccessful) {
-                    val k = mutableListOf<UiMovie>()
+                    val listOfMovies = mutableListOf<UiMovie>()
                     response.body()?.films?.forEach {
                         if (it != null) {
-                            it.toUiMovie()?.let { it1 -> k.add(it1) }
+                            it.toUiMovie()?.let { it1 -> listOfMovies.add(it1) }
                         }
                     }
-                    callbackList.provideData(k as ArrayList<UiMovie>)
+                    callbackList.provideData(listOfMovies as ArrayList<UiMovie>)
                 }
             }
 

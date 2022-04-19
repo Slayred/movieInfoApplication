@@ -3,6 +3,10 @@ package com.chibisov.movieinfoapplication.domain
 import com.chibisov.movieinfoapplication.data.Repository
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 import com.chibisov.movieinfoapplication.core.CallbackDataList
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 
 class BaseInteractor(private val repository: Repository) {
 
@@ -13,6 +17,8 @@ class BaseInteractor(private val repository: Repository) {
         } else {
             repository.addFavorites(movie)
         }
+
+//        repository.addFavorites(movie)
     }
 
     fun showNetList(callbackDataList: CallbackDataList) {
@@ -23,12 +29,12 @@ class BaseInteractor(private val repository: Repository) {
 //        return repository.showMovies()
 //    }
 
-    fun showFavorites(): ArrayList<UiMovie> {
+    fun showFavorites(): List<UiMovie> {
         return repository.showFavorites()
     }
 
     fun addCheckedItem(movie: UiMovie) {
-        repository.addCheckedItem(movie)
+//        repository.addCheckedItem(movie)
     }
 
 }

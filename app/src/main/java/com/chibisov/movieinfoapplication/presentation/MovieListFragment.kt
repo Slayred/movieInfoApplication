@@ -102,13 +102,13 @@ class MovieListFragment : BaseMovieListFragment() {
         recyclerView.layoutManager = setAdapter(divider!!, recyclerView, resources)
         (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
-        listViewModel.showNetList()
+        listViewModel.showList()
 
         listViewModel.observe(this ){
             adapter.updateDataFromAdapter()
         }
         swipeRefreshLayout.setOnRefreshListener{
-            listViewModel.showNetList()
+            listViewModel.showList()
             swipeRefreshLayout.isRefreshing = false
         }
 

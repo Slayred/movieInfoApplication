@@ -16,21 +16,21 @@ class Communication : Observable {
 
     private lateinit var diffResult: DiffUtil.DiffResult
 
-    private var listOfMoviesLiveData = MutableLiveData<ArrayList<UiMovie>>()
+    private var listOfMoviesLiveData = MutableLiveData<List<UiMovie>>()
 
     fun observe(owner: LifecycleOwner, observer: androidx.lifecycle.Observer<List<UiMovie>> ) {
         listOfMoviesLiveData.observe(owner, observer)
     }
 
-    fun getUIMoviesList(): ArrayList<UiMovie> {
-        return listOfMoviesLiveData.value?: arrayListOf()
+    fun getUIMoviesList(): List<UiMovie> {
+        return listOfMoviesLiveData.value?: emptyList()
     }
 
-    private fun setUIMoviesList(list: ArrayList<UiMovie>) {
+    private fun setUIMoviesList(list: List<UiMovie>) {
         listOfMoviesLiveData.value = list
     }
 
-    fun showUiMovieList(list: ArrayList<UiMovie>) {
+    fun showUiMovieList(list: List<UiMovie>) {
         val callback = MovieDiffUtil(getUIMoviesList(), list)
         diffResult = DiffUtil.calculateDiff(callback)
         setUIMoviesList(list)

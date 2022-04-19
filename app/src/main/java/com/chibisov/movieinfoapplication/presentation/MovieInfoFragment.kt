@@ -29,9 +29,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 class MovieInfoFragment : BaseMovieListFragment() {
 
     var BASE_URL = "https://kinopoiskapiunofficial.tech/api/v2.2/"
-    private val repository = Repository(MoviesCacheFavorites, MovieNetDataSource(
-        RetrofitFactory.getRetrofitInstance(BASE_URL).create(MovieService::class.java)))
-    private val baseInteractor = BaseInteractor(repository)
+//    private val repository = Repository(MoviesCacheFavorites, MovieNetDataSource(
+//        RetrofitFactory.getRetrofitInstance(BASE_URL).create(MovieService::class.java)))
+//    private val baseInteractor = BaseInteractor(repository)
     private lateinit var sharedMovieViewModel : SharedMovieViewModel
 
     private lateinit var movieFavourites: FloatingActionButton
@@ -84,7 +84,7 @@ class MovieInfoFragment : BaseMovieListFragment() {
 
         movieFavourites.setOnClickListener {
             movie!!.status = !movie!!.status
-            baseInteractor.changeStatus(movie!!)
+//            baseInteractor.changeStatus(movie!!)
             setFavourites(movie!!)
         }
 
@@ -108,7 +108,6 @@ class MovieInfoFragment : BaseMovieListFragment() {
     private fun setMovie(movie: UiMovie) {
         movieName.title = movie.name
         movieDescr.text = movie.description
-//        movie.posterPath.let { moviePoster.setImageResource(it) }
         Glide.with(requireActivity().applicationContext)
             .load(movie.posterPath)
             .placeholder(R.drawable.baseline_update_24)

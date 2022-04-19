@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 
 class MovieDiffUtil(
-    private val oldList: ArrayList<UiMovie>, private val newList: ArrayList<UiMovie>
+    private val oldList: List<UiMovie>, private val newList: List<UiMovie>
 ) : DiffUtil.Callback() {
 
     override fun getOldListSize() = oldList.size
