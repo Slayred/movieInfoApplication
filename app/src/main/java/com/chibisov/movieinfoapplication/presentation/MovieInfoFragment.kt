@@ -10,18 +10,14 @@ import androidx.activity.addCallback
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import com.bumptech.glide.Glide
 import com.chibisov.movieinfoapplication.MovieInfoApp
 import com.chibisov.movieinfoapplication.R
 import com.chibisov.movieinfoapplication.core.Const
-import com.chibisov.movieinfoapplication.data.MovieNetDataSource
-import com.chibisov.movieinfoapplication.data.MoviesCacheFavorites
-import com.chibisov.movieinfoapplication.data.Repository
 import com.chibisov.movieinfoapplication.data.models.UiMovie
-import com.chibisov.movieinfoapplication.data.net.MovieService
-import com.chibisov.movieinfoapplication.data.retrofit.RetrofitFactory
-import com.chibisov.movieinfoapplication.domain.BaseInteractor
+
 import com.chibisov.movieinfoapplication.domain.StateMovie
 import com.chibisov.movieinfoapplication.viewmodels.SharedMovieViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -29,9 +25,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 class MovieInfoFragment : Fragment() {
 
     var BASE_URL = "https://kinopoiskapiunofficial.tech/api/v2.2/"
-//    private val repository = Repository(MoviesCacheFavorites, MovieNetDataSource(
-//        RetrofitFactory.getRetrofitInstance(BASE_URL).create(MovieService::class.java)))
-//    private val baseInteractor = BaseInteractor(repository)
     private lateinit var sharedMovieViewModel : SharedMovieViewModel
 
     private lateinit var movieFavourites: FloatingActionButton

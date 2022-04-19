@@ -87,7 +87,6 @@ class MovieListFavoritesFragment : BaseMovieListFragment(){
     private fun showDetails(movie: UiMovie) {
         favoriteMovieListViewModel.addCheckedItem(movie)
         val fragment = MovieInfoFragment()
-        baseInteractor.addCheckedItem(movie)
         parentFragmentManager.setFragmentResult(
             Const.MOVIE,
             bundleOf(Const.BUNDLE to movie)

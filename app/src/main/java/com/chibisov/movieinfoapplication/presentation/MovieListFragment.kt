@@ -121,7 +121,6 @@ class MovieListFragment : BaseMovieListFragment() {
         listViewModel.addCheckedItem(movie)
         sharedMovieViewModel.setMovieID(movie.id)
         val fragment = MovieInfoFragment()
-        baseInteractor.addCheckedItem(movie)
         parentFragmentManager.setFragmentResult(
             Const.MOVIE,
             bundleOf(Const.BUNDLE to movie)
