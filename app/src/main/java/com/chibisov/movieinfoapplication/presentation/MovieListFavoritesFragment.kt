@@ -52,7 +52,6 @@ class MovieListFavoritesFragment : BaseMovieListFragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fragment = MovieInfoFragment()
         recyclerView = view.findViewById(R.id.movieRVFavor)
         adapter = MovieAdapter(MovieType.Favorite, object : MovieAdapter.FavoriteClickListener {
             override fun change(movie: UiMovie) {
@@ -87,6 +86,8 @@ class MovieListFavoritesFragment : BaseMovieListFragment(){
 
     private fun showDetails(movie: UiMovie) {
         favoriteMovieListViewModel.addCheckedItem(movie)
+        val fragment = MovieInfoFragment()
+        baseInteractor.addCheckedItem(movie)
         parentFragmentManager.setFragmentResult(
             Const.MOVIE,
             bundleOf(Const.BUNDLE to movie)

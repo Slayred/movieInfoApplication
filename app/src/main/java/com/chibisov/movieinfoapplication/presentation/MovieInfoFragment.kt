@@ -26,7 +26,7 @@ import com.chibisov.movieinfoapplication.domain.StateMovie
 import com.chibisov.movieinfoapplication.viewmodels.SharedMovieViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class MovieInfoFragment : BaseMovieListFragment() {
+class MovieInfoFragment : Fragment() {
 
     var BASE_URL = "https://kinopoiskapiunofficial.tech/api/v2.2/"
 //    private val repository = Repository(MoviesCacheFavorites, MovieNetDataSource(

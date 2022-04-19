@@ -10,8 +10,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomeFragment : Fragment() {
 
-    private lateinit var movieListFragment: BaseMovieListFragment
-    private lateinit var movieListFavoritesFragment: Fragment
     private lateinit var bottomBar: BottomNavigationView
 
     override fun onCreateView(
@@ -26,14 +24,17 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bottomBar = view.findViewById(R.id.btm_nav)
-        movieListFragment = MovieListFragment()
-        movieListFavoritesFragment = MovieListFavoritesFragment()
-        replaceFragment(movieListFragment)
+        replaceFragment(MovieListFragment())
 
         bottomBar.setOnItemSelectedListener {
+            val fragment = this.parentFragmentManager.findFragmentById(R.id.home_fragment_container)
             when (it.itemId) {
-                R.id.ic_movie_list -> replaceFragment(movieListFragment)
-                R.id.ic_favorites -> replaceFragment(movieListFavoritesFragment)
+                R.id.ic_movie_list -> if (fragment !is MovieListFragment) replaceFragment(
+                    MovieListFragment()
+                )
+                R.id.ic_favorites -> if (fragment !is MovieListFavoritesFragment) replaceFragment(
+                    MovieListFavoritesFragment()
+                )
             }
             true
         }
