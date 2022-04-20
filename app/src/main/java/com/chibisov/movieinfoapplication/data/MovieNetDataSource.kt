@@ -37,6 +37,7 @@ class MovieNetDataSource(private val service: MovieService) {
         })
     }
 
+    fun getMovieListRX() = service.getTopFilmsRX()
 
     fun showStateMovieInfo(callbackStateMovie: CallbackStateMovie, id: Int) {
         service.getMovieIno(id).enqueue(object : Callback<KinopoiskMovieInfoResponse>{

@@ -24,9 +24,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MovieInfoFragment : Fragment() {
 
-    var BASE_URL = "https://kinopoiskapiunofficial.tech/api/v2.2/"
     private lateinit var sharedMovieViewModel : SharedMovieViewModel
-
     private lateinit var movieFavourites: FloatingActionButton
     private lateinit var movieDescr: TextView
     private lateinit var movieName: androidx.appcompat.widget.Toolbar
@@ -77,7 +75,6 @@ class MovieInfoFragment : Fragment() {
 
         movieFavourites.setOnClickListener {
             movie!!.status = !movie!!.status
-//            baseInteractor.changeStatus(movie!!)
             setFavourites(movie!!)
         }
 

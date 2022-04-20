@@ -1,7 +1,6 @@
 package com.chibisov.movieinfoapplication.data.models
 
 import android.os.Parcelable
-import com.chibisov.movieinfoapplication.R
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
@@ -9,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 data class KinopoiskMovieResponse(
 
     @field:SerializedName("films")
-    val films: List<FilmsShortItem?>? = null,
+    val films: List<FilmsShortItem>,
 
     @field:SerializedName("pagesCount")
     val pagesCount: Int? = null
@@ -46,7 +45,7 @@ data class FilmsShortItem(
     val rating: String? = null,
 
     @field:SerializedName("posterUrlPreview")
-    val posterUrlPreview: String? = null,
+    val posterUrlPreview: String,
 
     @field:SerializedName("nameEn")
     val nameEn: String? = null,
@@ -55,16 +54,14 @@ data class FilmsShortItem(
     val countries: List<CountriesItem?>? = null
 ) : Parcelable {
 
-    fun toUiMovie() = this.posterUrlPreview?.let {
-        UiMovie(
+    fun toUiMovie() = UiMovie(
         this.filmId,
         this.nameRu,
         "desct",
-            it,
+        this.posterUrlPreview,
         status = false,
         checked = false
     )
-    }
 }
 
 @Parcelize

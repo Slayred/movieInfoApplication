@@ -1,6 +1,7 @@
 package com.chibisov.movieinfoapplication.data
 
 
+import androidx.lifecycle.LiveData
 import com.chibisov.movieinfoapplication.data.local.dao.MovieInfoDao
 import com.chibisov.movieinfoapplication.data.local.dao.MovieListDao
 import com.chibisov.movieinfoapplication.data.local.entity.MovieInfoEntity
@@ -24,6 +25,7 @@ private val movieInfoDao: MovieInfoDao) {
         return movieListDao.getMoviesList()
     }
 
+
     fun searchItem(movieListEntity: MovieListEntity): MovieListEntity? {
         return  movieListDao.searchItem(movieListEntity.kinopoikId)
     }
@@ -31,12 +33,6 @@ private val movieInfoDao: MovieInfoDao) {
 
     fun insertMovieItems(movieListEntity: MovieListEntity) {
         movieListDao.insertMovie(movieListEntity.copy(status = true))
-//        compositeDisposable.add(Observable.fromCallable { movieListDao.insertMovie(movieListEntity) }
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe()
-//        )
-//        compositeDisposable.dispose()
     }
 
     fun insertMovieInfo(movieInfoEntity: MovieInfoEntity) = movieInfoDao.insertMovieInfo(movieInfoEntity)

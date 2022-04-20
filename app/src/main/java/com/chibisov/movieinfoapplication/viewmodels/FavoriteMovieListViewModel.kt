@@ -1,6 +1,7 @@
 package com.chibisov.movieinfoapplication.viewmodels
 
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.chibisov.movieinfoapplication.data.models.UiMovie
@@ -17,6 +18,7 @@ class FavoriteMovieListViewModel(
 ): BaseViewModel, ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
+
 
     override fun observe(owner: LifecycleOwner, observer: Observer<List<UiMovie>>) {
         communication.observe(owner, observer)
@@ -46,8 +48,12 @@ class FavoriteMovieListViewModel(
         )
     }
 
+
+
     override fun addCheckedItem(movie: UiMovie) {
         interactor.addCheckedItem(movie)
         showList()
     }
+
+
 }

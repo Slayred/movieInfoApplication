@@ -4,6 +4,7 @@ import okhttp3.OkHttpClient
 import okhttp3.internal.addHeaderLenient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.security.SecureRandom
 import javax.net.ssl.HostnameVerifier
@@ -26,6 +27,7 @@ class RetrofitFactory {
             return Retrofit.Builder()
                 .baseUrl(url)
                 .client(getOkHttpInstance())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())//rxAdapterFactory
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         }

@@ -1,7 +1,6 @@
 package com.chibisov.movieinfoapplication.data.local.dao
 
 import androidx.room.*
-import com.chibisov.movieinfoapplication.data.local.entity.MovieInfoEntity
 import com.chibisov.movieinfoapplication.data.local.entity.MovieListEntity
 
 
@@ -10,6 +9,7 @@ interface MovieListDao {
 
     @Query("SELECT * FROM MOVIE_LIST")
     fun getMoviesList(): List<MovieListEntity>
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertMovie(entity: MovieListEntity)
