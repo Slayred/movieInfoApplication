@@ -3,9 +3,11 @@ package com.chibisov.movieinfoapplication
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.chibisov.movieinfoapplication.presentation.HomeFragment
 import com.google.android.material.snackbar.Snackbar
+import org.w3c.dom.Text
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,5 +24,8 @@ class MainActivity : AppCompatActivity() {
         transaction.commit()
     }
 
+    private fun showToast(text: String) {
+        Toast.makeText(this, text, Toast.LENGTH_LONG).show()
+    }
 }
 

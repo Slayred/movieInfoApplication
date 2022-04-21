@@ -31,8 +31,6 @@ class Communication {
         listOfMoviesLiveData.value = list
     }
 
-
-
     fun showUiMovieList(list: List<UiMovie>) {
         val callback = MovieDiffUtil(getUIMoviesList(), list)
         diffResult = DiffUtil.calculateDiff(callback)
@@ -42,7 +40,6 @@ class Communication {
     fun getDiffResult(): DiffUtil.DiffResult {
         return diffResult
     }
-
 
 
 }

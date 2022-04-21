@@ -107,6 +107,7 @@ class MovieListFragment : BaseMovieListFragment() {
         listViewModel.observe(this ){
             adapter.updateDataFromAdapter()
         }
+
         swipeRefreshLayout.setOnRefreshListener{
             listViewModel.showList()
             swipeRefreshLayout.isRefreshing = false

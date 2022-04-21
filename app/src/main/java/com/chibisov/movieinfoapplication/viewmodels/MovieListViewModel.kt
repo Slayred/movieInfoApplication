@@ -35,7 +35,6 @@ class MovieListViewModel(
 
     }
 
-
     override fun showList() {
         compositeDisposable.add(interactor.showNetListRx()
             .observeOn(AndroidSchedulers.mainThread())
