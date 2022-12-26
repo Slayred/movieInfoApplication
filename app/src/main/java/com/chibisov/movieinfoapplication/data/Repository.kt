@@ -2,10 +2,12 @@ package com.chibisov.movieinfoapplication.data
 
 import com.chibisov.movieinfoapplication.core.CallbackDataList
 import com.chibisov.movieinfoapplication.core.CallbackStateMovie
+import com.chibisov.movieinfoapplication.core.Error
 import com.chibisov.movieinfoapplication.data.converter.MovieInfoConverter
 import com.chibisov.movieinfoapplication.data.converter.MovieListConverter
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 import io.reactivex.Observable
+import java.net.UnknownHostException
 
 class Repository(
     private val movieCacheDataSource: MovieCacheDataSource,
@@ -25,6 +27,21 @@ class Repository(
         }
     }
 
+//    fun getNetListRx(): Observable<List<UiMovie>> {
+//        val movieList = try {
+//            movieNetDataSource.getMovieListRX()
+//        } catch (e: Throwable) {
+//            throw when (e) {
+//                is UnknownHostException -> Error.NoConnection
+//                else -> e
+//            }
+//        }
+//        return movieList.map { kinopoiskMovieResponse ->
+//            kinopoiskMovieResponse.films.map {
+//                it.toUiMovie()
+//            }
+//        }
+//    }
 
     fun getStateMovieInfo(callbackStateMovie: CallbackStateMovie, id: Int) {
         movieNetDataSource.showStateMovieInfo(callbackStateMovie, id)

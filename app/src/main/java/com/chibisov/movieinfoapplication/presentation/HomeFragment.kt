@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.replace
 import com.chibisov.movieinfoapplication.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -27,7 +28,7 @@ class HomeFragment : Fragment() {
         replaceFragment(MovieListFragment())
 
         bottomBar.setOnItemSelectedListener {
-            val fragment = this.parentFragmentManager.findFragmentById(R.id.home_fragment_container)
+            val fragment = childFragmentManager.findFragmentById(R.id.home_fragment_container)
             when (it.itemId) {
                 R.id.ic_movie_list -> if (fragment !is MovieListFragment) replaceFragment(
                     MovieListFragment()
@@ -42,10 +43,9 @@ class HomeFragment : Fragment() {
 
 
     private fun replaceFragment(fragment: Fragment) {
-//        val transaction = parentFragmentManager.beginTransaction()
-        val transaction = childFragmentManager.beginTransaction()
-        transaction.replace(R.id.home_fragment_container, fragment)
-        transaction.addToBackStack(null)
+        val transaction = parentFragmentManager.beginTransaction()
+        transaction.replace(R.id.home_fragment_container, fragment,fragment.javaClass.name)
+        transaction.addToBackStack(fragment.javaClass.name)
         transaction.commit()
 
     }

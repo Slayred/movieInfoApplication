@@ -7,9 +7,16 @@ import com.chibisov.movieinfoapplication.core.CallbackDataList
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import java.lang.Exception
 
 class BaseInteractor(private val repository: Repository) {
+
+    sealed class Result {
+        data class Success(val movieList:  Observable<List<UiMovie>>): Result()
+        data class Error(val e: Throwable): Result()
+    }
 
 
     fun changeStatus(movie: UiMovie) {
@@ -25,7 +32,17 @@ class BaseInteractor(private val repository: Repository) {
         repository.getNetList(callbackDataList)
     }
 
-    fun showNetListRx() = repository.getNetListRx()
+    fun showNetListRx(): Result = try {
+        repository.getNetListRx().let {
+            Result.Success(it)
+        }
+    } catch (e: Exception){
+        Result.Error(e)
+    }
+
+    fun showNetListRX(): Observable<List<UiMovie>> {
+        return repository.getNetListRx()
+    }
 
 
 

@@ -132,7 +132,6 @@ class MovieListFragment : BaseMovieListFragment() {
         val transaction = parentFragmentManager.beginTransaction()
         //Пытаемся поменять фрагмент для бэкстека
         transaction.replace(R.id.home_fragment_container, fragment)
-//        transaction.replace(R.id.main_fragment_container, fragment)
         transaction.addToBackStack(fragment.javaClass.name)
         transaction.commit()
     }

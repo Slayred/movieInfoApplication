@@ -28,7 +28,7 @@ class MovieInfoApp : Application() {
     private lateinit var movieRepository: Repository
     private lateinit var movieInteractor: BaseInteractor
     private lateinit var movieNetDataSource: MovieNetDataSource
-    var BASE_URL = "https://kinopoiskapiunofficial.tech/api/v2.2/"
+    private var BASE_URL = "https://kinopoiskapiunofficial.tech/api/v2.2/"
 
     private lateinit var movieCacheDataSource: MovieCacheDataSource
     private lateinit var movieListDao: MovieListDao

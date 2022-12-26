@@ -13,12 +13,12 @@ import retrofit2.http.Path
 interface MovieService {
 
     @Headers("X-API-KEY:295873e7-0cb4-4fb5-84ff-0c1fb88fc7fd")
-    @GET("films/top?page=2")
+    @GET("films/top?page=1")
     fun getTopFilms(): Call<KinopoiskMovieResponse>
 
 
     @Headers("X-API-KEY:295873e7-0cb4-4fb5-84ff-0c1fb88fc7fd")
-    @GET("films/top?page=2")
+    @GET("films/top?page=1")
     fun getTopFilmsRX(): Observable<KinopoiskMovieResponse>
 
 

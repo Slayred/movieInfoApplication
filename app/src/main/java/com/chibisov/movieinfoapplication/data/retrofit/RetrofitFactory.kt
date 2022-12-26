@@ -1,5 +1,6 @@
 package com.chibisov.movieinfoapplication.data.retrofit
 
+import android.annotation.SuppressLint
 import okhttp3.OkHttpClient
 import okhttp3.internal.addHeaderLenient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -18,7 +19,7 @@ class RetrofitFactory {
         private fun getOkHttpInstance(): OkHttpClient {
             val logging = HttpLoggingInterceptor()
             logging.level = HttpLoggingInterceptor.Level.BASIC
-            return OkHttpClient().newBuilder().ignoreAllSSLErrors()
+            return OkHttpClient().newBuilder()//.ignoreAllSSLErrors()
                 .addInterceptor(logging)
                 .build()
         }
@@ -33,7 +34,8 @@ class RetrofitFactory {
         }
 
         fun OkHttpClient.Builder.ignoreAllSSLErrors(): OkHttpClient.Builder {
-            val naiveTrustManager = object : X509TrustManager {
+            val naiveTrustManager =
+            object : X509TrustManager {
                 override fun checkClientTrusted(chain: Array<out java.security.cert.X509Certificate>?, authType: String?) = Unit
 
                 override fun checkServerTrusted(chain: Array<out java.security.cert.X509Certificate>?, authType: String?) = Unit

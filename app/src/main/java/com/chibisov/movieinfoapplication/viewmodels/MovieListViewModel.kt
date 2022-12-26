@@ -10,6 +10,8 @@ import com.chibisov.movieinfoapplication.domain.Communication
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.Disposables
 import io.reactivex.schedulers.Schedulers
 
 class MovieListViewModel(
@@ -36,17 +38,33 @@ class MovieListViewModel(
     }
 
     override fun showList() {
-        compositeDisposable.add(interactor.showNetListRx()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .subscribe({ result ->
-                communication.showUiMovieList(result)
-            }, {
-                Log.d("ERROR", "ERROR ${it.message}")
-            }, {
 
-            })
+    compositeDisposable.add(interactor.showNetListRX()
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe ({
+            result -> communication.showUiMovieList(result)
+        }, {
+            result -> Log.d("ERROR", "ERROR${result.message}")
+        }
         )
+
+    )
+
+
+//        compositeDisposable.add(interactor.showNetListRx()
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribeOn(Schedulers.io())
+//            .subscribe({ result ->
+//                communication.showUiMovieList(result)
+//            }, {
+//                Log.d("ERROR", "ERROR ${it.message}")
+//                response
+//            }, {
+//
+//            })
+//        )
+
 
     }
 
