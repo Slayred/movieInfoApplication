@@ -70,6 +70,17 @@ class MovieListFragment : BaseMovieListFragment() {
         return inflater.inflate(R.layout.fragment_movie_list, container, false)
     }
 
+//    override fun onBackPressed(): Boolean {
+//        val alertDialog = AlertDialog.Builder(requireContext())
+//        alertDialog.setTitle(resources.getText(R.string.exit))
+//        alertDialog.setMessage(resources.getText(R.string.exit_question))
+//        alertDialog.setPositiveButton(resources.getText(R.string.yes)) { _, _ ->
+//            requireActivity().finish()
+//        }
+//        alertDialog.setNegativeButton(resources.getText(R.string.no)) { _, _ -> }
+//        alertDialog.show()
+//        return super.onBackPressed()
+//    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -119,21 +130,26 @@ class MovieListFragment : BaseMovieListFragment() {
     }
 
     private fun showDetails(movie: UiMovie) {
-        listViewModel.addCheckedItem(movie)
         sharedMovieViewModel.setMovieID(movie.id)
-        val fragment = MovieInfoFragment()
-        parentFragmentManager.setFragmentResult(
-            Const.MOVIE,
-            bundleOf(Const.BUNDLE to movie)
-        )
-        val bundle = Bundle()
-        bundle.putParcelable(Const.MOVIE, movie)
-        fragment.arguments = bundle
-        val transaction = parentFragmentManager.beginTransaction()
-        //Пытаемся поменять фрагмент для бэкстека
-        transaction.replace(R.id.home_fragment_container, fragment)
-        transaction.addToBackStack(fragment.javaClass.name)
-        transaction.commit()
+       mainRouter().navigateToDetails(movie)
+
+//        listViewModel.addCheckedItem(movie)
+//        sharedMovieViewModel.setMovieID(movie.id)
+//        val fragment = MovieInfoFragment()
+//        parentFragmentManager.setFragmentResult(
+//            Const.MOVIE,
+//            bundleOf(Const.BUNDLE to movie)
+//        )
+//        val bundle = Bundle()
+//        bundle.putParcelable(Const.MOVIE, movie)
+//        fragment.arguments = bundle
+//        val transaction = parentFragmentManager.beginTransaction()
+//        //Пытаемся поменять фрагмент для бэкстека
+////        transaction.replace(R.id.home_fragment_container, fragment)
+//        transaction.replace(R.id.main_fragment_container, fragment)
+//        transaction.addToBackStack(fragment.javaClass.name)
+//        transaction.commit()
+
     }
 
     private fun share() {
@@ -143,5 +159,8 @@ class MovieListFragment : BaseMovieListFragment() {
         startActivity(Intent.createChooser(intent, getString(R.string.share_via)))
     }
 
+    companion object {
+        fun newInstance() = MovieListFragment()
+    }
 
 }

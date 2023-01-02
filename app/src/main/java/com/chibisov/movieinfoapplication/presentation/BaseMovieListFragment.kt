@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chibisov.movieinfoapplication.presentation.adapter.itemDecoration.CustomHorizontalItemDecoration
 import com.chibisov.movieinfoapplication.presentation.adapter.itemDecoration.CustomVerticalItemDecoration
 
-abstract class BaseMovieListFragment : Fragment() {
+abstract class BaseMovieListFragment : BaseFragment() {
 
     fun setAdapter(
         drawable: Drawable,

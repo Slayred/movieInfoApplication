@@ -87,6 +87,7 @@ class MovieListFavoritesFragment : BaseMovieListFragment(){
     private fun showDetails(movie: UiMovie) {
         favoriteMovieListViewModel.addCheckedItem(movie)
         val fragment = MovieInfoFragment()
+        //TODO add support fragment manager
         parentFragmentManager.setFragmentResult(
             Const.MOVIE,
             bundleOf(Const.BUNDLE to movie)
@@ -94,10 +95,17 @@ class MovieListFavoritesFragment : BaseMovieListFragment(){
         val bundle = Bundle()
         bundle.putParcelable(Const.MOVIE, movie)
         fragment.arguments = bundle
-        val transaction = parentFragmentManager.beginTransaction()
-        transaction.replace(R.id.home_fragment_container, fragment)
-        transaction.addToBackStack(fragment.javaClass.name)
-        transaction.commit()
-    }
+        val transaction = activity?.supportFragmentManager?.beginTransaction()
 
+        transaction?.replace(R.id.main_fragment_container, fragment)
+        //TODO after add to main, backstack pull to home fragment, not for previous
+//        val transaction = parentFragmentManager.beginTransaction()
+//        transaction.replace(R.id.home_fragment_container, fragment)
+        transaction?.addToBackStack(fragment.javaClass.name)
+        transaction?.commit()
+    }
+    companion object {
+
+        fun newInstance() = MovieListFavoritesFragment()
+    }
 }

@@ -22,7 +22,7 @@ import com.chibisov.movieinfoapplication.domain.StateMovie
 import com.chibisov.movieinfoapplication.viewmodels.SharedMovieViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class MovieInfoFragment : Fragment() {
+class MovieInfoFragment : BaseFragment() {
 
     private lateinit var sharedMovieViewModel : SharedMovieViewModel
     private lateinit var movieFavourites: FloatingActionButton
@@ -113,6 +113,15 @@ class MovieInfoFragment : Fragment() {
         return when (status) {
             true -> R.drawable.baseline_favorite_24
             false -> R.drawable.baseline_favorite_border_24
+        }
+    }
+
+    companion object {
+
+        fun newInstance(uiMovie: UiMovie)  = MovieInfoFragment().apply {
+            arguments = Bundle().apply {
+                putParcelable(Const.MOVIE, uiMovie)
+            }
         }
     }
 
