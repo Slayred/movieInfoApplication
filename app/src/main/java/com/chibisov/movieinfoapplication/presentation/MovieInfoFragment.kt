@@ -17,6 +17,7 @@ import com.chibisov.movieinfoapplication.MovieInfoApp
 import com.chibisov.movieinfoapplication.R
 import com.chibisov.movieinfoapplication.core.Const
 import com.chibisov.movieinfoapplication.data.models.UiMovie
+import com.chibisov.movieinfoapplication.databinding.FragmentMovieInfoCoordinatorBinding
 
 import com.chibisov.movieinfoapplication.domain.StateMovie
 import com.chibisov.movieinfoapplication.viewmodels.SharedMovieViewModel
@@ -25,14 +26,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 class MovieInfoFragment : BaseFragment() {
 
     private lateinit var sharedMovieViewModel : SharedMovieViewModel
-    private lateinit var movieFavourites: FloatingActionButton
-    private lateinit var movieDescr: TextView
-    private lateinit var movieName: androidx.appcompat.widget.Toolbar
-    private lateinit var moviePoster: ImageView
-    private lateinit var comment: EditText
-    private lateinit var progressBar: ProgressBar
-    private lateinit var coordinatorLayout: CoordinatorLayout
     private var movie: UiMovie? = null
+    private lateinit var binding: FragmentMovieInfoCoordinatorBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,7 +37,9 @@ class MovieInfoFragment : BaseFragment() {
         // Inflate the layout for this fragment
         movie = arguments?.getParcelable(Const.MOVIE)
         Log.d(this::javaClass.toString(), "OnCreateView")
-        return inflater.inflate(R.layout.fragment_movie_info_coordinator, container, false)
+        binding = FragmentMovieInfoCoordinatorBinding.inflate(inflater, container, false)
+        return binding.root
+//        return inflater.inflate(R.layout.fragment_movie_info_coordinator, container, false)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +48,8 @@ class MovieInfoFragment : BaseFragment() {
         requireActivity().onBackPressedDispatcher //custom CallBack for backPressed
             .addCallback(this) {
                 val movieBack = movie
-                val comment = comment.text.toString()
+//                val comment = comment.text.toString()
+                val comment = binding.included.nestedComment.text.toString()
                 setFragmentResult(
                     Const.BUNDLE,
                     bundleOf(Const.MOVIE to movieBack, Const.COMMENT to comment)
@@ -64,16 +62,20 @@ class MovieInfoFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(this::javaClass.toString(), "OnViewCreated")
-        coordinatorLayout = view.findViewById(R.id.included)
-        movieFavourites = view.findViewById(R.id.fab)
-        movieDescr = view.findViewById(R.id.nested_description)
-        movieName = view.findViewById(R.id.toolbar)
-        moviePoster = view.findViewById(R.id.main_backdrop)
-        comment = view.findViewById(R.id.nested_comment)
-        progressBar = view.findViewById(R.id.progress_bar)
+//        coordinatorLayout = view.findViewById(R.id.included)
+//        movieFavourites = view.findViewById(R.id.fab)
+//        movieDescr = view.findViewById(R.id.nested_description)
+//        movieName = view.findViewById(R.id.toolbar)
+//        moviePoster = view.findViewById(R.id.main_backdrop)
+//        comment = view.findViewById(R.id.nested_comment)
+//        progressBar = view.findViewById(R.id.progress_bar)
 
 
-        movieFavourites.setOnClickListener {
+//        movieFavourites.setOnClickListener {
+//            movie!!.status = !movie!!.status
+//            setFavourites(movie!!)
+//        }
+        binding.included.fab.setOnClickListener {
             movie!!.status = !movie!!.status
             setFavourites(movie!!)
         }
@@ -81,13 +83,15 @@ class MovieInfoFragment : BaseFragment() {
         sharedMovieViewModel.observeStateMovie(this) {
             when(it){
                 is StateMovie.Successful -> {
-                    progressBar.isVisible = false
-                    coordinatorLayout.isVisible = true
+//                    progressBar.isVisible = false
+                    binding.progressBar.isVisible = false
+//                    coordinatorLayout.isVisible = true
+                    binding.included.coordinatorMovieInfo.isVisible = true
                     setMovie(it.uiMovie)
                 }
                 is StateMovie.Progress -> {
-                    coordinatorLayout.isVisible = false
-                    progressBar.isVisible = true
+                    binding.included.coordinatorMovieInfo.isVisible = false
+                    binding.progressBar.isVisible = true
                 }
             }
         }
@@ -96,17 +100,21 @@ class MovieInfoFragment : BaseFragment() {
     }
 
     private fun setMovie(movie: UiMovie) {
-        movieName.title = movie.name
-        movieDescr.text = movie.description
+//        movieName.title = movie.name
+        binding.included.toolbar.title = movie.name
+//        movieDescr.text = movie.description
+        binding.included.nestedDescription.text = movie.description
         Glide.with(requireActivity().applicationContext)
             .load(movie.posterPath)
             .placeholder(R.drawable.baseline_update_24)
-            .into(moviePoster)
+//            .into(moviePoster)
+            .into(binding.included.mainBackdrop)
         setFavourites(movie)
     }
 
     private fun setFavourites(movie: UiMovie) {
-        movieFavourites.setImageResource(checkFavourites(movie.status))
+//        movieFavourites.setImageResource(checkFavourites(movie.status))
+        binding.included.fab.setImageResource(checkFavourites(movie.status))
     }
 
     private fun checkFavourites(status: Boolean): Int {
