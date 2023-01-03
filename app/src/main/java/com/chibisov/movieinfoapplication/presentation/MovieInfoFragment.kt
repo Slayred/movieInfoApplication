@@ -39,23 +39,11 @@ class MovieInfoFragment : BaseFragment() {
         Log.d(this::javaClass.toString(), "OnCreateView")
         binding = FragmentMovieInfoCoordinatorBinding.inflate(inflater, container, false)
         return binding.root
-//        return inflater.inflate(R.layout.fragment_movie_info_coordinator, container, false)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(this::javaClass.toString(), "OnCreate")
         sharedMovieViewModel = (requireActivity().application as MovieInfoApp).sharedMovieViewModel
-        requireActivity().onBackPressedDispatcher //custom CallBack for backPressed
-            .addCallback(this) {
-                val movieBack = movie
-//                val comment = comment.text.toString()
-                val comment = binding.included.nestedComment.text.toString()
-                setFragmentResult(
-                    Const.BUNDLE,
-                    bundleOf(Const.MOVIE to movieBack, Const.COMMENT to comment)
-                )
-                parentFragmentManager.popBackStack()
-            }
         super.onCreate(savedInstanceState)
     }
 
@@ -67,7 +55,7 @@ class MovieInfoFragment : BaseFragment() {
             setFavourites(movie!!)
         }
 
-        sharedMovieViewModel.observeStateMovie(this) {
+        sharedMovieViewModel.observeStateMovieRx(this) {
             when(it){
                 is StateMovie.Successful -> {
                     binding.progressBar.isVisible = false
@@ -78,9 +66,14 @@ class MovieInfoFragment : BaseFragment() {
                     binding.included.coordinatorMovieInfo.isVisible = false
                     binding.progressBar.isVisible = true
                 }
+                is StateMovie.Fail -> {
+                    showToast(it.e)
+                }
             }
         }
-        sharedMovieViewModel.showStateMovieInfo()
+
+
+        sharedMovieViewModel.shoMovieInfoRx(movie!!.id)
 
     }
 
@@ -90,7 +83,6 @@ class MovieInfoFragment : BaseFragment() {
         Glide.with(requireActivity().applicationContext)
             .load(movie.posterPath)
             .placeholder(R.drawable.baseline_update_24)
-//            .into(moviePoster)
             .into(binding.included.mainBackdrop)
         setFavourites(movie)
     }

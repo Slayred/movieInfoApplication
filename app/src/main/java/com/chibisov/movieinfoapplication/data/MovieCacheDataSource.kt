@@ -7,6 +7,7 @@ import com.chibisov.movieinfoapplication.data.local.dao.MovieListDao
 import com.chibisov.movieinfoapplication.data.local.entity.MovieInfoEntity
 import com.chibisov.movieinfoapplication.data.local.entity.MovieListEntity
 import com.chibisov.movieinfoapplication.data.models.UiMovie
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -41,6 +42,10 @@ private val movieInfoDao: MovieInfoDao) {
 
     fun deleteFavItem(movieListEntity: MovieListEntity) {
         movieListDao.delete(movieListEntity)
+    }
+
+    fun getMovieInfo(id: Int): Flowable<MovieInfoEntity> {
+        return movieInfoDao.getMovieInfo(id)
     }
 
 }

@@ -1,11 +1,10 @@
 package com.chibisov.movieinfoapplication.viewmodels
 
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.chibisov.movieinfoapplication.data.models.UiMovie
-import com.chibisov.movieinfoapplication.domain.BaseInteractor
+import com.chibisov.movieinfoapplication.domain.interactor.BaseInteractor
 import com.chibisov.movieinfoapplication.domain.Communication
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers

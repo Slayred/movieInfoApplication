@@ -2,14 +2,10 @@ package com.chibisov.movieinfoapplication.domain
 
 
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import com.chibisov.movieinfoapplication.presentation.adapter.util.MovieDiffUtil
-import com.chibisov.movieinfoapplication.core.Observable
-import com.chibisov.movieinfoapplication.core.Observer
 import com.chibisov.movieinfoapplication.data.models.UiMovie
-import kotlin.collections.ArrayList
 
 class Communication {
 

@@ -19,13 +19,8 @@ class MainActivity : AppCompatActivity(), MainRouter {
         navigateToHomeFragment()
     }
 
-    private fun replaceFragment(fragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.add(R.id.main_fragment_container, fragment)
-        transaction.commit()
-    }
 
-    private fun showToast(text: String) {
+    fun showToast(text: String) {
         Toast.makeText(this, text, Toast.LENGTH_LONG).show()
     }
 

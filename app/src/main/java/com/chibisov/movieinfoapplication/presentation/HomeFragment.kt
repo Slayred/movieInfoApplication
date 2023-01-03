@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.replace
 import androidx.lifecycle.ViewModelProvider
 import com.chibisov.movieinfoapplication.R
 import com.chibisov.movieinfoapplication.viewmodels.HomeViewModel
@@ -17,7 +16,6 @@ class HomeFragment : BaseFragment() {
 
     private lateinit var bottomBar: BottomNavigationView
     private lateinit var activeFragmentTag: String
-//    private lateinit var currentFragment: Fragment
     private lateinit var homeViewModel: HomeViewModel
 
     override fun onCreateView(
@@ -51,20 +49,18 @@ class HomeFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         bottomBar = view.findViewById(R.id.btm_nav)
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-
         if (homeViewModel.currentName.value == null) {
-            replaceFragment(MovieListFragment())
+            replaceFragment(Screens.Home.MovieListFragment().value)
         }
         Log.d("BACKSTACK", "CURRENT CHILDBACKSTACK IS ${childFragmentManager.fragments}")
-
         bottomBar.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.ic_movie_list -> {
-                    replaceFragment(MovieListFragment())
+                    replaceFragment(Screens.Home.MovieListFragment().value)
                     it.isChecked = true
                 }
                 R.id.ic_favorites ->  {
-                    replaceFragment(MovieListFavoritesFragment())
+                    replaceFragment(Screens.Home.MovieListFavoritesFragment().value)
                     it.isChecked = true
                 }
             }
@@ -109,14 +105,12 @@ class HomeFragment : BaseFragment() {
         } else {
             transaction.add(R.id.home_fragment_container, fragment, activeFragmentTag)
         }
-
         Log.d("BACKSTACK", "CURRENT BACKSTACKENTITY IS ${childFragmentManager.backStackEntryCount}")
         transaction.commit()
-        homeViewModel.currentName.value = fragment
+        homeViewModel.currentName.value = activeFragmentTag
     }
 
     companion object {
-
         fun newInstance() = HomeFragment()
     }
 }
