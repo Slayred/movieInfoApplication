@@ -51,21 +51,6 @@ class MovieListViewModel(
 
     )
 
-
-//        compositeDisposable.add(interactor.showNetListRx()
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribeOn(Schedulers.io())
-//            .subscribe({ result ->
-//                communication.showUiMovieList(result)
-//            }, {
-//                Log.d("ERROR", "ERROR ${it.message}")
-//                response
-//            }, {
-//
-//            })
-//        )
-
-
     }
 
 

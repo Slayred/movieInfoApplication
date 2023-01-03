@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.chibisov.movieinfoapplication.MovieInfoApp
 import com.chibisov.movieinfoapplication.R
@@ -16,6 +17,7 @@ import com.chibisov.movieinfoapplication.core.Const
 import com.chibisov.movieinfoapplication.core.MovieType
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 import com.chibisov.movieinfoapplication.viewmodels.FavoriteMovieListViewModel
+import com.chibisov.movieinfoapplication.viewmodels.SharedMovieViewModel
 import com.google.android.material.snackbar.Snackbar
 
 class MovieListFavoritesFragment : BaseMovieListFragment(){
@@ -25,6 +27,7 @@ class MovieListFavoritesFragment : BaseMovieListFragment(){
     private lateinit var adapter: MovieAdapter
     private lateinit var fragment: BaseMovieListFragment
     private lateinit var favoriteMovieListViewModel: FavoriteMovieListViewModel
+    private lateinit var sharedMovieViewModel: SharedMovieViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,6 +55,7 @@ class MovieListFavoritesFragment : BaseMovieListFragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sharedMovieViewModel = (requireActivity().application as MovieInfoApp).sharedMovieViewModel
         recyclerView = view.findViewById(R.id.movieRVFavor)
         adapter = MovieAdapter(MovieType.Favorite, object : MovieAdapter.FavoriteClickListener {
             override fun change(movie: UiMovie) {
@@ -85,7 +89,9 @@ class MovieListFavoritesFragment : BaseMovieListFragment(){
     }
 
     private fun showDetails(movie: UiMovie) {
-        favoriteMovieListViewModel.addCheckedItem(movie)
+//        favoriteMovieListViewModel.addCheckedItem(movie)
+//        sharedMovieViewModel.setMovieID(movie.id)
+//        mainRouter().navigateToDetails(movie)
         val fragment = MovieInfoFragment()
         //TODO add support fragment manager
         parentFragmentManager.setFragmentResult(

@@ -20,6 +20,8 @@ import com.chibisov.movieinfoapplication.viewmodels.HomeViewModel
 import com.chibisov.movieinfoapplication.viewmodels.MovieListViewModel
 import com.chibisov.movieinfoapplication.viewmodels.SharedMovieViewModel
 
+
+
 class MovieInfoApp : Application() {
 
     lateinit var movieListViewModel: MovieListViewModel

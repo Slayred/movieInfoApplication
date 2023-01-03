@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity(), MainRouter {
             homeFragment -> supportFragmentManager.beginTransaction()
             .add(R.id.main_fragment_container, homeFragment, homeFragment::class.java.simpleName)
 //            .addToBackStack(homeFragment::class.java.simpleName)
-            .commitAllowingStateLoss()
+            .commit()
         }
     }
 

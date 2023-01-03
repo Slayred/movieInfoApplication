@@ -11,7 +11,7 @@ import com.chibisov.movieinfoapplication.data.local.entity.MovieListEntity
 
 @Database(
     entities = [MovieInfoEntity::class,
-        MovieListEntity::class], version = 3, exportSchema = true
+        MovieListEntity::class], version = 1, exportSchema = true
 )
 abstract class MovieInfoDataBase : RoomDatabase() {
 

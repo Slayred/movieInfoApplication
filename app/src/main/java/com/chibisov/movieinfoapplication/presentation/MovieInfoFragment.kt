@@ -62,19 +62,6 @@ class MovieInfoFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(this::javaClass.toString(), "OnViewCreated")
-//        coordinatorLayout = view.findViewById(R.id.included)
-//        movieFavourites = view.findViewById(R.id.fab)
-//        movieDescr = view.findViewById(R.id.nested_description)
-//        movieName = view.findViewById(R.id.toolbar)
-//        moviePoster = view.findViewById(R.id.main_backdrop)
-//        comment = view.findViewById(R.id.nested_comment)
-//        progressBar = view.findViewById(R.id.progress_bar)
-
-
-//        movieFavourites.setOnClickListener {
-//            movie!!.status = !movie!!.status
-//            setFavourites(movie!!)
-//        }
         binding.included.fab.setOnClickListener {
             movie!!.status = !movie!!.status
             setFavourites(movie!!)
@@ -83,9 +70,7 @@ class MovieInfoFragment : BaseFragment() {
         sharedMovieViewModel.observeStateMovie(this) {
             when(it){
                 is StateMovie.Successful -> {
-//                    progressBar.isVisible = false
                     binding.progressBar.isVisible = false
-//                    coordinatorLayout.isVisible = true
                     binding.included.coordinatorMovieInfo.isVisible = true
                     setMovie(it.uiMovie)
                 }
@@ -100,9 +85,7 @@ class MovieInfoFragment : BaseFragment() {
     }
 
     private fun setMovie(movie: UiMovie) {
-//        movieName.title = movie.name
         binding.included.toolbar.title = movie.name
-//        movieDescr.text = movie.description
         binding.included.nestedDescription.text = movie.description
         Glide.with(requireActivity().applicationContext)
             .load(movie.posterPath)
@@ -113,7 +96,6 @@ class MovieInfoFragment : BaseFragment() {
     }
 
     private fun setFavourites(movie: UiMovie) {
-//        movieFavourites.setImageResource(checkFavourites(movie.status))
         binding.included.fab.setImageResource(checkFavourites(movie.status))
     }
 

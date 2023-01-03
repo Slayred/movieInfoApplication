@@ -8,15 +8,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.chibisov.movieinfoapplication.domain.Communication
+import com.chibisov.movieinfoapplication.presentation.MovieListFragment
 
 class HomeViewModel(): ViewModel() {
 
-    var currentFragment = Fragment()::class.java.simpleName
 
-    private val currentName: MutableLiveData<String> = MutableLiveData<String>(Fragment()::class.java.simpleName)
+    val currentName: MutableLiveData<Fragment> = MutableLiveData<Fragment>()
 
-    fun observe(owner: LifecycleOwner, observer: Observer<String>){
+    fun observe(owner: LifecycleOwner, observer: Observer<Fragment>){
         currentName.observe(owner, observer)
+    }
+
+    init {
+        Log.d("BACKSTACK", "WIEWMODEL IS INIT")
+        currentName.postValue(MovieListFragment())
     }
 
     override fun onCleared() {

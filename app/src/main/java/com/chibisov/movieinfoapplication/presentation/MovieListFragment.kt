@@ -7,10 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.RecyclerView
@@ -54,33 +51,9 @@ class MovieListFragment : BaseMovieListFragment() {
         savedInstanceState: Bundle?
     ): View? {
         Log.d("BaseFragmentTag", "onCreateView()1 ${javaClass.simpleName}")
-        requireActivity().onBackPressedDispatcher //custom CallBack for backPressed
-            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    val alertDialog = AlertDialog.Builder(requireContext())
-                    alertDialog.setTitle(resources.getText(R.string.exit))
-                    alertDialog.setMessage(resources.getText(R.string.exit_question))
-                    alertDialog.setPositiveButton(resources.getText(R.string.yes)) { _, _ ->
-                        requireActivity().finish()
-                    }
-                    alertDialog.setNegativeButton(resources.getText(R.string.no)) { _, _ -> }
-                    alertDialog.show()
-                }
-            })
         return inflater.inflate(R.layout.fragment_movie_list, container, false)
     }
 
-//    override fun onBackPressed(): Boolean {
-//        val alertDialog = AlertDialog.Builder(requireContext())
-//        alertDialog.setTitle(resources.getText(R.string.exit))
-//        alertDialog.setMessage(resources.getText(R.string.exit_question))
-//        alertDialog.setPositiveButton(resources.getText(R.string.yes)) { _, _ ->
-//            requireActivity().finish()
-//        }
-//        alertDialog.setNegativeButton(resources.getText(R.string.no)) { _, _ -> }
-//        alertDialog.show()
-//        return super.onBackPressed()
-//    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -133,22 +106,6 @@ class MovieListFragment : BaseMovieListFragment() {
         sharedMovieViewModel.setMovieID(movie.id)
        mainRouter().navigateToDetails(movie)
 
-//        listViewModel.addCheckedItem(movie)
-//        sharedMovieViewModel.setMovieID(movie.id)
-//        val fragment = MovieInfoFragment()
-//        parentFragmentManager.setFragmentResult(
-//            Const.MOVIE,
-//            bundleOf(Const.BUNDLE to movie)
-//        )
-//        val bundle = Bundle()
-//        bundle.putParcelable(Const.MOVIE, movie)
-//        fragment.arguments = bundle
-//        val transaction = parentFragmentManager.beginTransaction()
-//        //Пытаемся поменять фрагмент для бэкстека
-////        transaction.replace(R.id.home_fragment_container, fragment)
-//        transaction.replace(R.id.main_fragment_container, fragment)
-//        transaction.addToBackStack(fragment.javaClass.name)
-//        transaction.commit()
 
     }
 

@@ -17,7 +17,6 @@ class Communication {
 
     private var listOfMoviesLiveData = MutableLiveData<List<UiMovie>>()
 
-    private var listOfMoviesState = MutableLiveData<List<StateMovie>>()
 
     fun observe(owner: LifecycleOwner, observer: androidx.lifecycle.Observer<List<UiMovie>> ) {
         listOfMoviesLiveData.observe(owner, observer)

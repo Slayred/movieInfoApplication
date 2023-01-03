@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.replace
 import androidx.lifecycle.ViewModelProvider
 import com.chibisov.movieinfoapplication.R
@@ -50,9 +51,9 @@ class HomeFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         bottomBar = view.findViewById(R.id.btm_nav)
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        replaceFragment(MovieListFragment())
-        homeViewModel.observe(this){
 
+        if (homeViewModel.currentName.value == null) {
+            replaceFragment(MovieListFragment())
         }
         Log.d("BACKSTACK", "CURRENT CHILDBACKSTACK IS ${childFragmentManager.fragments}")
 
@@ -78,16 +79,26 @@ class HomeFragment : BaseFragment() {
             replaceFragment(MovieListFragment())
             return true
         }
+        if(fragment is MovieListFragment){
+            val alertDialog = AlertDialog.Builder(requireContext())
+            alertDialog.setTitle(resources.getText(R.string.exit))
+            alertDialog.setMessage(resources.getText(R.string.exit_question))
+            alertDialog.setPositiveButton(resources.getText(R.string.yes)) { _, _ ->
+                requireActivity().finish()
+            }
+            alertDialog.setNegativeButton(resources.getText(R.string.no)) { _, _ -> }
+            alertDialog.show()
+            return true
+        }
         return super.onBackPressed()
     }
 
 
     private fun replaceFragment(fragment: Fragment) {
-        if (!isAdded) return
         activeFragmentTag = fragment::class.java.simpleName
+        if (!isAdded) return
         val activeFragment = childFragmentManager.findFragmentByTag(activeFragmentTag)
         val transaction = childFragmentManager.beginTransaction()
-        //TODO ACtive fargment is null bcs it first try
         if (activeFragment != null) {
             childFragmentManager.fragments.forEach {
                 transaction.hide(it)
@@ -98,8 +109,10 @@ class HomeFragment : BaseFragment() {
         } else {
             transaction.add(R.id.home_fragment_container, fragment, activeFragmentTag)
         }
+
         Log.d("BACKSTACK", "CURRENT BACKSTACKENTITY IS ${childFragmentManager.backStackEntryCount}")
         transaction.commit()
+        homeViewModel.currentName.value = fragment
     }
 
     companion object {
