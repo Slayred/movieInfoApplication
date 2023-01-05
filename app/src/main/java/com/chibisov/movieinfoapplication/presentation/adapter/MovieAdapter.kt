@@ -62,7 +62,6 @@ class MovieAdapter(
         protected val movieDetails: Button = itemView.findViewById(R.id.movieDetails)
         open fun bind(model: UiMovie) {
             movieName.text = model.name
-//            moviePoster.setImageResource(model.posterPath)
             Glide.with(itemView)
                 .load(model.posterPath)
                 .apply(RequestOptions().override(150,150))
@@ -109,9 +108,6 @@ class MovieAdapter(
     interface FavoriteClickListener {
         fun change(movie: UiMovie)
     }
-//    interface FavoriteClickDeleteListener: FavoriteClickListener{
-//        fun change(movie: UiMovie, position: Int)
-//    }
 
     interface DetailsCLickListener {
         fun details(movie: UiMovie)

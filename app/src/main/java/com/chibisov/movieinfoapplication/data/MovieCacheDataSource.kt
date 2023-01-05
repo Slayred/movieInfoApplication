@@ -1,34 +1,38 @@
 package com.chibisov.movieinfoapplication.data
 
 
-import androidx.lifecycle.LiveData
 import com.chibisov.movieinfoapplication.data.local.dao.MovieInfoDao
 import com.chibisov.movieinfoapplication.data.local.dao.MovieListDao
 import com.chibisov.movieinfoapplication.data.local.entity.MovieInfoEntity
 import com.chibisov.movieinfoapplication.data.local.entity.MovieListEntity
-import com.chibisov.movieinfoapplication.data.models.UiMovie
 import io.reactivex.Flowable
-import io.reactivex.Observable
-import io.reactivex.Scheduler
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
-
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 
 class MovieCacheDataSource(private val movieListDao: MovieListDao,
 private val movieInfoDao: MovieInfoDao) {
 
-    private val compositeDisposable = CompositeDisposable()
 
 
     fun getMovieItems(): List<MovieListEntity> {
         return movieListDao.getMoviesList()
     }
 
+    suspend fun getMovieFavoriteList(): List<MovieListEntity> {
+        return withContext(Dispatchers.IO){
+            movieListDao.getMoviesFavoriteList()
+        }
+    }
 
     fun searchItem(movieListEntity: MovieListEntity): MovieListEntity? {
-        return  movieListDao.searchItem(movieListEntity.kinopoikId)
+        return  movieListDao.searchItem(movieListEntity.kinopoiskId)
+    }
+
+   suspend fun searchItem(id: Int): MovieListEntity? {
+        return withContext(Dispatchers.IO){
+            movieListDao.searchItem(id)
+        }
     }
 
 
@@ -36,7 +40,15 @@ private val movieInfoDao: MovieInfoDao) {
         movieListDao.insertMovie(movieListEntity.copy(status = true))
     }
 
-    fun insertMovieInfo(movieInfoEntity: MovieInfoEntity) = movieInfoDao.insertMovieInfo(movieInfoEntity)
+    fun insertMovieInfo(movieInfoEntity: MovieInfoEntity) {
+        movieInfoDao.insertMovieInfo(movieInfoEntity)
+    }
+
+    suspend fun insertMovieInfoDbRc(movieInfoEntity: MovieInfoEntity) {
+        withContext(Dispatchers.IO){
+            movieInfoDao.insertMovieInfo(movieInfoEntity)
+        }
+    }
 
     fun updateMovieItems(movieListEntity: MovieListEntity) = movieListDao.updateMovie(movieListEntity)
 
@@ -46,6 +58,20 @@ private val movieInfoDao: MovieInfoDao) {
 
     fun getMovieInfo(id: Int): Flowable<MovieInfoEntity> {
         return movieInfoDao.getMovieInfo(id)
+    }
+
+    fun updateMovieInfoStatus(id: Int, status: Boolean) {
+        movieInfoDao.updateMovieStatus(id, status)
+
+    }
+
+    fun updateMovieListStatus(id: Int, status: Boolean) {
+        movieListDao.updateStatusOfMovie(id,status)
+    }
+
+    fun saveMovieRc(fromUiToEntity: MovieInfoEntity) {
+        fromUiToEntity.checked = true
+        movieInfoDao.insertMovieInfo(fromUiToEntity)
     }
 
 }

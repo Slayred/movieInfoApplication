@@ -5,13 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
-import androidx.activity.addCallback
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
 import com.bumptech.glide.Glide
 import com.chibisov.movieinfoapplication.MovieInfoApp
 import com.chibisov.movieinfoapplication.R
@@ -20,12 +14,11 @@ import com.chibisov.movieinfoapplication.data.models.UiMovie
 import com.chibisov.movieinfoapplication.databinding.FragmentMovieInfoCoordinatorBinding
 
 import com.chibisov.movieinfoapplication.domain.StateMovie
-import com.chibisov.movieinfoapplication.viewmodels.SharedMovieViewModel
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.chibisov.movieinfoapplication.viewmodels.MovieInfoViewModel
 
 class MovieInfoFragment : BaseFragment() {
 
-    private lateinit var sharedMovieViewModel : SharedMovieViewModel
+    private lateinit var movieInfoViewModel : MovieInfoViewModel
     private var movie: UiMovie? = null
     private lateinit var binding: FragmentMovieInfoCoordinatorBinding
 
@@ -43,7 +36,7 @@ class MovieInfoFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(this::javaClass.toString(), "OnCreate")
-        sharedMovieViewModel = (requireActivity().application as MovieInfoApp).sharedMovieViewModel
+        movieInfoViewModel = (requireActivity().application as MovieInfoApp).movieInfoViewModel
         super.onCreate(savedInstanceState)
     }
 
@@ -52,10 +45,11 @@ class MovieInfoFragment : BaseFragment() {
         Log.d(this::javaClass.toString(), "OnViewCreated")
         binding.included.fab.setOnClickListener {
             movie!!.status = !movie!!.status
-            setFavourites(movie!!)
+            setFavouritesImage(movie!!)
+            movieInfoViewModel.changeStatus(movie!!.id, movie!!.status)
         }
 
-        sharedMovieViewModel.observeStateMovieRx(this) {
+        movieInfoViewModel.observeStateMovieRx(this) {
             when(it){
                 is StateMovie.Successful -> {
                     binding.progressBar.isVisible = false
@@ -70,10 +64,12 @@ class MovieInfoFragment : BaseFragment() {
                     showToast(it.e)
                 }
             }
+
         }
 
 
-        sharedMovieViewModel.shoMovieInfoRx(movie!!.id)
+        movieInfoViewModel.showMovieInfoCr(movie!!.id)
+
 
     }
 
@@ -84,11 +80,14 @@ class MovieInfoFragment : BaseFragment() {
             .load(movie.posterPath)
             .placeholder(R.drawable.baseline_update_24)
             .into(binding.included.mainBackdrop)
-        setFavourites(movie)
+        setFavouritesImage(movie)
     }
 
-    private fun setFavourites(movie: UiMovie) {
+    private fun setFavouritesImage(movie: UiMovie) {
         binding.included.fab.setImageResource(checkFavourites(movie.status))
+//        sharedMovieViewModel.changeStatus(movie.id, movie.status)
+
+
     }
 
     private fun checkFavourites(status: Boolean): Int {

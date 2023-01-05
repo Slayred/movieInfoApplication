@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 import com.chibisov.movieinfoapplication.domain.interactor.BaseInteractor
 import com.chibisov.movieinfoapplication.domain.Communication
@@ -11,6 +12,8 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MovieListViewModel(
     val communication: Communication,
@@ -37,23 +40,29 @@ class MovieListViewModel(
 
     override fun showList() {
 
-    compositeDisposable.add(interactor.showNetListRX()
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe ({
-            result -> communication.showUiMovieList(result)
-        }, {
-            result -> Log.d("ERROR", "ERROR${result.message}")
-        }
-        )
+        compositeDisposable.add(interactor.showNetListRX()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ result ->
+                communication.showUiMovieList(result)
+            }, { result ->
+                Log.d("ERROR", "ERROR${result.message}")
+            }
+            )
 
-    )
+        )
 
     }
 
 
     override fun addCheckedItem(movie: UiMovie) {
         interactor.addCheckedItem(movie)
+    }
+
+    override fun showListCr() {
+        viewModelScope.launch(Dispatchers.Main) {
+            communication.showUiMovieList(interactor.showNetListCr())
+        }
     }
 
 

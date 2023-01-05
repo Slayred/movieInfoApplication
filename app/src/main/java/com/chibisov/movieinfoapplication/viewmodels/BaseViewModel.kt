@@ -12,5 +12,6 @@ interface BaseViewModel {
     fun changeStatus(movie: UiMovie)
     fun showList()
     fun addCheckedItem(movie: UiMovie)
+    fun showListCr()
 
 }

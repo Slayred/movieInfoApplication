@@ -47,7 +47,7 @@ data class KinopoiskMovieInfoModel(
     val lastSync: String? = null,
 
     @field:SerializedName("posterUrl")
-    val posterUrl: String? = null,
+    val posterUrl: String,
 
     @field:SerializedName("genres")
     val genres: List<GenresItem?>? = null,

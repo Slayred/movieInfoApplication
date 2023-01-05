@@ -18,9 +18,10 @@ import com.chibisov.movieinfoapplication.R
 import com.chibisov.movieinfoapplication.presentation.adapter.MovieAdapter
 import com.chibisov.movieinfoapplication.core.Const
 import com.chibisov.movieinfoapplication.core.MovieType
+import com.chibisov.movieinfoapplication.core.mainRouter
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 import com.chibisov.movieinfoapplication.viewmodels.MovieListViewModel
-import com.chibisov.movieinfoapplication.viewmodels.SharedMovieViewModel
+import com.chibisov.movieinfoapplication.viewmodels.MovieInfoViewModel
 import com.google.android.material.snackbar.Snackbar
 
 class MovieListFragment : BaseMovieListFragment() {
@@ -30,7 +31,7 @@ class MovieListFragment : BaseMovieListFragment() {
     private lateinit var adapter: MovieAdapter
     private lateinit var fragment: Fragment
     private lateinit var listViewModel: MovieListViewModel
-    private lateinit var sharedMovieViewModel: SharedMovieViewModel
+    private lateinit var movieInfoViewModel: MovieInfoViewModel
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +59,7 @@ class MovieListFragment : BaseMovieListFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         listViewModel = (requireActivity().application as MovieInfoApp).movieListViewModel
-        sharedMovieViewModel = (requireActivity().application as MovieInfoApp).sharedMovieViewModel
+        movieInfoViewModel = (requireActivity().application as MovieInfoApp).movieInfoViewModel
         fragment = MovieInfoFragment()
         inviteBtn = view.findViewById(R.id.inviteBtn)
         recyclerView = view.findViewById(R.id.movieRV)
@@ -86,14 +87,14 @@ class MovieListFragment : BaseMovieListFragment() {
         recyclerView.layoutManager = setAdapter(divider!!, recyclerView, resources)
         (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
-        listViewModel.showList()
+        listViewModel.showListCr()
 
         listViewModel.observe(this ){
             adapter.updateDataFromAdapter()
         }
 
         swipeRefreshLayout.setOnRefreshListener{
-            listViewModel.showList()
+            listViewModel.showListCr()
             swipeRefreshLayout.isRefreshing = false
         }
 
@@ -103,7 +104,7 @@ class MovieListFragment : BaseMovieListFragment() {
     }
 
     private fun showDetails(movie: UiMovie) {
-        sharedMovieViewModel.setMovieID(movie.id)
+        movieInfoViewModel.setMovieID(movie.id)
        mainRouter().navigateToDetails(movie)
 
 

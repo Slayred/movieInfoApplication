@@ -8,7 +8,7 @@ class MovieListConverterImpl : MovieListConverter {
 
     override fun toUi(entity: MovieListEntity): UiMovie {
         return UiMovie(
-            entity.kinopoikId,
+            entity.kinopoiskId,
             entity.name,
             "descr",
             entity.posterPreviewPath,

@@ -9,6 +9,7 @@
     android:fitsSystemWindows="true"
     >
 
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/main.appbar"
         android:layout_width="match_parent"

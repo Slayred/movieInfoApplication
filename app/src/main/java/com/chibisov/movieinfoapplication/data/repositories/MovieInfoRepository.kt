@@ -14,5 +14,9 @@ interface MovieInfoRepository {
 
     fun getMovieInfoDb(id: Int): Flowable<MovieInfoEntity>
 
-    suspend fun getMovieInfoRc(id: Int): KinopoiskMovieInfoModel
+    suspend fun getMovieInfoRc(id: Int): UiMovie
+
+    suspend fun changeMovieInfoStatus(id: Int, status: Boolean)
+
+    suspend fun saveToDbCr(movie: UiMovie)
 }

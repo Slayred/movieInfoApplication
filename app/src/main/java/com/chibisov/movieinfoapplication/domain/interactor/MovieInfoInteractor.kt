@@ -11,7 +11,13 @@ interface MovieInfoInteractor {
 
     fun saveToDbRx(movie: UiMovie)
 
-    fun showMovieInfoDb(id: Int): Flowable<MovieInfoEntity>
+    fun showMovieInfoDbRx(id: Int): Flowable<MovieInfoEntity>
 
     suspend fun showMovieInfoCr(id: Int): UiMovie
+
+    suspend fun changeMovieStatus(id: Int, status: Boolean)
+
+    fun changeMovieChecked(uiMovie: UiMovie)
+    suspend fun saveToDbCr(movie: UiMovie)
+
 }

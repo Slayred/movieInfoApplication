@@ -19,6 +19,10 @@ data class UiMovie(
         return this
     }
 
+    fun setChecked() {
+        this.checked = true
+    }
+
     fun same(movie: UiMovie): Boolean {
         return this.id == movie.id
     }

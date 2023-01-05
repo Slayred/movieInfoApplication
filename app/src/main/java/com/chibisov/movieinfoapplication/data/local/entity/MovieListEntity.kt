@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "movie_list")
 @Parcelize
 data class MovieListEntity(
-    @PrimaryKey(autoGenerate = false) var kinopoikId: Int,
+    @PrimaryKey(autoGenerate = false) var kinopoiskId: Int,
     var posterPreviewPath: String,
     var name: String,
     var status: Boolean,

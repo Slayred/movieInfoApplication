@@ -6,18 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResultListener
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.chibisov.movieinfoapplication.MovieInfoApp
 import com.chibisov.movieinfoapplication.R
 import com.chibisov.movieinfoapplication.presentation.adapter.MovieAdapter
 import com.chibisov.movieinfoapplication.core.Const
 import com.chibisov.movieinfoapplication.core.MovieType
+import com.chibisov.movieinfoapplication.core.mainRouter
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 import com.chibisov.movieinfoapplication.viewmodels.FavoriteMovieListViewModel
-import com.chibisov.movieinfoapplication.viewmodels.SharedMovieViewModel
+import com.chibisov.movieinfoapplication.viewmodels.MovieInfoViewModel
 import com.google.android.material.snackbar.Snackbar
 
 class MovieListFavoritesFragment : BaseMovieListFragment(){
@@ -27,7 +26,7 @@ class MovieListFavoritesFragment : BaseMovieListFragment(){
     private lateinit var adapter: MovieAdapter
     private lateinit var fragment: BaseMovieListFragment
     private lateinit var favoriteMovieListViewModel: FavoriteMovieListViewModel
-    private lateinit var sharedMovieViewModel: SharedMovieViewModel
+    private lateinit var movieInfoViewModel: MovieInfoViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,7 +54,7 @@ class MovieListFavoritesFragment : BaseMovieListFragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sharedMovieViewModel = (requireActivity().application as MovieInfoApp).sharedMovieViewModel
+        movieInfoViewModel = (requireActivity().application as MovieInfoApp).movieInfoViewModel
         recyclerView = view.findViewById(R.id.movieRVFavor)
         adapter = MovieAdapter(MovieType.Favorite, object : MovieAdapter.FavoriteClickListener {
             override fun change(movie: UiMovie) {
@@ -84,13 +83,19 @@ class MovieListFavoritesFragment : BaseMovieListFragment(){
         favoriteMovieListViewModel.observe(this){
             adapter.updateDataFromAdapter()
         }
-        favoriteMovieListViewModel.showList()
+//        favoriteMovieListViewModel.showList()
+        favoriteMovieListViewModel.showFavorites()
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        favoriteMovieListViewModel.showList()
     }
 
     private fun showDetails(movie: UiMovie) {
         favoriteMovieListViewModel.addCheckedItem(movie)
-        sharedMovieViewModel.setMovieID(movie.id)
+        movieInfoViewModel.setMovieID(movie.id)
         mainRouter().navigateToDetails(movie)
     }
     companion object {

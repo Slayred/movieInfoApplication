@@ -3,6 +3,7 @@ package com.chibisov.movieinfoapplication.viewmodels
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 import com.chibisov.movieinfoapplication.domain.interactor.BaseInteractor
 import com.chibisov.movieinfoapplication.domain.Communication
@@ -10,6 +11,9 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+
 
 class FavoriteMovieListViewModel(
     val communication: Communication,
@@ -47,11 +51,21 @@ class FavoriteMovieListViewModel(
         )
     }
 
+    fun showFavorites(){
+        viewModelScope.launch (Dispatchers.Main) {
+            communication.showUiMovieList(interactor.showFavoritesCr())
+        }
+    }
+
 
 
     override fun addCheckedItem(movie: UiMovie) {
         interactor.addCheckedItem(movie)
         showList()
+    }
+
+    override fun showListCr() {
+        TODO("Not yet implemented")
     }
 
 

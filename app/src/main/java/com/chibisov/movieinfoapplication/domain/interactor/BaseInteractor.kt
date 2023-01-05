@@ -1,6 +1,6 @@
 package com.chibisov.movieinfoapplication.domain.interactor
 
-import com.chibisov.movieinfoapplication.data.Repository
+import com.chibisov.movieinfoapplication.data.repositories.impl.Repository
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 import io.reactivex.Observable
 
@@ -23,12 +23,20 @@ class BaseInteractor(private val repository: Repository) {
 
 
     fun showFavorites(): List<UiMovie> {
-        return repository.showFavorites()
+        return repository.showFavoritesRx()
+    }
+
+    suspend fun showFavoritesCr(): List<UiMovie> {
+        return repository.getFavoritesCr()
     }
 
 
     fun addCheckedItem(movie: UiMovie) {
 //        repository.addCheckedItem(movie)
+    }
+
+    suspend fun showNetListCr(): List<UiMovie> {
+        return repository.getNetListCr()
     }
 
 }

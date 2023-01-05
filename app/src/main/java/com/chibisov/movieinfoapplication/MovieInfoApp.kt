@@ -3,7 +3,7 @@ package com.chibisov.movieinfoapplication
 import android.app.Application
 import com.chibisov.movieinfoapplication.data.MovieCacheDataSource
 import com.chibisov.movieinfoapplication.data.MovieNetDataSource
-import com.chibisov.movieinfoapplication.data.Repository
+import com.chibisov.movieinfoapplication.data.repositories.impl.Repository
 import com.chibisov.movieinfoapplication.data.converter.impl.MovieInfoConverterImpl
 import com.chibisov.movieinfoapplication.data.converter.impl.MovieListConverterImpl
 import com.chibisov.movieinfoapplication.data.local.MovieInfoDataBase
@@ -19,14 +19,14 @@ import com.chibisov.movieinfoapplication.domain.interactor.MovieInfoInteractor
 import com.chibisov.movieinfoapplication.domain.interactor.impl.MovieInfoInteractorImpl
 import com.chibisov.movieinfoapplication.viewmodels.FavoriteMovieListViewModel
 import com.chibisov.movieinfoapplication.viewmodels.MovieListViewModel
-import com.chibisov.movieinfoapplication.viewmodels.SharedMovieViewModel
+import com.chibisov.movieinfoapplication.viewmodels.MovieInfoViewModel
 
 
 class MovieInfoApp : Application() {
 
     lateinit var movieListViewModel: MovieListViewModel
     lateinit var movieFavoriteListViewModel: FavoriteMovieListViewModel
-    lateinit var sharedMovieViewModel: SharedMovieViewModel
+    lateinit var movieInfoViewModel: MovieInfoViewModel
 //    val homeViewModel: HomeViewModel  by viewModels()
 
     private lateinit var movieInfoInteractor: MovieInfoInteractor
@@ -48,7 +48,7 @@ class MovieInfoApp : Application() {
         movieListDao = MovieInfoDataBase.getDataBase(this).movieListDao()
         movieInfoDao = MovieInfoDataBase.getDataBase(this).movieInfoData()
         movieCacheDataSource = MovieCacheDataSource(movieListDao, movieInfoDao)
-        movieInfoRepository = MovieInfoRepositoryImpl(movieNetDataSource,movieCacheDataSource)
+        movieInfoRepository = MovieInfoRepositoryImpl(movieNetDataSource,movieCacheDataSource, MovieInfoConverterImpl())
         movieRepository = Repository(
             movieCacheDataSource,
             movieNetDataSource,
@@ -59,6 +59,6 @@ class MovieInfoApp : Application() {
         movieInfoInteractor = MovieInfoInteractorImpl(movieInfoRepository, MovieInfoConverterImpl())
         movieListViewModel = MovieListViewModel(Communication(), movieInteractor)
         movieFavoriteListViewModel = FavoriteMovieListViewModel(Communication(), movieInteractor)
-        sharedMovieViewModel = SharedMovieViewModel(movieInfoInteractor)
+        movieInfoViewModel = MovieInfoViewModel(movieInfoInteractor)
     }
 }

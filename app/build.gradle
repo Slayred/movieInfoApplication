@@ -84,6 +84,9 @@ dependencies {
     // alternatively - without Android dependencies for tests
     testImplementation "androidx.paging:paging-common-ktx:$paging_version"
 
+    // debugImplementation because LeakCanary should only run in debug builds.
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
+
 
     implementation "androidx.room:room-runtime:2.4.2"
     implementation "androidx.room:room-rxjava2:2.4.2"

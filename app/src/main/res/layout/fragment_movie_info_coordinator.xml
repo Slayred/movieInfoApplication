@@ -5,11 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/included"
-        layout="@layout/coordinator_movie_info"
-        android:visibility="invisible">
-    </include>
+
+
+        <include
+            android:id="@+id/included"
+            layout="@layout/coordinator_movie_info"
+            android:visibility="invisible">
+        </include>
+
 
     <ProgressBar
         android:id="@+id/progress_bar"
