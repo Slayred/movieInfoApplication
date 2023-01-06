@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.chibisov.movieinfoapplication.presentation.adapter.adapterManager.CustomLinearLayoutManager
 import com.chibisov.movieinfoapplication.presentation.adapter.itemDecoration.CustomHorizontalItemDecoration
 import com.chibisov.movieinfoapplication.presentation.adapter.itemDecoration.CustomVerticalItemDecoration
 
@@ -20,11 +21,16 @@ abstract class BaseMovieListFragment : BaseFragment() {
             recyclerView.addItemDecoration(
                 CustomVerticalItemDecoration(drawable)
             )
-            LinearLayoutManager(
-                activity,
+            CustomLinearLayoutManager(
+                activity!!,
                 LinearLayoutManager.VERTICAL,
                 false
             )
+//            LinearLayoutManager(
+//                activity,
+//                LinearLayoutManager.VERTICAL,
+//                false
+//            )
         } else {
             recyclerView.addItemDecoration(
                 CustomHorizontalItemDecoration(drawable)

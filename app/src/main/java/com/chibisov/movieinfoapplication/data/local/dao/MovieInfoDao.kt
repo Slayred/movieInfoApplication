@@ -22,6 +22,9 @@ interface MovieInfoDao {
     @Query("UPDATE movie_info set status =:status where kinopoiskId = :id")
     fun updateMovieStatus(id: Int, status: Boolean)
 
+    @Query("UPDATE movie_info set checked = 1 where kinopoiskId = :id")
+    fun setMovieChecked(id: Int)
+
     @Query("SELECT * FROM movie_info WHERE kinopoiskId = :id LIMIT 1")
     fun getMovieInfoCr(id: Int): MovieInfoEntity
 }

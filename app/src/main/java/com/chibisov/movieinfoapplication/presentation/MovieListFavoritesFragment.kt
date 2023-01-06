@@ -10,16 +10,16 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.RecyclerView
 import com.chibisov.movieinfoapplication.MovieInfoApp
 import com.chibisov.movieinfoapplication.R
-import com.chibisov.movieinfoapplication.presentation.adapter.MovieAdapter
 import com.chibisov.movieinfoapplication.core.Const
 import com.chibisov.movieinfoapplication.core.MovieType
 import com.chibisov.movieinfoapplication.core.mainRouter
 import com.chibisov.movieinfoapplication.data.models.UiMovie
+import com.chibisov.movieinfoapplication.presentation.adapter.MovieAdapter
 import com.chibisov.movieinfoapplication.viewmodels.FavoriteMovieListViewModel
 import com.chibisov.movieinfoapplication.viewmodels.MovieInfoViewModel
 import com.google.android.material.snackbar.Snackbar
 
-class MovieListFavoritesFragment : BaseMovieListFragment(){
+class MovieListFavoritesFragment : BaseMovieListFragment() {
 
 
     private lateinit var recyclerView: RecyclerView
@@ -80,24 +80,29 @@ class MovieListFavoritesFragment : BaseMovieListFragment(){
         recyclerView.itemAnimator?.apply {
             removeDuration = 0
         }
-        favoriteMovieListViewModel.observe(this){
+        favoriteMovieListViewModel.observe(this) {
             adapter.updateDataFromAdapter()
         }
-//        favoriteMovieListViewModel.showList()
-        favoriteMovieListViewModel.showFavorites()
+        favoriteMovieListViewModel.showList()
 
     }
 
     override fun onResume() {
         super.onResume()
+        Log.d(Const.PRESENTATION, "${this::class.java.simpleName} is resume")
+    }
+
+    override fun onResumeMy() {
+        super.onResumeMy()
         favoriteMovieListViewModel.showList()
     }
 
     private fun showDetails(movie: UiMovie) {
-        favoriteMovieListViewModel.addCheckedItem(movie)
+        favoriteMovieListViewModel.addCheckedItem(movie.id)
         movieInfoViewModel.setMovieID(movie.id)
         mainRouter().navigateToDetails(movie)
     }
+
     companion object {
 
         fun newInstance() = MovieListFavoritesFragment()

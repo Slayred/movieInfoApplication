@@ -5,6 +5,7 @@ import com.chibisov.movieinfoapplication.data.local.dao.MovieInfoDao
 import com.chibisov.movieinfoapplication.data.local.dao.MovieListDao
 import com.chibisov.movieinfoapplication.data.local.entity.MovieInfoEntity
 import com.chibisov.movieinfoapplication.data.local.entity.MovieListEntity
+import com.chibisov.movieinfoapplication.data.models.UiMovie
 import io.reactivex.Flowable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -72,6 +73,11 @@ private val movieInfoDao: MovieInfoDao) {
     fun saveMovieRc(fromUiToEntity: MovieInfoEntity) {
         fromUiToEntity.checked = true
         movieInfoDao.insertMovieInfo(fromUiToEntity)
+    }
+
+    fun changeStatus(id: Int) {
+        movieListDao.setMovieChecked(id)
+        movieInfoDao.setMovieChecked(id)
     }
 
 }

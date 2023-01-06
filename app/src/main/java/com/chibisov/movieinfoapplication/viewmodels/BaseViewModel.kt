@@ -1,17 +1,14 @@
 package com.chibisov.movieinfoapplication.viewmodels
 
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import com.chibisov.movieinfoapplication.data.models.UiMovie
 
 interface BaseViewModel {
 
     fun observe(owner: LifecycleOwner, observer: Observer<List<UiMovie>>)
     fun changeStatus(movie: UiMovie)
+    fun addCheckedItem(id: Int)
     fun showList()
-    fun addCheckedItem(movie: UiMovie)
-    fun showListCr()
 
 }

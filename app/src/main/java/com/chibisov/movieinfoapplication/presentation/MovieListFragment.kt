@@ -87,14 +87,14 @@ class MovieListFragment : BaseMovieListFragment() {
         recyclerView.layoutManager = setAdapter(divider!!, recyclerView, resources)
         (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
-        listViewModel.showListCr()
+        listViewModel.showList()
 
         listViewModel.observe(this ){
             adapter.updateDataFromAdapter()
         }
 
         swipeRefreshLayout.setOnRefreshListener{
-            listViewModel.showListCr()
+            listViewModel.showList()
             swipeRefreshLayout.isRefreshing = false
         }
 
@@ -105,9 +105,20 @@ class MovieListFragment : BaseMovieListFragment() {
 
     private fun showDetails(movie: UiMovie) {
         movieInfoViewModel.setMovieID(movie.id)
+        listViewModel.addCheckedItem(movie.id)
        mainRouter().navigateToDetails(movie)
 
 
+    }
+
+    override fun onResumeMy() {
+        super.onResumeMy()
+        listViewModel.showList()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(Const.PRESENTATION, "${this::class.java.simpleName} is resume")
     }
 
     private fun share() {

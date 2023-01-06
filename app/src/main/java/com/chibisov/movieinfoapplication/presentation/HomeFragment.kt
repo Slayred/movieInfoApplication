@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import com.chibisov.movieinfoapplication.R
+import com.chibisov.movieinfoapplication.core.Const
 import com.chibisov.movieinfoapplication.viewmodels.HomeViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -27,10 +28,6 @@ class HomeFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
-    override fun onResume() {
-        super.onResume()
-        Log.d("BACKSTACK", "ON RESUME")
-    }
 
     override fun onStop() {
         super.onStop()
@@ -90,18 +87,17 @@ class HomeFragment : BaseFragment() {
     }
 
 
-    private fun replaceFragment(fragment: Fragment) {
+    private fun replaceFragment(fragment: BaseFragment) {
         activeFragmentTag = fragment::class.java.simpleName
         if (!isAdded) return
-        val activeFragment = childFragmentManager.findFragmentByTag(activeFragmentTag)
+        val activeFragment = childFragmentManager.findFragmentByTag(activeFragmentTag) as BaseFragment?
         val transaction = childFragmentManager.beginTransaction()
         if (activeFragment != null) {
             childFragmentManager.fragments.forEach {
                 transaction.hide(it)
-                activeFragment.onResume()
             }
             transaction.show(activeFragment)
-            activeFragment.onResume()
+            activeFragment.onResumeMy()
         } else {
             transaction.add(R.id.home_fragment_container, fragment, activeFragmentTag)
         }
@@ -109,6 +105,7 @@ class HomeFragment : BaseFragment() {
         transaction.commit()
         homeViewModel.currentName.value = activeFragmentTag
     }
+
 
     companion object {
         fun newInstance() = HomeFragment()

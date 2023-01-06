@@ -14,52 +14,34 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MovieListViewModel(
     val communication: Communication,
     private val interactor: BaseInteractor
 ) : ViewModel(), BaseViewModel {
 
-    private val compositeDisposable = CompositeDisposable()
 
     override fun observe(owner: LifecycleOwner, observer: Observer<List<UiMovie>>) {
         communication.observe(owner, observer)
     }
 
     override fun changeStatus(movie: UiMovie) {
-        compositeDisposable.add(Observable.fromCallable {
+        viewModelScope.launch(Dispatchers.IO) {
             interactor.changeStatus(movie)
         }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-            }
-        )
+
 
     }
+
+    override fun addCheckedItem(id: Int) {
+        viewModelScope.launch(Dispatchers.Main){
+            interactor.addCheckedItem(id)
+        }
+    }
+
 
     override fun showList() {
-
-        compositeDisposable.add(interactor.showNetListRX()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ result ->
-                communication.showUiMovieList(result)
-            }, { result ->
-                Log.d("ERROR", "ERROR${result.message}")
-            }
-            )
-
-        )
-
-    }
-
-
-    override fun addCheckedItem(movie: UiMovie) {
-        interactor.addCheckedItem(movie)
-    }
-
-    override fun showListCr() {
         viewModelScope.launch(Dispatchers.Main) {
             communication.showUiMovieList(interactor.showNetListCr())
         }
@@ -68,7 +50,6 @@ class MovieListViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        compositeDisposable.dispose()
     }
 
 }

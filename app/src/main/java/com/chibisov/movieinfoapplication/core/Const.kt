@@ -6,6 +6,7 @@ object Const {
     const val COMMENT = "comment"
     const val TAG = "TAG_RESULT"
     const val BUNDLE = "bundle_key"
+    const val PRESENTATION = "PRESENTATION"
 }
 
 enum class MovieType {

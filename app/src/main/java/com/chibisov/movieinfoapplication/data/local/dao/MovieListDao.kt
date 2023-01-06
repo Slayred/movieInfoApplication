@@ -28,4 +28,7 @@ interface MovieListDao {
 
     @Query("UPDATE movie_list set status = :status where kinopoiskId = :id")
     fun updateStatusOfMovie(id: Int, status: Boolean)
+
+    @Query("UPDATE movie_list set checked = 1 where kinopoiskId = :id")
+    fun setMovieChecked(id: Int)
 }

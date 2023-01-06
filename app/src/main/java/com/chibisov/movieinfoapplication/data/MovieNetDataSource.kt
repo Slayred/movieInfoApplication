@@ -12,30 +12,6 @@ import retrofit2.Response
 
 class MovieNetDataSource(private val service: MovieService) {
 
-    fun getNewList(callbackList: CallbackDataList) {
-        service.getTopFilms().enqueue(object : Callback<KinopoiskMovieResponse> {
-            override fun onResponse(
-                call: Call<KinopoiskMovieResponse>,
-                response: Response<KinopoiskMovieResponse>
-            ) {
-                if (response.isSuccessful) {
-                    val listOfMovies = mutableListOf<UiMovie>()
-                    response.body()?.films?.forEach {
-                        if (it != null) {
-                            it.toUiMovie()?.let { it1 -> listOfMovies.add(it1) }
-                        }
-                    }
-                    callbackList.provideData(listOfMovies as ArrayList<UiMovie>)
-                }
-            }
-
-            override fun onFailure(call: Call<KinopoiskMovieResponse>, t: Throwable) {
-                TODO("Not yet implemented")
-            }
-
-        })
-    }
-
     fun getMovieListRX() = service.getTopFilmsRX()
 
     suspend fun getMovieListCr() =service.getTopFilmsCr()

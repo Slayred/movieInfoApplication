@@ -10,9 +10,6 @@ import retrofit2.http.Path
 
 interface MovieService {
 
-    @Headers("X-API-KEY:295873e7-0cb4-4fb5-84ff-0c1fb88fc7fd")
-    @GET("films/top?page=1")
-    fun getTopFilms(): Call<KinopoiskMovieResponse>
 
 
     @Headers("X-API-KEY:295873e7-0cb4-4fb5-84ff-0c1fb88fc7fd")
@@ -23,13 +20,6 @@ interface MovieService {
     @GET("films/top?page=1")
     suspend fun getTopFilmsCr(): KinopoiskMovieResponse
 
-
-
-
-
-    @Headers("X-API-KEY:295873e7-0cb4-4fb5-84ff-0c1fb88fc7fd")
-    @GET("films/{id}")
-    fun getMovieIno(@Path("id") id: Int): Call<KinopoiskMovieInfoModel>
 
     @Headers("X-API-KEY:295873e7-0cb4-4fb5-84ff-0c1fb88fc7fd")
     @GET("films/{id}")

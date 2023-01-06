@@ -1,13 +1,10 @@
 package com.chibisov.movieinfoapplication.data.repositories.impl
 
-import com.chibisov.movieinfoapplication.core.CallbackDataList
 import com.chibisov.movieinfoapplication.data.MovieCacheDataSource
 import com.chibisov.movieinfoapplication.data.MovieNetDataSource
 import com.chibisov.movieinfoapplication.data.converter.MovieInfoConverter
 import com.chibisov.movieinfoapplication.data.converter.MovieListConverter
-import com.chibisov.movieinfoapplication.data.models.KinopoiskMovieInfoModel
 import com.chibisov.movieinfoapplication.data.models.UiMovie
-import io.reactivex.Observable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -19,26 +16,11 @@ class Repository(
 ) {
 
 
-    fun getNetList(callbackDataList: CallbackDataList) {
-        movieNetDataSource.getNewList(callbackDataList)
-    }
-
-    fun getNetListRx(): Observable<List<UiMovie>> = movieNetDataSource.getMovieListRX()
-        .map { kinopoiskMovieResponse ->
-            kinopoiskMovieResponse.films.map {
-                it.toUiMovie()
-            }
-        }
-
-
     fun addFavorites(movie: UiMovie) {
         movieCacheDataSource.insertMovieItems(movieListConverter.toEntity(movie))
 
     }
 
-    fun showFavoritesRx() = movieCacheDataSource.getMovieItems().map {
-        movieListConverter.toUi(it)
-    }
 
     suspend fun getFavoritesCr(): List<UiMovie> {
         return movieCacheDataSource.getMovieFavoriteList().map {
@@ -56,9 +38,6 @@ class Repository(
         movieCacheDataSource.deleteFavItem(movieListConverter.toEntity(movie))
     }
 
-    fun getMovieInfoRx(id: Int): Observable<KinopoiskMovieInfoModel> {
-        return movieNetDataSource.getMovieInfoRx(id)
-    }
 
     suspend fun getNetListCr(): List<UiMovie> {
 
@@ -77,6 +56,13 @@ class Repository(
         }
 
         return movieListUi
+    }
+
+    suspend fun addCheckedItem(id: Int) {
+        withContext(Dispatchers.IO) {
+            movieCacheDataSource.changeStatus(id)
+        }
+
     }
 
 
